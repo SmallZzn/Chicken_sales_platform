@@ -1,0 +1,45 @@
+{
+    "code": 200,
+    "msg": null,
+    "data": {
+        "total": 3,
+        "list": [
+            {
+                "cartdetailId": 1,
+                "productId": 1,
+                "quantity": 12,
+                "allprice": 1200,
+                "cartId": 1,
+                "productName": "坤"
+            },
+            {
+                "cartdetailId": 2,
+                "productId": 2,
+                "quantity": 11,
+                "allprice": 1221,
+                "cartId": 1,
+                "productName": "红羽鸡"
+            }
+        ],
+        "pageNum": 1,
+        "pageSize": 2,
+        "size": 2,
+        "startRow": 1,
+        "endRow": 2,
+        "pages": 2,
+        "prePage": 0,
+        "nextPage": 2,
+        "isFirstPage": true,
+        "isLastPage": false,
+        "hasPreviousPage": false,
+        "hasNextPage": true,
+        "navigatePages": 8,
+        "navigatepageNums": [
+            1,
+            2
+        ],
+        "navigateFirstPage": 1,
+        "navigateLastPage": 2
+    },
+    "map": {}
+}

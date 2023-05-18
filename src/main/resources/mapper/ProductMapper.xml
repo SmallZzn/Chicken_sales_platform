@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhao.salechicken.mapper.ProductMapper">
+
+    <resultMap id="BaseResultMap" type="com.zhao.salechicken.pojo.Product">
+        <id property="productId" column="product_id" jdbcType="INTEGER"/>
+        <result property="productName" column="product_name" jdbcType="VARCHAR"/>
+        <result property="description" column="description" jdbcType="VARCHAR"/>
+        <result property="price" column="price" jdbcType="DOUBLE"/>
+        <result property="weight" column="weight" jdbcType="DOUBLE"/>
+        <result property="origin" column="origin" jdbcType="VARCHAR"/>
+        <result property="category" column="category" jdbcType="VARCHAR"/>
+        <result property="inventory" column="inventory" jdbcType="INTEGER"/>
+        <result property="sales" column="sales" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        product_id
+        ,product_name,description,
+        price,weight,origin,
+        category,inventory,sales
+    </sql>
+
+    <insert id="addProduct">
+        insert into product(product_name, description, price, weight, origin, category, inventory, image, sales)
+        values(#{product.productName}, #{product.description}, #{product.price}, #{product.weight}, #{product.origin},#{product.category}, #{product.inventory},#{product.image},0)
+    </insert>
+
+    <delete id="deleteProduct">
+        delete from product where product_id = #{productId};
+    </delete>
+    
+    <update id="updateProduct">
+        update product
+        set product_name=#{product.productName}, description=#{product.description}, price=#{product.price}, weight=#{product.weight}, origin=#{product.origin}, category=#{product.category}, inventory=#{product.inventory}, image=#{product.image}, sales=#{product.sales}
+        where product_id=#{product.productId}
+    </update>
+
+    <select id="selectProduct" resultMap="BaseResultMap">
+        select *
+        from product
+        where inventory>0
+        <where>
+            <if test="productName!=null and productName!=''">
+                and product_name like '%${productName}%'
+            </if>
+            <if test="category!=null and category!=''">
+                and category=#{category}
+            </if>
+            <if test="origin!=null and origin!=''">
+                and origin=#{origin}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectAllProduct" resultMap="BaseResultMap">
+        select *
+        from product
+        <trim prefix="where" suffixOverrides="and">
+            <if test="productName!=null and productName!=''">
+                product_name like '%${productName}%' and
+            </if>
+            <if test="category!=null and category!=''">
+                category=#{category} and
+            </if>
+            <if test="origin!=null and origin!=''">
+                origin=#{origin} and
+            </if>
+        </trim>
+    </select>
+
+    <select id="selectProductBySales" resultMap="BaseResultMap">
+        select *
+        from product
+        <trim prefix="where" suffixOverrides="and">
+            <if test="productName!=null and productName!=''">
+                product_name like '%${productName}%' and
+            </if>
+            <if test="category!=null and category!=''">
+                category=#{category} and
+            </if>
+            <if test="origin!=null and origin!=''">
+                origin=#{origin} and
+            </if>
+        </trim>
+        order by sales DESC
+    </select>
+
+    <select id="getProductByName" resultMap="BaseResultMap">
+        select * from product where product_name=#{productName}
+    </select>
+
+    <select id="getProductByCategory" resultMap="BaseResultMap">
+        select * from product WHERE category=#{category}
+    </select>
+
+    <select id="getProductById" resultMap="BaseResultMap">
+        select * from product where product_id=#{productId}
+    </select>
+
+    <select id="getProductNameById" resultType="string">
+        select product_name from product where product_id=#{productId}
+    </select>
+
+    <select id="sortProductByPriceDESC" resultMap="BaseResultMap">
+        select *
+        from product
+        <trim prefix="where" suffixOverrides="and">
+            <if test="productName!=null and productName!=''">
+                product_name like '%${productName}%' and
+            </if>
+            <if test="category!=null and category!=''">
+                category=#{category} and
+            </if>
+            <if test="origin!=null and origin!=''">
+                origin=#{origin} and
+            </if>
+        </trim>
+        order by price DESC
+    </select>
+
+    <select id="sortProductByPriceASC" resultMap="BaseResultMap">
+        select *
+        from product
+        <trim prefix="where" suffixOverrides="and">
+            <if test="productName!=null and productName!=''">
+                product_name like '%${productName}%' and
+            </if>
+            <if test="category!=null and category!=''">
+                category=#{category} and
+            </if>
+            <if test="origin!=null and origin!=''">
+                origin=#{origin} and
+            </if>
+        </trim>
+        order by price ASC
+    </select>
+
+    <select id="selectShortSupplyProduct" resultMap="BaseResultMap">
+        select *
+        from product
+        where inventory=0
+        <if test="productName!=null and productName!=''">
+            and product_name like '%${productName}%'
+        </if>
+        <if test="category!=null and category!=''">
+            and category=#{category}
+        </if>
+        <if test="origin!=null and origin!=''">
+            and origin=#{origin}
+        </if>
+    </select>
+</mapper>

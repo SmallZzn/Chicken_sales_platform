@@ -1,0 +1,107 @@
+{
+    "code": 200,
+    "msg": null,
+    "data": {
+        "total": 30,
+        "list": [
+            {
+                "productId": 1,
+                "productName": "白羽肉鸡",
+                "description": "肉质肥美，口感细嫩",
+                "price": 45,
+                "weight": 1,
+                "origin": "河南",
+                "category": 2,
+                "inventory": 100,
+                "image": null,
+                "sales": null
+            },
+            {
+                "productId": 2,
+                "productName": "黑羽肉鸡",
+                "description": "肉质鲜嫩，肉质紧实",
+                "price": 50,
+                "weight": 1,
+                "origin": "山东",
+                "category": 2,
+                "inventory": 80,
+                "image": null,
+                "sales": null
+            },
+            {
+                "productId": 3,
+                "productName": "黄油鸡",
+                "description": "肉质肥厚，肉质鲜美",
+                "price": 55,
+                "weight": 2,
+                "origin": "广东",
+                "category": 2,
+                "inventory": 90,
+                "image": null,
+                "sales": null
+            },
+            {
+                "productId": 4,
+                "productName": "白羽肉鸡",
+                "description": "肉质肥美，口感细嫩",
+                "price": 45,
+                "weight": 1,
+                "origin": "河南",
+                "category": 2,
+                "inventory": 100,
+                "image": null,
+                "sales": null
+            },
+            {
+                "productId": 5,
+                "productName": "黑羽肉鸡",
+                "description": "肉质鲜嫩，肉质紧实",
+                "price": 50,
+                "weight": 1,
+                "origin": "山东",
+                "category": 2,
+                "inventory": 80,
+                "image": null,
+                "sales": null
+            },
+            {
+                "productId": 6,
+                "productName": "黄油鸡",
+                "description": "肉质肥厚，肉质鲜美",
+                "price": 55,
+                "weight": 2,
+                "origin": "广东",
+                "category": 2,
+                "inventory": 90,
+                "image": null,
+                "sales": null
+            }
+        ],
+        "pageNum": 1,
+        "pageSize": 3,
+        "size": 3,
+        "startRow": 1,
+        "endRow": 3,
+        "pages": 10,
+        "prePage": 0,
+        "nextPage": 2,
+        "isFirstPage": true,
+        "isLastPage": false,
+        "hasPreviousPage": false,
+        "hasNextPage": true,
+        "navigatePages": 8,
+        "navigatepageNums": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+        ],
+        "navigateFirstPage": 1,
+        "navigateLastPage": 8
+    },
+    "map": {}
+}

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhao.salechicken.mapper.OrderMapper">
+    <resultMap id="BaseResultMap" type="com.zhao.salechicken.pojo.Order">
+            <id property="orderId" column="order_id" jdbcType="INTEGER"/>
+            <result property="userId" column="user_id" jdbcType="INTEGER"/>
+            <result property="orderdate" column="orderdate" jdbcType="TIMESTAMP"/>
+            <result property="totalprice" column="totalprice" jdbcType="DOUBLE"/>
+            <result property="status" column="status" jdbcType="VARCHAR"/>
+            <result property="num" column="num" jdbcType="INTEGER"/>
+            <result property="addressId" column="address_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        order_id,user_id,orderdate,
+        totalprice,status,num,address_id
+    </sql>
+
+    <select id="selectAllOrder" resultMap="BaseResultMap">
+        select * from `order`
+        <where>
+            <if test="userId!=null and userId!=''">
+                user_id=#{userId}
+            </if>
+        </where>
+        order by orderdate DESC
+    </select>
+
+    <delete id="deleteOrder">
+        delete from `order` where order_id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectOrder" resultMap="BaseResultMap">
+        select *
+        from `order`
+        where user_id=#{userId}
+        <if test="orderId!=null and orderId!=''">
+            and order_id=#{orderId}
+        </if>
+        <if test="status!=null and status!=''">
+            and status=#{status}
+        </if>
+        order by orderdate DESC
+    </select>
+
+    <insert id="addOrder" useGeneratedKeys="true" keyProperty="orderId">
+        insert into `order`(user_id,orderdate,totalprice,status,num,address_id)
+        values(#{order.userId},#{order.orderdate},#{order.totalprice},#{order.status},#{order.num},#{order.addressId})
+    </insert>
+
+    <update id="updateOrder">
+        update `order`
+        set user_id=#{order.userId},
+            orderdate=#{order.orderdate},
+            totalprice=#{order.totalprice},
+            status=#{order.status},
+            num=#{order.num},
+            address_id=#{order.addressId}
+        where order_id=#{order.orderId}
+    </update>
+</mapper>

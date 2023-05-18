@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhao.salechicken.mapper.CartdetailMapper">
+
+    <resultMap id="BaseResultMap" type="com.zhao.salechicken.pojo.Cartdetail">
+        <id property="cartdetailId" column="cartdetail_id" jdbcType="INTEGER"/>
+        <result property="productId" column="product_id" jdbcType="INTEGER"/>
+        <result property="quantity" column="quantity" jdbcType="INTEGER"/>
+        <result property="allprice" column="allprice" jdbcType="DOUBLE"/>
+        <result property="cartId" column="cart_id" javaType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        cartdetail_id
+        ,product_id,quantity,
+        allprice,cart_id
+    </sql>
+
+    <select id="seleceCartdetail" resultMap="BaseResultMap">
+        select *
+        from cartdetail
+        where cartdetail_id = #{cartdetailId}
+    </select>
+
+    <update id="updateCartdetail">
+        update cartdetail
+        set quantity=#{cartdetail.quantity},
+            allprice=#{cartdetail.allprice}
+        where product_id = #{cartdetail.productId}
+    </update>
+
+    <insert id="addProductIntoCart">
+        insert into cartdetail(product_id, quantity, allprice, cart_id)
+        values (#{product.productId}, 1, #{product.price}, #{cartId})
+    </insert>
+
+    <select id="selectAllCartdetial" resultMap="BaseResultMap">
+        select *
+        from cartdetail
+        where cart_id = #{cartId}
+    </select>
+
+    <delete id="emptyCartdetail">
+        delete
+        from cartdetail
+        where cart_id = #{cartId}
+    </delete>
+
+    <delete id="deleteProductFromCart">
+        delete
+        from cartdetail
+        where product_id = #{productId}
+          and cart_id = #{cartId};
+    </delete>
+
+    <select id="selectPayCartdetail" resultMap="BaseResultMap">
+        select *
+        from cartdetail
+        where cart_id = #{cartId}
+          and cartdetail_id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="selectCartdetailById" resultMap="BaseResultMap">
+        select *
+        from cartdetail
+        where product_id=#{productId}
+            and cart_id=#{cartId}
+    </select>
+</mapper>

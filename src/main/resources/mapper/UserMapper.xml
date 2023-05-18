@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhao.salechicken.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="com.zhao.salechicken.pojo.User">
+        <id property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="type" column="type" jdbcType="SMALLINT"/>
+        <result property="image" column="image" jdbcType="VARCHAR"/>
+        <result property="sex" column="sex" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        user_id
+        ,user_name,password,
+        email,phone,type,image,sex
+    </sql>
+
+    <select id="getUserById" resultMap="BaseResultMap">
+        select *
+        from user
+        WHERE user_id = #{userId}
+    </select>
+
+    <select id="getUserByName" resultMap="BaseResultMap">
+        select *
+        from user
+        WHERE user_name = #{userName}
+    </select>
+
+    <insert id="addUser" useGeneratedKeys="true" keyProperty="userId">
+        insert into user(user_name, password, email, phone, type, image,sex)
+        values (#{user.userName}, #{user.password}, #{user.email}, #{user.phone}, #{user.type},#{user.image},#{user.sex})
+    </insert>
+
+    <update id="updateUser">
+        update user
+        set user_name=#{user.userName},
+            password=#{user.password},
+            email=#{user.email},
+            phone=#{user.phone},
+            image=#{user.image},
+            sex=#{user.sex}
+        where user_id = #{user.userId}
+    </update>
+
+    <delete id="deleteUser">
+        delete
+        from user
+        where user_Id = #{userId}
+    </delete>
+
+    <select id="selectUser" resultMap="BaseResultMap">
+        select *
+        from user
+        where type = #{type}
+        <if test="keywords!=null and keywords!=''">
+            and user_name like '%${keywords}%'
+        </if>
+        order by user_id asc
+    </select>
+
+    <select id="getUserNameById" resultType="string">
+        select user_name
+        from user
+        where user_id = #{userId}
+    </select>
+</mapper>

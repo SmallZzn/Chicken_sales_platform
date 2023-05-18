@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhao.salechicken.mapper.PermissionMapper">
+
+    <resultMap id="BaseResultMap" type="com.zhao.salechicken.pojo.Permission">
+            <id property="permissionId" column="permission_id" jdbcType="INTEGER"/>
+            <result property="permissionName" column="permission_name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        permission_id,permission_name
+    </sql>
+
+    <select id="selectPermission" resultMap="BaseResultMap">
+        select *
+        from permission
+        where permission_id in
+        <foreach collection="permissionIds" item="permissionId" separator="," open="(" close=")">
+            #{permissionId}
+        </foreach>
+    </select>
+
+    <select id="selectAllPermission" resultMap="BaseResultMap">
+        select * from permission;
+    </select>
+</mapper>

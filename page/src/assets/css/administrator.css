@@ -1,0 +1,61 @@
+html{
+    height: 100%;
+}
+
+body{
+    height: 100%;
+    background-color: #f6f5f5;
+}
+
+aside{
+    position: fixed;
+    left: 0;
+}
+
+aside ul{
+    font-size: 20px;
+}
+
+article{
+    height: 100%;
+    margin-left: 175px;
+}
+
+tbody>tr{
+    height: 50px;
+}
+
+.myContainer{
+    /* position: fixed; */
+    background-color: white;
+    /* width: 85%; */
+    /* left: 13%; */
+    padding-top: 2%;
+}
+
+.btn-margin{
+    position: relative;
+    left:25%;
+    margin-top: 10%;
+}
+
+/*.back-color{*/
+/*    width: 100%;*/
+/*    height:100%;*/
+/*    background-color: #45b788;*/
+/*}*/
+
+.edit-table{
+    display: none;
+    border-radius: 5%;
+    width: 30%;
+    height: 70%;
+    top: 10%;
+    left: 35%;
+    background-color: #adbdc0;
+}
+
+.delImg{
+    width:24px;
+    height:24px;
+}

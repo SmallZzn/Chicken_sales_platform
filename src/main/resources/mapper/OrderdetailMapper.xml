@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhao.salechicken.mapper.OrderdetailMapper">
+
+    <resultMap id="BaseResultMap" type="com.zhao.salechicken.pojo.Orderdetail">
+            <id property="orderdetialId" column="orderdetial_id" jdbcType="INTEGER"/>
+            <result property="quantity" column="quantity" jdbcType="INTEGER"/>
+            <result property="totalMoney" column="total_money" jdbcType="DOUBLE"/>
+            <result property="orderId" column="order_id" javaType="INTEGER"></result>
+            <result property="productId" column="product_id" jdbcType="INTEGER"></result>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        orderdetial_id,quantity,total_money,
+        order_id,product_id
+    </sql>
+
+    <insert id="addOrdertail">
+        insert into orderdetail(quantity,total_money,order_id,product_id)
+        values (#{orderdetail.quantity},#{orderdetail.totalMoney},#{orderdetail.orderId},#{orderdetail.productId})
+    </insert>
+
+    <select id="selectOrderDetailByOrderId" resultMap="BaseResultMap">
+        select * from orderdetail where order_id=#{orderId}
+    </select>
+</mapper>

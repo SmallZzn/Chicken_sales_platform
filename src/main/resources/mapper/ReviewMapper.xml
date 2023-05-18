@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhao.salechicken.mapper.ReviewMapper">
+
+    <resultMap id="BaseResultMap" type="com.zhao.salechicken.pojo.Review">
+        <id property="reviewId" column="review_id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="productId" column="product_id" jdbcType="INTEGER"/>
+        <result property="rating" column="rating" jdbcType="INTEGER"/>
+        <result property="comment" column="comment" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        review_id
+        ,user_id,product_id,
+        rating,comment,create_time
+    </sql>
+
+    <select id="selectReviewById" resultMap="BaseResultMap">
+        select * from review where product_id=#{productId}
+    </select>
+
+    <insert id="addReview">
+        insert into review(user_id, product_id, rating, comment, create_time)
+        values (#{review.userId},#{review.productId},#{review.rating},#{review.comment},#{review.createTime})
+    </insert>
+
+    <select id="getReviewUserIdById" resultType="integer">
+        select user_id from review where review_id=#{reviewId}
+    </select>
+
+    <delete id="deleteReview">
+        delete from review where review_id=#{reviewId}
+    </delete>
+
+    <select id="selectMyReview" resultMap="BaseResultMap">
+        select * from review where user_id=#{userId} order by create_time desc
+    </select>
+</mapper>

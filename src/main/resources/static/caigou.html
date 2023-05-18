@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>老乡鸡销售平台</title>
+    <link rel="stylesheet" href="../bootstrap-3.4.1/css/bootstrap.css">
+    <link rel="stylesheet" href="../bootstrap-3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/index.css">
+    <script src="../bootstrap-3.4.1/js/bootstrap.js"></script>
+</head>
+<body>
+    <!-- 第一行 -->
+    <div class="header-top">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-md-4">
+                    <div class="header-top-welcome">
+                        <p>欢迎来到老乡鸡销售平台!</p> 
+                    </div>
+                </div>   
+
+                <div class="col-md-5">
+                  <ul class="nav nav-pills header-top-nav ">
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="#">会员</a></li>
+                    <li><a href="#">iOS</a></li>
+                    <li><a href="#">Android</a></li>
+                    <li><a href="#">联系我们</a></li>
+                    <li><a href="#">帮助</a></li>
+                </div>   
+
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-default btn-sm language">
+                        <span class="glyphicon glyphicon-globe"></span> 
+                        <select>
+                            <option value="简体中文"><a href="#index.html">简体中文</a></option>
+                            <option value="English"><a href="index2.html">English</a></option>
+                        </select>
+                    </button>
+                </div>  
+
+                <div class="col-md-1">
+                    <button type="button" class="btn btn-default btn-sm language">
+                        <span class="glyphicon glyphicon-usd"></span> 
+                        <select>
+                            <option value="人民币">人民币</option>
+                            <option value="dollor">Doller</option>
+                        </select>
+                    </button>
+                </div>  
+            </div>
+        </div>
+        <!-- 第一行结束 -->
+
+        <!-- 第二行 -->
+        <div class="header-part">
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- logo -->
+                    <div class="col-md-2">
+                        <a href="index.html"><img src="images/logo.png" alt="" class="logo"></a>
+                    </div>
+
+    
+                    <!-- 搜索框 -->
+                    <div class="col-lg-4  search">
+                        <div class="input-group">
+                            <input type="text" placeholder="搜索想要的商品吧" class="form-control">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">
+                                    <span class="glyphicon glyphicon-search"></span>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- 购物车 -->
+                    <div class="col-md-2">
+                        <button class="btn-lg sp" title="购物车">
+                            <span class="glyphicon glyphicon-shopping-cart">
+                                <a href="sp.html">00.00</a>
+                            </span>
+                        </button>
+                    </div>
+
+                    <!-- 我的订单 -->
+                    <div class="col-md-2">
+                        <button class="btn-lg sp order" title="我的订单">
+                            <span class="glyphicon glyphicon-list-alt">
+                                <a href="order.html">我的订单</a>
+                            </span>
+                        </button>
+                    </div>
+
+                    <!-- 登陆 -->
+                    <div class="col-md-1">
+                        <img src="images/user.png" alt="" class="user-img"> 
+                        <span class="uname">Jackson</span>
+                    </div>
+
+                    <div class="col-md-1">
+                        <a href="login.html">
+                            <button type="button" class="btn btn-primary btn-lg user">
+                            <span class="glyphicon glyphicon-user"></span>登陆
+                            </button>
+                        </a>
+                        
+                    </div>   
+                </div>
+            </div>
+        </div>
+        <!-- 第二行结束 -->
+    </div>
+
+
+
+    <!-- 商品部分 -->
+    <div class="panel">
+
+        <div class="panel-body">
+            <div class="row">
+
+                <div class="col-md-3">
+                    <div class="thumbnail">
+                        <img src="images/goods/12.jpeg" alt="">
+                        <h3>火鸡</h3>
+                        <p>产地:北美洲</p>
+                        <span class="goods-price">¥399</span>
+                        <button class="btn btn-default">
+                            <a href="sp.html"><span class="glyphicon glyphicon-shopping-cart"></span>加入购物车</a> 
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="thumbnail">
+                        <img src="images/goods/02.jpeg" alt="">
+                        <h3>溜达鸡</h3>
+                        <p>产地:内蒙古</p>
+                        <span class="goods-price">¥118</span>
+                        <button class="btn btn-default">
+                            <a href="sp.html"><span class="glyphicon glyphicon-shopping-cart"></span>加入购物车</a> 
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="thumbnail">
+                        <img src="images/goods/03.jpeg" alt="">
+                        <h3>三黄鸡</h3>
+                        <p>产地:广东、广西</p>
+                        <span class="goods-price">¥78</span>
+                        <button class="btn btn-default">
+                            <a href="sp.html"><span class="glyphicon glyphicon-shopping-cart"></span>加入购物车</a> 
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="thumbnail">
+                        <img src="images/goods/04.jpeg" alt="">
+                        <h3>乌鸡</h3>
+                        <p>产地:江西</p>
+                        <span class="goods-price">¥99</span>
+                        <button class="btn btn-default">
+                            <a href="sp.html"><span class="glyphicon glyphicon-shopping-cart"></span>加入购物车</a> 
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="thumbnail">
+                        <img src="images/goods/05.jpeg" alt="">
+                        <h3>卢氏鸡</h3>
+                        <p>产地:河南</p>
+                        <span class="goods-price">¥69</span>
+                        <button class="btn btn-default">
+                            <a href="sp.html"><span class="glyphicon glyphicon-shopping-cart"></span>加入购物车</a> 
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="thumbnail">
+                        <img src="images/goods/06.jpeg" alt="">
+                        <h3>长汀河田鸡</h3>
+                        <p>产地:福建</p>
+                        <span class="goods-price">¥79</span>
+                        <button class="btn btn-default">
+                            <a href="sp.html"><span class="glyphicon glyphicon-shopping-cart"></span>加入购物车</a> 
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="thumbnail">
+                        <img src="images/goods/07.jpeg" alt="">
+                        <h3>新疆黑鸡</h3>
+                        <p>产地:新疆</p>
+                        <span class="goods-price">¥149</span>
+                        <button class="btn btn-default">
+                            <a href="sp.html"><span class="glyphicon glyphicon-shopping-cart"></span>加入购物车</a> 
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="thumbnail">
+                        <img src="images/goods/08.jpeg" alt="">
+                        <h3>清远鸡</h3>
+                        <p>产地:广东</p>
+                        <span class="goods-price">¥59</span>
+                        <button class="btn btn-default">
+                            <a href="sp.html"><span class="glyphicon glyphicon-shopping-cart"></span>加入购物车</a> 
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="thumbnail">
+                        <img src="images/goods/09.jpeg" alt="">
+                        <h3>文昌鸡</h3>
+                        <p>产地:海南</p>
+                        <span class="goods-price">¥109</span>
+                        <button class="btn btn-default">
+                            <a href="sp.html"><span class="glyphicon glyphicon-shopping-cart"></span>加入购物车</a> 
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="thumbnail">
+                        <img src="images/goods/10.jpeg" alt="">
+                        <h3>浦东鸡</h3>
+                        <p>产地:上海</p>
+                        <span class="goods-price">¥89</span>
+                        <button class="btn btn-default">
+                            <a href="sp.html"><span class="glyphicon glyphicon-shopping-cart"></span>加入购物车</a> 
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="thumbnail">
+                        <img src="images/goods/11.jpeg" alt="">
+                        <h3>芦花鸡</h3>
+                        <p>产地:山东</p>
+                        <span class="goods-price">¥59</span>
+                        <button class="btn btn-default">
+                            <a href="sp.html"><span class="glyphicon glyphicon-shopping-cart"></span>加入购物车</a> 
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="thumbnail">
+                        <img src="images/goods/01.jpeg" alt="">
+                        <h3>走地鸡</h3>
+                        <p>产地:全国各地</p>
+                        <span class="goods-price">¥80</span>
+                        <button class="btn btn-default">
+                            <a href="sp.html"><span class="glyphicon glyphicon-shopping-cart"></span>加入购物车</a> 
+                        </button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <ul class="pagination pagination-lg" style="margin-left: 560px;">
+            <li><a href="#">&laquo;</a></li>
+            <li><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li><a href="#">&raquo;</a></li>
+        </ul>
+    </div>
+    <!-- 商品部分结束 -->
+
+    <!-- visual部分 -->
+    <section class="visual-part">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-6 col-lg-3">
+              <div class="visual-wrap">
+                <div class="visual-icon"><i class="glyphicon glyphicon-plane"></i></div>
+                <div class="visual-content">
+                  <h5>免费配送</h5>
+                  <p>免费配送，一键直达</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+              <div class="visual-wrap">
+                <div class="visual-icon"><i class="glyphicon glyphicon-refresh"></i></div>
+                <div class="visual-content">
+                  <h5>24h无理由退换</h5>
+                  <p>注重客户体验</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+              <div class="visual-wrap">
+                <div class="visual-icon"><i class="glyphicon glyphicon-user"></i></div>
+                <div class="visual-content">
+                  <h5>人工客服</h5>
+                  <p>人工客服24h在线</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+              <div class="visual-wrap">
+                <div class="visual-icon"><i class="glyphicon glyphicon-lock"></i></div>
+                <div class="visual-content">
+                  <h5>安全支付</h5>
+                  <p>安全支付，放心买</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    <!-- visual部分结束 -->
+
+    <!-- footer 部分 -->
+    <footer class="footer-part">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-3">
+              <div class="footer-widget"><a class="footer-logo" href="#"><img src="images/logo.png" alt="logo"></a>
+                <p class="footer-desc footer-text">纯人工养殖 保证肉质鲜美</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="footer-widget contact">
+                <h3 class="footer-title">联系我们</h3>
+                <ul class="footer-contact">
+                  <li><i class="glyphicon glyphicon-envelope"></i>
+                    <p><span>10086@qq.com</span><span>10086@qq.com</span></p>
+                  </li>
+                  <li><i class="glyphicon glyphicon-earphone"></i>
+                    <p><span>(+86) 111 1111 1111</span><span>(+86) 111 1111 1111</span></p>
+                  </li>
+                  <li><i class="glyphicon glyphicon-map-marker"></i>
+                    <p>仲恺农业工程学院</p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="footer-widget">
+                <h3 class="footer-title">快速链接</h3>
+                <div class="footer-links">
+                  <ul>
+                    <li><a href="#">我的账户</a></li>
+                    <li><a href="#">历史订单</a></li>
+                    <li><a href="#">浏览记录</a></li>
+                    <li><a href="#">畅销榜</a></li>
+                  </ul>
+                  <ul>
+                    <li><a href="#">位置</a></li>
+                    <li><a href="#">合同</a></li>
+                    <li><a href="#">指南</a></li>
+                    <li><a href="#">问题反馈</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="footer-widget">
+                <h3 class="footer-title">下载app</h3>
+                <p class="footer-desc">app更方便</p>
+                <div class="footer-app"><a href="#"><img src="images/google-store.png" alt="google"></a><a href="#"><img src="images/app-store.png" alt="app"></a></div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="footer-bottom">
+                <p class="footer-copytext">&copy;All Copyrights Reserved by ysh zxr zzn team</p>
+                <div class="footer-card"><a href="#"><img src="images/payment/jpg/01.jpg" alt="payment"></a><a href="#"><img src="images/payment/jpg/02.jpg" alt="payment"></a><a href="#"><img src="images/payment/jpg/03.jpg" alt="payment"></a><a href="#"><img src="images/payment/jpg/04.jpg" alt="payment"></a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    <!-- footer部分结束 -->
+
+    <!-- script -->
+    <script>
+        let list = document.querySelector('.lb-list');
+        let box = document.querySelector('.lunbotu')
+        //复制一份
+        list.innerHTML += list.innerHTML;
+        let left = 0;
+
+        let timer;
+        
+        function move() {
+            clearInterval(timer);
+
+            timer = setInterval(function(){
+            left -= 2;
+                if(left === -(6*200 + 5*10)){
+                left = 0;
+                }
+            list.style.left = left + 'px';
+            },20)
+        }
+
+        move();
+
+        box.onmouseenter = function() {
+            clearInterval(timer);
+        }
+
+        box.onmouseleave = function() {
+            move();
+        }
+    </script>
+    <!-- script部分结束-->
+</body>
+</html>

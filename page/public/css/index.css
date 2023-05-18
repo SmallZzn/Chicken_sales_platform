@@ -1,0 +1,488 @@
+* {
+    margin: 0;
+    padding: 0;
+    outline: 0;
+}
+
+body {
+    background-color: #f5f5f5;
+}
+
+li {
+    list-style: none;
+}
+
+p {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    margin-top: 15px;
+}
+
+/* 顶部  第一行*/
+.header-top {
+    background-color: #119744;
+}
+
+.header-top-welcome p{
+    color: #fff;
+    font-size: 14px;
+    letter-spacing: .3px;
+    padding-left: 20px;
+}
+
+.header-top-nav {
+    margin-left: -20px;
+    padding: 5px 0;
+}
+
+.header-top-nav a:hover {
+    color: #119744;
+}
+
+.header-top-nav a{
+    color: white;
+}
+
+.language {
+    margin-top: 8px;
+    background-color: #119744;
+    border: #119744;
+}
+
+.language span {
+    margin-top: 3px;
+    font-size: 16px;
+    color: #fff;
+    vertical-align: auto;
+}
+
+.language:hover span{
+    color: #119744;
+}
+
+
+/* 第一行结束 */
+
+/* 第二行 */
+.header-part {
+    background-color: #fff;
+    /* position: fixed; */
+}
+
+.logo {
+    width: 250px;
+    height: 80px;
+    margin-left: -10px;
+}
+
+.search {
+    margin-top: 25px;
+}
+
+.search .form-control {
+    border: 2px solid #119744;
+    border-right: 0;
+    border-radius: 8px;
+    margin-left: 30px;
+}
+
+.search button {
+    border: 2px solid #119744;
+    border-left: 0;
+    /* 使得边框不会挤开 */
+    padding: 5px 12px;  
+    border-radius: 8px;
+}
+
+.sp {
+    margin-top: 20px;
+    margin-left: 40px;
+    font-size: 18px;
+    border: 1px solid transparent;
+    border-radius: 99999px;
+}
+
+.order {
+    margin-top: 20px;
+    margin-left: -20px;
+    font-size: 17px;
+    border: 1px solid transparent;
+    border-radius: 99999px;
+}
+
+.sp a {
+    text-decoration: none;
+    color: black;
+}
+
+
+.sp:hover {
+    color: #fff;
+    background-color: #119744;
+}
+
+.sp:hover a {
+    color: #fff;
+}
+
+.user-img {
+    margin-top: 20px;
+    border-radius: 99px;
+    margin-left: -50px;
+}
+
+.uname {
+    display: block;
+    font-size: 16px;
+    margin-top: -30px;
+}
+
+.user {
+    margin-top: 18px;
+    font-size: 16px;
+    background-color: #119744;
+}
+
+.user a{
+    color: white;
+}
+
+.user:hover {
+    color: #119744;
+    background-color: #fff;
+}
+
+.user:hover a {
+    color: #119744;
+}
+/* 第二行结束 */
+
+/* banner部分 */
+.banner {
+   width: 100%;
+   height: 700px;
+   background: url(../images/banner.jpeg) no-repeat;
+   background-size: 100%;
+}
+
+.banner-btn {
+    padding-top: 650px;
+    padding-left: 1200px;
+}
+
+.banner-btn1,
+.banner-btn2 {
+    font-size: 16px;
+    background-color: rgb(148, 187, 5);
+    border: 1px solid rgb(148, 187, 5);
+    border-radius: 10px;
+}
+
+.banner-btn1 a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.banner-btn2 {
+    margin-left: 30px;
+}
+
+.banner-btn1:hover {
+    background-color: #fff;
+}
+
+.banner-btn1:hover a {
+    color: rgb(148, 187, 5);
+}
+
+.banner-btn2:hover {
+    background-color: #fff;
+    color: rgb(148, 187, 5);
+}
+/* banner部分结束 */
+
+/* 轮播图 */
+.lunbotu {
+    position: relative;
+    display: flex;
+    margin-left: 68px;
+    width: 1300px;
+    height: 100px;
+    margin-top: 20px;
+    overflow: hidden;
+    background-color: #f5f5f5;
+}
+
+.lunbotu .lb-list img {
+    width: 200px;
+    height: 100px;
+    border-radius: 20px;
+}
+
+.lunbotu > .lb-list {
+    position: absolute;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lb-list > div {
+    width: 200px;
+    height: 100px;
+    margin-right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+/* 轮播图部分结束 */
+
+/* 商品部分 */
+.panel {
+    margin-top: 30px;
+    background-color: #f5f5f5;
+}
+
+.panel-heading h1 {
+    text-align: center;
+}
+
+.thumbnail {
+    background-color: #fff;
+    border: 2px solid transparent;
+}
+
+.thumbnail a {
+    text-decoration: none;
+    color: black;
+}
+
+.thumbnail:hover {
+    border: 2px solid #119744;
+}
+
+.thumbnail h3 {
+    text-align: center;
+}
+
+.thumbnail p{
+    text-align: center;
+    font-size: 14px;
+}
+
+.goods-price {
+    margin-left: 90px;
+    font-size: 18px;
+    color: #119744;
+
+}
+
+.thumbnail button {
+    margin-left: 20px;
+}
+
+.thumbnail button:hover {
+    background-color: #119744;
+}
+
+.thumbnail button:hover a {
+    color: #fff;
+}
+
+.panel-body img {
+    width: 200px;
+    height: 200px;
+}
+/* 商品部分结束 */
+
+/* visual部分 */
+.visual-part {
+    padding: 100px 0;
+    background: #f8fffa
+}
+
+.visual-wrap {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start
+}
+
+.visual-wrap:hover .visual-icon i {
+    color: var(--white);
+    background: var(--primary)
+}
+
+.visual-icon {
+    margin-right: 20px
+}
+
+.visual-icon i {
+    width: 50px;
+    height: 50px;
+    font-size: 25px;
+    line-height: 63px;
+    border-radius: 50%;
+    text-align: center;
+    display: inline-block;
+    color: #119744;
+    background: var(--white);
+    border: 3px double var(--primary);
+    box-shadow: var(--primary-bshadow);
+    transition: all linear .3s;
+    -webkit-transition: all linear .3s;
+    -moz-transition: all linear .3s;
+    -ms-transition: all linear .3s;
+    -o-transition: all linear .3s
+}
+
+.visual-content h5 {
+    font-size: 17px;
+    margin-bottom: 8px;
+    text-transform: capitalize
+}
+
+.visual-content p {
+    font-size: 15px;
+    line-height: 22px
+}
+/* visual部分结束 */
+
+/* footer部分 */
+.footer-part {
+    padding-top: 40px;
+    font-size: 16px;
+}
+
+.footer-widget {
+    margin-left: 40px;
+    display: grid;
+    grid-template-columns: 100%
+}
+
+.footer-logo {
+    margin-bottom: 25px;
+}
+
+.footer-logo img {
+    margin-left: -130px;
+    width: 400px;
+    height: 180px;
+}
+
+.footer-text {
+    margin-left: -70px;
+    font-size: 25px;
+    font-weight: 700;
+    color: yellowgreen;
+}
+
+.footer-desc {
+    margin-bottom: 30px;
+}
+
+.footer-title {
+    margin-bottom: 25px;
+    letter-spacing: -0.3px;
+    text-transform: capitalize
+}
+
+.footer-widget.contact {
+    margin-left: 70px
+}
+
+.footer-widget.contact ul li i {
+    color: #119744;
+}
+
+.footer-contact li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 18px
+}
+
+.footer-contact li:last-child {
+    margin-bottom: 0
+}
+
+.footer-contact li i {
+    font-size: 30px;
+    margin-right: 15px;
+    color: var(--primary)
+}
+
+.footer-contact li p span {
+    display: block
+}
+
+.footer-links {
+    display: grid;
+    grid-gap: 50px;
+    grid-template-columns: 1fr 1fr
+}
+
+.footer-links ul li {
+    margin-bottom: 15px
+}
+
+.footer-links ul li:last-child {
+    margin-bottom: 0
+}
+
+.footer-links ul li a {
+    color: var(--text);
+    text-transform: capitalize;
+    transition: all linear .3s;
+    -webkit-transition: all linear .3s;
+    -moz-transition: all linear .3s;
+    -ms-transition: all linear .3s;
+    -o-transition: all linear .3s
+}
+
+.footer-links ul li a:hover {
+    color: var(--primary);
+    text-decoration: underline;
+}
+
+.footer-app {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 1fr 1fr
+}
+
+.footer-app a img {
+    width: 100%
+}
+
+.footer-bottom {
+    margin-top: 75px;
+    padding: 30px 50px;
+    border-radius: 8px 8px 0 0;
+    background: #119744;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between
+}
+
+.footer-copytext {
+    font-size: 15px;
+    color: #fff;
+}
+
+
+.footer-card a {
+    margin-left: 10px
+}
+
+.footer-card a img {
+    width: 50px;
+    border-radius: 3px
+}
+
+/* footer部分结束 */
+
+

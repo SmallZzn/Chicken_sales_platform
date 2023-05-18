@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhao.salechicken.mapper.PermissiondetailMapper">
+
+    <resultMap id="BaseResultMap" type="com.zhao.salechicken.pojo.Permissiondetail">
+            <id property="permissiondetailId" column="permissiondetail_id" jdbcType="INTEGER"/>
+            <result property="userId" column="user_id" jdbcType="INTEGER"/>
+            <result property="permissionId" column="permission_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        permissiondetail_id,user_id,permission_id
+    </sql>
+
+    <select id="judgePermission" resultType="boolean">
+        select count(*)>0 from permissiondetail where user_id=#{userId} and permission_id=#{permissionId}
+    </select>
+
+    <insert id="addPermission">
+        insert into permissiondetail(user_id,permission_id)
+        values
+        <foreach collection="ids" item="id" separator=",">
+            (#{userId},#{id})
+        </foreach>
+    </insert>
+
+    <delete id="deletePermission">
+        delete from permissiondetail
+        where user_id=#{userId} and permission_id=#{permissionId}
+    </delete>
+
+    <select id="selectProcessPermission" resultType="integer">
+        select permission_id
+        from permissiondetail
+        where user_id=#{userId}
+    </select>
+
+    <select id="selectUnProcessPermission" resultType="integer">
+        select permission_id
+        from permission
+        where permission_id not in (select permission_id from permissiondetail where user_id=#{userId})
+    </select>
+    
+    <delete id="clearAllPermissiondetail">
+        delete from permissiondetail
+        where user_id=#{userId}
+    </delete>
+</mapper>

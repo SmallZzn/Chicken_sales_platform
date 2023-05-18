@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhao.salechicken.mapper.AddressMapper">
+
+    <resultMap id="BaseResultMap" type="com.zhao.salechicken.pojo.Address">
+        <id property="addressId" column="address_id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="receiver" column="receiver" jdbcType="VARCHAR"/>
+        <result property="sex" column="sex" jdbcType="INTEGER"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="province" column="province" jdbcType="VARCHAR"/>
+        <result property="city" column="city" jdbcType="VARCHAR"/>
+        <result property="region" column="region" jdbcType="VARCHAR"/>
+        <result property="detail" column="detail" jdbcType="VARCHAR"/>
+        <result property="isdefault" column="isdefault" jdbcType="SMALLINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        address_id
+        ,user_id,name,sex,
+        phone,province,city,
+        region,detail,isdefault
+    </sql>
+
+    <insert id="addAddress">
+        insert into address(user_id, receiver, sex, phone, province, city, region, detail, isdefault)
+        values (#{address.userId},#{address.receiver},#{address.sex}, #{address.phone}, #{address.province}, #{address.city},
+                #{address.region}, #{address.detail}, #{address.isdefault})
+    </insert>
+
+    <delete id="deleteAddress">
+        delete
+        from address
+        where address_id = #{addressId}
+    </delete>
+
+    <select id="selectAllAddress" resultMap="BaseResultMap">
+        select *
+        from address
+        where user_id = #{userId}
+    </select>
+
+    <update id="updateAddress">
+        update address
+        set sex=#{address.sex},
+            receiver=#{address.receiver},
+            phone=#{address.phone},
+            province=#{address.province},
+            city=#{address.city},
+            region=#{address.region},
+            detail=#{address.detail},
+            isdefault=#{address.isdefault}
+        where address_id=#{address.addressId}
+    </update>
+
+    <update id="isDefaultAddress">
+        update address
+        set isdefault=0
+        where isdefault=1
+          and user_id=#{address.userId}
+    </update>
+</mapper>
