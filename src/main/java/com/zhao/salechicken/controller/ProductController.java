@@ -36,7 +36,6 @@ public class ProductController {
     public R<String> addProduct(HttpServletRequest request, @RequestBody Product product) {
 
         //获取当前登录用户
-//        Integer loginUser = (Integer) request.getSession().getAttribute("loginUser");
         Integer loginUser = BaseContext.getCurrentId();
 
         //判断是否有添加产品的权限
@@ -58,7 +57,6 @@ public class ProductController {
     @DeleteMapping("/deleteProduct")
     public R<String> deleteProduct(HttpServletRequest request, Integer productId) {
         //获取当前登录用户
-//        Integer loginUser = (Integer) request.getSession().getAttribute("loginUser");
         Integer loginUser = BaseContext.getCurrentId();
 
         //判断是否有删除产品的权限
@@ -81,7 +79,6 @@ public class ProductController {
     public R<String> updateProduct(HttpServletRequest request, @RequestBody Product product) {
 
         //获取当前登录用户
-//        Integer loginUser = (Integer) request.getSession().getAttribute("loginUser");
         Integer loginUser = BaseContext.getCurrentId();
 
         //判断是否有更新产品的权限
@@ -117,13 +114,7 @@ public class ProductController {
     @GetMapping("/selectAllProduct")
     public R<PageInfo> selectAllProduct(HttpServletRequest request, int page, int pageSize, String productName, Integer category, String origin) {
         //获取当前登录用户
-//        Integer loginUser = (Integer) request.getSession().getAttribute("loginUser");
         Integer loginUser = BaseContext.getCurrentId();
-
-//        //判断是否有查看产品的权限
-//        if (!permissiondetailService.judgePermission(loginUser,9)) {
-//            return R.error("您没有该权限!!!");
-//        }
 
         PageInfo pageInfo = productService.selectAllProduct(page, pageSize, productName, category, origin);
         return R.success(pageInfo);
@@ -185,7 +176,6 @@ public class ProductController {
     @GetMapping("/selectShortSupplyProduct")
     public R<PageInfo> selectShortSupplyProduct(HttpServletRequest request,int page, int pageSize, String productName, Integer category, String origin) {
         //获取当前登录用户
-//        Integer loginUser = (Integer) request.getSession().getAttribute("loginUser");
         Integer loginUser = BaseContext.getCurrentId();
 
         //判断是否有查看产品的权限

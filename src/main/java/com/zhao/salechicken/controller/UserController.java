@@ -63,7 +63,6 @@ public class UserController {
     @DeleteMapping("/deleteUser")
     public R<String> deleteUser(HttpServletRequest request, Integer userId) {
         //获取当前登录用户
-//        Integer loginUser = (Integer) request.getSession().getAttribute("loginUser");
         Integer loginUser = BaseContext.getCurrentId();
 
         //若是管理员进行删除
@@ -86,18 +85,16 @@ public class UserController {
     /**
      * 用户修改信息
      *
-     * @param request
      * @param user
      * @return
      */
     @PutMapping("/updateUserInfo")
-    public R<String> updateUserInfo(HttpServletRequest request, @RequestBody User user) {
+    public R<String> updateUserInfo(@RequestBody User user) {
         //获取当前登录用户的id
         Integer loginUser = BaseContext.getCurrentId();
 
         System.out.println(user);
 
-        //TODO 注释掉loginUser
         //若是管理员进行删除
         if (!loginUser.equals(user.getUserId())) {
             //判断是否就有删除用户的权限

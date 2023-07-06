@@ -68,7 +68,6 @@ public class OrderController {
     public R<String> deleteOrder(HttpServletRequest request, @RequestParam List<Integer> ids) {
 
         //获取当前登录用户
-//        Integer loginUser = (Integer) request.getSession().getAttribute("loginUser");
         Integer loginUser = BaseContext.getCurrentId();
 
         //判断是否有删除订单的权限
@@ -151,7 +150,6 @@ public class OrderController {
         }
 
         //获取当前登录用户的id
-//        Integer loginUser = (Integer) request.getSession().getAttribute("loginUser");
         Integer loginUser = BaseContext.getCurrentId();
 
         orderService.pay(loginUser, payDto.getCartdetailIds(), payDto.getAddressId());

@@ -49,7 +49,6 @@ public class CategoryController {
     @PostMapping("/addCategory")
     public R<String> addCategory(HttpServletRequest request, @RequestBody Category category) {
         //获取当前登录用户
-//        Integer loginUser = (Integer) request.getSession().getAttribute("loginUser");
         Integer loginUser = BaseContext.getCurrentId();
 
         //判断是否有添加产品种类的权限
@@ -75,7 +74,6 @@ public class CategoryController {
     @DeleteMapping("/deleteCategory")
     public R<String> deleteCategory(HttpServletRequest request, Integer categoryId) {
         //获取当前登录用户
-//        Integer loginUser = (Integer) request.getSession().getAttribute("loginUser");
         Integer loginUser = BaseContext.getCurrentId();
 
         //判断是否有添加产品种类的权限

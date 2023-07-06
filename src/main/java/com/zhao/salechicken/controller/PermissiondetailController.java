@@ -40,7 +40,6 @@ public class PermissiondetailController {
     @PostMapping("/addPermission")
     public R<String> addPermission(HttpServletRequest request, @RequestBody User user, Integer id) {
         //获取当前登录用户
-//        Integer loginUser = (Integer) request.getSession().getAttribute("loginUser");
         Integer loginUser = BaseContext.getCurrentId();
 
         //判读是否有管理权限
@@ -63,7 +62,6 @@ public class PermissiondetailController {
     @PostMapping("/deletePermission")
     public R<String> deletePermission(HttpServletRequest request, @RequestBody User user, Integer permissionId) {
         //获取当前登录用户
-//        Integer loginUser = (Integer) request.getSession().getAttribute("loginUser");
         Integer loginUser = BaseContext.getCurrentId();
 
         //判读是否有管理权限
@@ -86,7 +84,6 @@ public class PermissiondetailController {
     @GetMapping("/selectProcessPermission")
     public R<List> selectProcessPermission(HttpServletRequest request, Integer userId) {
         //获取当前登录用户
-//        Integer loginUser = (Integer) request.getSession().getAttribute("loginUser");
         Integer loginUser = BaseContext.getCurrentId();
 
         //判读是否有管理权限
@@ -108,7 +105,6 @@ public class PermissiondetailController {
     @GetMapping("/selectUnProcessPermission")
     public R<List> selectUnProcessPermission(HttpServletRequest request, Integer userId) {
         //获取当前登录用户
-//        Integer loginUser = (Integer) request.getSession().getAttribute("loginUser");
         Integer loginUser = BaseContext.getCurrentId();
 
         //判读是否有管理权限

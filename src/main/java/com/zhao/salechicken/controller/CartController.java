@@ -81,41 +81,11 @@ public class CartController {
         //获取当前登录用户的id
         Integer loginUser = BaseContext.getCurrentId();
 
-        //获取我的购物车
-//        Cart cart = cartService.selectCart(loginUser);
-
-        //查看购物车中改商品的详情
-//        Cartdetail myCartdetail = cartdetailService.selectCartdetailById(cart.getCartId(), cartdetail.getProductId());
-
-        //若不存在该商品，则将该商品加入购物车
-//        if (myCartdetail == null) {
-//            Product product = productService.getProductById(cartdetail.getProductId());
-//            cartdetailService.addProductIntoCart(product, cart.getCartId());
-//            return R.success("加入购物车成功");
-//        }
         //若存在，则修改购物车详情
         cartdetailService.updateCartdetail(loginUser, cartdetail);
 
         return R.success("商品数量已修改");
     }
-
-//    /**
-//     * 减少购物车中商品数量
-//     *
-//     * @param request
-//     * @param cartdetail
-//     * @return
-//     */
-//    @DeleteMapping("/reduceCartProductNum")
-//    public R<String> reduceCartProductNum(HttpServletRequest request, @RequestBody Cartdetail cartdetail) {
-//        //获取当前登录用户的id
-////        Integer loginUser = (Integer) request.getSession().getAttribute("loginUser");
-//        Integer loginUser = BaseContext.getCurrentId();
-//
-//        cartService.reduceCartProductNum(loginUser, cartdetail.getCartdetailId(), cartdetail.getProductId());
-//
-//        return R.success("减少成功");
-//    }
 
     /**
      * 清空购物车
@@ -126,7 +96,6 @@ public class CartController {
     @DeleteMapping("/emptyCart")
     public R<String> emptyCart(HttpServletRequest request) {
         //获取当前登录用户的id
-//        Integer loginUser = (Integer) request.getSession().getAttribute("loginUser");
         Integer loginUser = BaseContext.getCurrentId();
 
         //查找用户的购物车

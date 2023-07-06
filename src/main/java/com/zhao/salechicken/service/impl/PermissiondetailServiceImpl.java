@@ -45,12 +45,6 @@ public class PermissiondetailServiceImpl implements PermissiondetailService {
         //查找用户具有的权限的id
         List<Integer> permissionIds = permissiondetailMapper.selectProcessPermission(userId);
 
-//        if (permissionIds.size() == 0) {
-//            return null;
-//        }
-//
-//        List<Permission> permissions = permissionService.selectPermission(permissionIds);
-
         return permissionIds;
     }
 
@@ -67,16 +61,6 @@ public class PermissiondetailServiceImpl implements PermissiondetailService {
 
         return permissions;
     }
-
-//    @Override
-//    @Transactional
-//    public void updatePermission(Integer userId, List<Integer> ids) {
-//        //先清空管理员权限
-//        permissiondetailMapper.clearAllPermissiondetail(userId);
-//
-//        //添加新的权限
-//        permissiondetailMapper.addPermission(userId, ids);
-//    }
 
     @Override
     public void clearAllPermissiondetail(Integer userId) {

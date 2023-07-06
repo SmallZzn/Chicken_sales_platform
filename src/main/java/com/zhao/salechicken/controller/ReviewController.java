@@ -1,6 +1,7 @@
 package com.zhao.salechicken.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.zhao.salechicken.common.BaseContext;
 import com.zhao.salechicken.common.R;
 import com.zhao.salechicken.pojo.Review;
 import com.zhao.salechicken.service.ReviewService;
@@ -26,14 +27,13 @@ public class ReviewController {
     /**
      * 新增评论
      *
-     * @param request
      * @param review
      * @return
      */
     @PostMapping("/addReview")
-    public R<String> addReview(HttpServletRequest request, @RequestBody Review review) {
+    public R<String> addReview(@RequestBody Review review) {
         //1、获取当前用户id
-        Integer loginUser = (Integer) request.getSession().getAttribute("loginUser");
+        Integer loginUser = BaseContext.getCurrentId();
 
         //2、设置要添加的review
         review.setUserId(loginUser);
@@ -49,14 +49,13 @@ public class ReviewController {
      * 删除产品评价
      * 用户只能删自己的，管理员只有admin能删除用户评价
      *
-     * @param request
      * @param reviewId
      * @return
      */
     @DeleteMapping("/deleteReview")
-    public R<String> deleteReview(HttpServletRequest request, Integer reviewId) {
+    public R<String> deleteReview(Integer reviewId) {
         //1、获取当前登录用户的id
-        Integer loginUser = (Integer) request.getSession().getAttribute("loginUser");
+        Integer loginUser = BaseContext.getCurrentId();
 
         //2、查看登录者的名称
         String loginUserName = userService.getUserNameById(loginUser);
@@ -65,7 +64,6 @@ public class ReviewController {
         Integer userId = reviewService.getReviewUserById(reviewId);
         String userName = userService.getUserNameById(userId);
 
-        //TODO 删除   注释
         //3、判断操作者是不是作者本人
 //        if (!(loginUserName.equals(userName))) {
 //            return R.error("您无法删除该评论");
@@ -91,13 +89,12 @@ public class ReviewController {
     /**
      * 查看单个用户的所有评价（分页）
      *
-     * @param request
      * @param page
      * @param pageSize
      * @return
      */
     @GetMapping("/selectMyReview")
-    public R<PageInfo> selectMyReview(HttpServletRequest request, int page, int pageSize,Integer userId) {
+    public R<PageInfo> selectMyReview(int page, int pageSize,Integer userId) {
 
         PageInfo pageInfo = reviewService.selectMyReview(userId, page, pageSize);
 

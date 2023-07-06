@@ -73,27 +73,6 @@ public class FileController {
      * @param fileName 文件名称
      * @param response 用来获取输出流
      */
-//    @GetMapping("/download")
-//    public void download(String fileName, HttpServletResponse response) {
-//        try {
-//            //输入流，通过输入流读取文件内容
-//            System.out.println(basePath + fileName);
-//            FileInputStream fileInputStream = new FileInputStream(new File(basePath + fileName));
-//            //输出流，通过输出流将文件写回浏览器，在浏览器中展示图片
-//            ServletOutputStream outputStream = response.getOutputStream();
-//
-//            int len = 0;
-//            byte[] bytes = new byte[1024];
-//            while ((len = fileInputStream.read(bytes)) != -1) {
-//                outputStream.write(bytes, 0, len);
-//                outputStream.flush();
-//            }
-//            outputStream.close();
-//            fileInputStream.close();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
     @GetMapping("/download")
     public void download(String fileName, HttpServletResponse response) throws IOException {
         log.info("filename:" + fileName);

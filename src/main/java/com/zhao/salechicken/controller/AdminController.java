@@ -34,7 +34,6 @@ public class AdminController {
     public R<String> addAdmin(HttpServletRequest request, @RequestBody User user) {
 
         //1、获取当前登录用户
-//        Integer loginUser = (Integer) request.getSession().getAttribute("loginUser");
         Integer loginUser = BaseContext.getCurrentId();
 
         //2、判断是否具有添加管理员的权限
@@ -66,7 +65,6 @@ public class AdminController {
     @PutMapping("/updateAdmin")
     public R<String> updateAdmin(HttpServletRequest request, @RequestBody User user) {
         //1、获取当前登录用户
-//        Integer loginUser = (Integer) request.getSession().getAttribute("loginUser");
         Integer loginUser = BaseContext.getCurrentId();
 
         //2、判断是否具有更新管理员的权限
@@ -89,7 +87,6 @@ public class AdminController {
     @DeleteMapping("/deleteAdmin")
     public R<String> deleteAdmin(HttpServletRequest request,Integer userId) {
         //1、获取当前登录用户
-//        Integer loginUser = (Integer) request.getSession().getAttribute("loginUser");
         Integer loginUser = BaseContext.getCurrentId();
 
         //2、判断是否具有删除管理员的权限
@@ -115,7 +112,6 @@ public class AdminController {
     @GetMapping("/selectUser")
     public R<PageInfo> selectUser(HttpServletRequest request, int page, int pageSize, Integer type, String keywords) {
         //1、获取当前登录用户
-//        Integer loginUser = (Integer) request.getSession().getAttribute("loginUser");
         Integer loginUser = BaseContext.getCurrentId();
 
         User user = userService.getUserById(loginUser);

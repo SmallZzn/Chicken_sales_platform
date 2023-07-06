@@ -33,38 +33,6 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public List<Address> selectAllAddress(Integer userId) {
-//        //1、开启分页功能
-//        PageHelper.startPage(page,pageSize);
-//
-//        //2、根据orderId查询订单详情
-//        List<Address> addresses = addressMapper.selectAllAddress(userId);
-//
-//        //3、设置分页插件
-//        PageInfo<Address> addressPageInfo = new PageInfo<>(addresses);
-//
-//        //4、设置要返回的分页插件
-//        PageInfo<AddressDto> addressDtoPageInfo = new PageInfo<>();
-//
-//        //5、赋值信息到要返回的分页插件
-//        BeanUtils.copyProperties(addressPageInfo,addressDtoPageInfo);
-//
-//        //6、创建集合addressDtos,并为其属性赋值
-//        List<AddressDto> addressDtos = addresses.stream().map((item) -> {
-//            AddressDto addressDto = new AddressDto();
-//
-//            //复制item到addressDto
-//            BeanUtils.copyProperties(item, addressDto);
-//
-//            //为addressDto的userName赋值
-//            String userName = userService.getUserNameById(userId);
-//            addressDto.setUserName(userName);
-//
-//            return addressDto;
-//        }).collect(Collectors.toList());
-//
-//        //7、为addressDtoPageInfo赋值
-//        addressDtoPageInfo.setList(addressDtos);
-
         return addressMapper.selectAllAddress(userId);
     }
 

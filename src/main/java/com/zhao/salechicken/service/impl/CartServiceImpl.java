@@ -96,24 +96,8 @@ public class CartServiceImpl implements CartService {
         //查找用户的购物车
         Cart cart = cartMapper.selectCart(loginUser);
 
-//        //查询购物车详情
-//        Cartdetail cartdetailInfo = cartdetailService.seleceCartdetail(cartdetailId);
-
         //查询改商品信息
         Product productInfo = productService.getProductById(productId);
-
-//        if (cartdetailInfo != null) {
-//            //购物车中存在该商品，该商品数量+1，并更新总价
-//            //更新购物车详情数量
-//            cartdetailInfo.setQuantity(cartdetailInfo.getQuantity() + 1);
-//            //更新购物车详情总价
-//            cartdetailInfo.setAllprice(cartdetailInfo.getQuantity() * productInfo.getPrice());
-//            //更新数据库
-//            cartdetailService.updateCartdetail(cartdetailInfo);
-//        } else {
-//            //购物车中不存在该商品，向购物车中添加该商品
-//            cartdetailService.addProductIntoCart(productInfo, cart.getCartId());
-//        }
 
         cartdetailService.addProductIntoCart(productInfo, cart.getCartId());
 
@@ -124,39 +108,6 @@ public class CartServiceImpl implements CartService {
         //更新数据库
         cartMapper.updateCart(cart);
     }
-
-//    @Override
-//    public void reduceCartProductNum(Integer loginUser,Integer cartdetailId,Integer productId) {
-//
-//        //查找用户的购物车
-//        Cart cart = cartMapper.selectCart(loginUser);
-//
-//        //查询购物车中该商品的信息
-//        Cartdetail cartdetailInfo = cartdetailService.seleceCartdetail(cartdetailId);
-//
-//        //查询改商品信息
-//        Product productInfo = productService.getProductById(productId);
-//
-//        if (cartdetailInfo.getQuantity() > 1) {
-//            //如果购物车中该商品的数量大于1，则数量-1
-//            //更新购物车详情数量
-//            cartdetailInfo.setQuantity(cartdetailInfo.getQuantity() - 1);
-//            //更新购物车详情总价
-//            cartdetailInfo.setAllprice(cartdetailInfo.getQuantity() * productInfo.getPrice());
-//            //更新数据库
-//            cartdetailService.updateCartdetail(cartdetailInfo);
-//        } else {
-//            //如果购物车中该商品的数量小于1，则删除该商品
-//            cartdetailService.deleteProductFromCart(cartdetailInfo.getProductId(), cart.getCartId());
-//        }
-//
-//        //更新购物车商品数量
-//        cart.setNum(cart.getNum() - 1);
-//        //更新购物车商品总价
-//        cart.setAllprice(cart.getAllprice() - productInfo.getPrice());
-//        //更新数据库
-//        cartMapper.updateCart(cart);
-//    }
 }
 
 

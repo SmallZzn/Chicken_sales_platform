@@ -149,13 +149,8 @@ public class OrderServiceImpl implements OrderService {
      */
     public static Long randomOrderCode() {
         SimpleDateFormat dmDate = new SimpleDateFormat("yyyyMMddHHmmss");
-//        String randata = getRandom(1);
         Date date = new Date();
         String dateran = dmDate.format(date);
-//        String Xsode = "XS" + dateran + randata;
-//        if (Xsode.length() < 24) {
-//            Xsode = Xsode + 0;
-//        }
         return Long.parseLong(dateran);
     }
 

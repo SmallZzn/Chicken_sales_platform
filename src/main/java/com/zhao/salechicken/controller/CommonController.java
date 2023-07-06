@@ -52,8 +52,6 @@ public class CommonController {
         HttpSession session = request.getSession();
         session.getServletContext().setAttribute("loginUser", loginUser.getUserId());
 
-//        BaseContext.setCurrentId(loginUser.getUserId());
-
         log.info("登录用户的id:{}", loginUser.getUserId());
         return R.success(loginUser);
     }
