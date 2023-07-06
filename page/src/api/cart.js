@@ -12,14 +12,24 @@ function get(page = 1, pageSize = 5) {
   });
 }
 
+function add(productId) {
+  return request({
+    method: "post",
+    url: "/cart/addCart",
+    params: {
+      productId,
+    },
+  });
+}
+
 // allprice: 0,
 // cartId: 0,
 // cartdetailId: 0,
 // productId: 0,
 // quantity: 0
-function add(data) {
+function updateCartdetail(data) {
   return request({
-    method: "post",
+    method: "put",
     url: "/cart/updateCartdetail",
     data,
   });
@@ -27,8 +37,8 @@ function add(data) {
 
 function reduceNum(data) {
   return request({
-    method: "post",
-    url: "/cart/updateCartdetail",
+    method: "put",
+    url: "/cart/reduceCartProductNum",
     data,
   });
 }
@@ -40,4 +50,4 @@ function removeAll() {
   });
 }
 
-export default { get, add, reduceNum, removeAll };
+export default { get, add, updateCartdetail, reduceNum, removeAll };

@@ -14,7 +14,7 @@ function login(userName, password) {
 function register(data) {
   return request({
     method: "post",
-    url: "/user/register",
+    url: "/user/logon",
     data,
   });
 }

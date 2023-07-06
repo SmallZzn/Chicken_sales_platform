@@ -28,6 +28,7 @@ export default {
       localStorage.removeItem("loginName");
       // 返回首页
       this.$router.push("/user");
+      this.$router.go(0)
     },
   },
 };

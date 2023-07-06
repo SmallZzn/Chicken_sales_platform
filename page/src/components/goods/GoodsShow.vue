@@ -6,7 +6,7 @@
       :key="item.productId"
       :productId="item.productId"
       :goodsName="item.productName"
-      :imgSrc="item.image"
+      :imgName="item.image"
       :origin="item.origin"
       :price="item.price"
     ></goods-card>

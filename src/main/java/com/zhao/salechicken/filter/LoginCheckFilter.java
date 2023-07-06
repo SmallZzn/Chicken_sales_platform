@@ -38,23 +38,10 @@ public class LoginCheckFilter implements Filter {
 
         //定义不需要处理的请求路径
         String[] urls = new String[]{
-                //测试需要
-                //---------------------
-                "/**",
+                "/product/selectProductBySales",
                 "/logout",
-                "/user/selectUserInfo",
-                "/order/selectAllOrder",
-                "/review/selectMyReview",
-                "/review/deleteReview",
-                "/address/deleteAddress",
-                "/address/defaultAddress",
-                "/user/updateUserInfo",
-                "/address/updateAddress",
-                "/address/addAddress",
                 "/file/upload",
                 "/file/download",
-                "/product/selectAllProduct",
-                //----------------------
                 "/index.html",
                 "/login",
                 "/login.html",//登录页面
@@ -84,7 +71,7 @@ public class LoginCheckFilter implements Filter {
 
 //        TODO a
         //4、判断登录状态，如果已登录，则直接放行
-        Long loginUser = (Long) request.getSession().getAttribute("loginUser");
+        Integer loginUser = (Integer) request.getSession().getServletContext().getAttribute("loginUser");
         if (loginUser != null) {
             log.info("用户已登录，用户id为：{}", loginUser);
             BaseContext.setCurrentId(loginUser);

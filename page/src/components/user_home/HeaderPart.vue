@@ -34,31 +34,35 @@
 
         <!-- 购物车 -->
         <div class="col-md-2">
-          <button class="btn-lg sp" title="购物车">
-            <span class="glyphicon glyphicon-shopping-cart">
-              <a href="#/user/cart" target="_blank"> 00.00</a>
-            </span>
-          </button>
+          <a href="#/user/cart" target="_blank" style="color: #000">
+            <button class="btn-lg sp" title="购物车">
+              <span class="glyphicon glyphicon-shopping-cart"> 00.00 </span>
+            </button>
+          </a>
         </div>
 
         <!-- 我的订单 -->
         <div class="col-md-2">
-          <button class="btn-lg sp order" title="我的订单">
-            <span class="glyphicon glyphicon-list-alt">
-              <!-- 跳转到订单页面 -->
-              <router-link :to="{ name: 'UserMe', params: { pageIndex: 4 } }"
-                > 我的订单</router-link
-              >
-            </span>
-          </button>
+          <!-- 跳转到订单页面 -->
+          <router-link
+            :to="{ name: 'UserMe', params: { pageIndex: 4 } }"
+            style="color: #000"
+          >
+            <button class="btn-lg sp order" title="我的订单">
+              <span class="glyphicon glyphicon-list-alt"> 我的订单 </span>
+            </button>
+          </router-link>
         </div>
 
         <!-- 登陆 -->
         <div class="col-md-1 user_info">
           <a :href="isLogin ? '#/user/me' : '#/login'" target="_blank">
-            <img src="/images/user.png" alt="" class="user-img" />
+            <img v-if="!isLogin" src="/images/noLogin.png" class="user-img" />
+            <img v-else :src="getImgUrl(avatarImgName)" class="user-img" />
             <span v-if="!isLogin" class="uname">未登陆</span>
-            <span v-else class="uname">{{ loginName + " " + loginId }}</span>
+            <span v-else class="uname">
+              {{ loginName }}
+            </span>
           </a>
         </div>
         <div class="col-md-1">
@@ -80,13 +84,16 @@
 </template>
 
 <script>
+import request from "@/utils/request";
 import Logout from "../user/Logout.vue";
+
 export default {
   components: { Logout },
   data() {
     return {
-      loginId: "-1",
+      loginId: null,
       loginName: "",
+      avatarImgName: null,
       isLogin: false,
       searchStr: null,
     };
@@ -103,11 +110,31 @@ export default {
       this.isLogin = true;
       this.loginId = loginId;
       this.loginName = loginName;
+      this.avatarImgName = this.getAvatarImgName(loginId);
     }
   },
   methods: {
     onSearchClick() {
       this.$emit("search", this.searchStr);
+    },
+    //获取头像图片名称
+    getAvatarImgName(userId) {
+      request
+        .get("/user/selectUserInfo", {
+          params: {
+            page: this.addressPage,
+            pageSize: this.addressPageSize,
+            userId,
+          },
+        })
+        .then((res) => {
+          console.log(res.data.data);
+          this.avatarImgName = res.data.data.image;
+        });
+    },
+    //下载图片
+    getImgUrl(img) {
+      return `http://localhost:9999/file/download?fileName=${img}`;
     },
   },
 };
@@ -197,6 +224,8 @@ export default {
 }
 
 .user-img {
+  width: 40px;
+  height: 40px;
   margin-top: 20px;
   border-radius: 99px;
   margin-left: -50px;

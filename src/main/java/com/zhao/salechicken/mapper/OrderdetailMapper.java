@@ -27,7 +27,7 @@ public interface OrderdetailMapper {
      * @param orderId
      * @return
      */
-    List<Orderdetail> selectOrderDetailByOrderId(@Param("orderId") Integer orderId);
+    List<Orderdetail> selectOrderDetailByOrderId(@Param("orderId") Long orderId);
 }
 
 

@@ -8,38 +8,41 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
-* @author 86180
-* @description 针对表【permissiondetail】的数据库操作Mapper
-* @createDate 2023-04-12 17:07:27
-* @Entity com.zhao.salechicken.pojo.Permissiondetail
-*/
+ * @author 86180
+ * @description 针对表【permissiondetail】的数据库操作Mapper
+ * @createDate 2023-04-12 17:07:27
+ * @Entity com.zhao.salechicken.pojo.Permissiondetail
+ */
 @Mapper
 public interface PermissiondetailMapper {
 
     /**
      * 判断用户是否具有某个权限
+     *
      * @param userId
      * @param permissionId
      * @return
      */
-    boolean judgePermission(@Param("userId") Integer userId,@Param("permissionId") Integer permissionId);
+    boolean judgePermission(@Param("userId") Integer userId, @Param("permissionId") Integer permissionId);
 
     /**
      * 增加用户权限
      * @param userId
-     * @param ids
+     * @param id
      */
-    void addPermission(@Param("userId") Integer userId,@Param("ids") List<Integer> ids);
+    void addPermission(@Param("userId") Integer userId,@Param("id") Integer id);
 
     /**
      * 删除用户权限
+     *
      * @param userId
      * @param permissionId
      */
-    void deletePermission(@Param("userId") Integer userId,@Param("permissionId") Integer permissionId);
+    void deletePermission(@Param("userId") Integer userId, @Param("permissionId") Integer permissionId);
 
     /**
      * 查询用户有的权限
+     *
      * @param userId
      * @return
      */
@@ -47,6 +50,7 @@ public interface PermissiondetailMapper {
 
     /**
      * 查询用户没有的权限
+     *
      * @param userId
      * @return
      */

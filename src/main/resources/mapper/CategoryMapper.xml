@@ -5,30 +5,40 @@
 <mapper namespace="com.zhao.salechicken.mapper.CategoryMapper">
 
     <resultMap id="BaseResultMap" type="com.zhao.salechicken.pojo.Category">
-            <id property="categoryId" column="category_id" jdbcType="INTEGER"/>
-            <result property="name" column="name" jdbcType="VARCHAR"/>
-            <result property="type" column="type" jdbcType="INTEGER"/>
+        <id property="categoryId" column="category_id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="type" column="type" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        category_id,name,type
+        category_id
+        ,name,type
     </sql>
 
     <select id="selectAllCategory" resultMap="BaseResultMap">
-        select * from category
+        select *
+        from category
     </select>
 
     <select id="selectCategoryCount" resultType="integer">
-        select count(*) from category
+        select count(*)
+        from category
     </select>
 
     <insert id="addCategory">
-        insert into category(name,type)
-        values (#{category.name},#{category.type})
+        insert into category(name, type)
+        values (#{category.name}, #{category.type})
     </insert>
 
     <delete id="deleteCategory">
-        delete from category
-        where category_id=#{categoryId}
+        delete
+        from category
+        where category_id = #{categoryId}
     </delete>
+
+    <select id="selectNameByType" resultType="string">
+        select name
+        from category
+        where type = #{type}
+    </select>
 </mapper>

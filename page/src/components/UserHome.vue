@@ -70,7 +70,7 @@ export default {
 };
 </script>
 
-<!-- 引入各种样式 -->
+<!-- 引入其他样式 -->
 <style src="../assets/css/index.css" />
 
 <style scoped>

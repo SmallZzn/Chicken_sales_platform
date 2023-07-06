@@ -29,7 +29,7 @@ public class Orderdetail implements Serializable {
     /**
      * 订单id
      */
-    private Integer orderId;
+    private Long orderId;
 
     /**
      * 商品id

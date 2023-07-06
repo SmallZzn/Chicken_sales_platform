@@ -3,18 +3,16 @@
     <!-- banner部分 -->
     <div class="banner">
       <div class="banner-btn">
-        <a href="">
-          <button type="button" class="btn btn-primary btn-lg banner-btn1">
-            <span class="glyphicon glyphicon-shopping-cart"></span
-            ><a href="#" @click.prevent="onPurchase">采购</a>
-          </button>
-        </a>
-
-        <a href="">
-          <button type="button" class="btn btn-primary btn-lg banner-btn2">
-            <span class="glyphicon glyphicon-flash"></span>折扣
-          </button>
-        </a>
+        <button
+          type="button"
+          class="btn btn-primary btn-lg banner-btn1"
+          @click="onPurchase"
+        >
+          <span class="glyphicon glyphicon-shopping-cart"></span>采购
+        </button>
+        <button type="button" class="btn btn-primary btn-lg banner-btn2">
+          <span class="glyphicon glyphicon-flash"></span>折扣
+        </button>
       </div>
     </div>
     <!-- banner部分结束-->
@@ -131,15 +129,81 @@ export default {
 </script>
 
 <style scoped>
-.banner-btn1:hover span {
-    color: rgb(148, 187, 5);
+/* banner部分 */
+.banner {
+  position: relative;
+  height: 700px;
+  background: url(@/assets/images/banner.jpeg) no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.banner-btn {
+  position: absolute;
+  right: 150px;
+  bottom: 50px;
 }
 
-.user_container {
-  background-color: #f3f5f7;
+.banner-btn1,
+.banner-btn2 {
+  font-size: 16px;
+  background-color: rgb(148, 187, 5);
+  border: 1px solid rgb(148, 187, 5);
+  border-radius: 10px;
 }
 
+.banner-btn2 {
+  margin-left: 30px;
+}
 
+.banner-btn1:hover {
+  background-color: #fff;
+}
 
+.banner-btn1:hover {
+  color: rgb(148, 187, 5);
+}
 
+.banner-btn2:hover {
+  background-color: #fff;
+  color: rgb(148, 187, 5);
+}
+/* banner部分结束 */
+
+/* 轮播图 */
+.lunbotu {
+  position: relative;
+  display: flex;
+  margin: 0 auto;
+  width: 1300px;
+  height: 100px;
+  margin-top: 20px;
+  overflow: hidden;
+  background-color: #f5f5f5;
+}
+
+.lunbotu .lb-list img {
+  width: 200px;
+  height: 100px;
+  border-radius: 20px;
+}
+
+.lunbotu > .lb-list {
+  position: absolute;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lb-list > div {
+  width: 200px;
+  height: 100px;
+  margin-right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+/* 轮播图部分结束 */
 </style>

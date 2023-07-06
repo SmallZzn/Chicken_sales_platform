@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhao.salechicken.mapper.OrderMapper">
     <resultMap id="BaseResultMap" type="com.zhao.salechicken.pojo.Order">
-            <id property="orderId" column="order_id" jdbcType="INTEGER"/>
+            <id property="orderId" column="order_id" jdbcType="BIGINT"/>
             <result property="userId" column="user_id" jdbcType="INTEGER"/>
             <result property="orderdate" column="orderdate" jdbcType="TIMESTAMP"/>
             <result property="totalprice" column="totalprice" jdbcType="DOUBLE"/>
@@ -49,8 +49,8 @@
     </select>
 
     <insert id="addOrder" useGeneratedKeys="true" keyProperty="orderId">
-        insert into `order`(user_id,orderdate,totalprice,status,num,address_id)
-        values(#{order.userId},#{order.orderdate},#{order.totalprice},#{order.status},#{order.num},#{order.addressId})
+        insert into `order`(order_id,user_id,orderdate,totalprice,status,num,address_id)
+        values(#{order.orderId},#{order.userId},#{order.orderdate},#{order.totalprice},#{order.status},#{order.num},#{order.addressId})
     </insert>
 
     <update id="updateOrder">
@@ -63,4 +63,28 @@
             address_id=#{order.addressId}
         where order_id=#{order.orderId}
     </update>
+
+    <select id="selectTotalSales" resultType="double">
+        SELECT
+            COALESCE(SUM(o.totalprice), 0) AS total_sales
+        FROM
+            (SELECT 1 AS month
+             UNION SELECT 2 AS month
+             UNION SELECT 3 AS month
+             UNION SELECT 4 AS month
+             UNION SELECT 5 AS month
+             UNION SELECT 6 AS month
+             UNION SELECT 7 AS month
+             UNION SELECT 8 AS month
+             UNION SELECT 9 AS month
+             UNION SELECT 10 AS month
+             UNION SELECT 11 AS month
+             UNION SELECT 12 AS month) AS m
+                LEFT JOIN
+            `order` AS o ON m.month = MONTH(o.orderdate) AND YEAR(o.orderdate) = YEAR(CURDATE())
+        GROUP BY
+            m.month
+        ORDER BY
+            m.month;
+    </select>
 </mapper>

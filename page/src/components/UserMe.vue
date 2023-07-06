@@ -27,7 +27,7 @@
       </div>
     </header>
 
-    <div class="container">
+    <div class="container body_container">
       <nav>
         <a
           href="#"
@@ -99,7 +99,6 @@
 
         <!--我的评论-->
         <div v-show="index === 2">
-          <!--TODO 修改 -->
           <div
             class="comment"
             v-for="review in reviewList"
@@ -122,8 +121,8 @@
                 type="text"
                 class="deleteReview"
                 @click.prevent="deleteReview(review.reviewId)"
-                >删除</el-button
-              >
+                >删除
+              </el-button>
             </template>
           </div>
           <br />
@@ -162,7 +161,7 @@
                 <td class="info">{{ address.province }}</td>
                 <td class="info">{{ address.city }}</td>
                 <td class="info">{{ address.region }}</td>
-                <td class="info">{{ address.region }}</td>
+                <td class="info">{{ address.detail }}</td>
                 <td class="info">
                   <a class="edit" @click.prevent="editAddress(address)">编辑</a>
                   <template>
@@ -170,8 +169,8 @@
                       type="text"
                       class="delete"
                       @click.prevent="deleteAddress(address.addressId)"
-                      >删除</el-button
-                    >
+                      >删除
+                    </el-button>
                   </template>
                   <br />
                   <button
@@ -226,7 +225,10 @@
                   target="_blank"
                   class="edit"
                   >查看</a
-                >
+                ><br>
+                <a v-if="order.status==='已付款'" @click="refund(order)" style="color: red">
+                  申请退款
+                </a>
               </td>
             </tr>
           </table>
@@ -247,7 +249,7 @@
           title="信息修改"
           :visible.sync="changeInfoVisible"
           width="30%"
-          @close="cancelChangeInfo"
+          :before-close="cancelChangeInfo"
           center
         >
           <el-form
@@ -256,17 +258,19 @@
             :model="tempUser"
             ref="updateInfoFrom"
           >
-            <el-upload
-              action="http://localhost:9999/file/upload"
-              :on-success="handleUploadSuccess"
-              :before-upload="beforeUpload"
-              :show-file-list="false"
-            >
-              <el-image
-                :src="getImgUrl(tempUser.image)"
-                class="changeHeadImage"
-              ></el-image>
-            </el-upload>
+            <div class="change_head_container">
+              <el-upload
+                action="http://localhost:9999/file/upload"
+                :show-file-list="false"
+                :on-success="handleUploadSuccess"
+                :before-upload="beforeUpload"
+              >
+                <el-image
+                  :src="getImgUrl(tempUser.image)"
+                  class="changeHeadImage"
+                ></el-image>
+              </el-upload>
+            </div>
             <el-form-item label="用户名" prop="userName">
               <el-input v-model="tempUser.userName"></el-input>
             </el-form-item>
@@ -292,7 +296,7 @@
           </span>
         </el-dialog>
 
-        <!--地址修改页面-->
+        <!-- TODO 地址修改页面-->
         <el-dialog
           title="地址修改"
           :visible.sync="changeAddressVisible"
@@ -404,7 +408,7 @@ export default {
         email: "bin@example.com",
         phone: "18523654256",
         sex: 1,
-        image: "",
+        image: "6e79d623-eab1-4dc2-92ef-9081ef58d1b0.jpg",
         type: 0,
       },
       //是否显示信息修改弹窗
@@ -417,7 +421,7 @@ export default {
         email: "bin@example.com",
         phone: "18523654256",
         sex: 1,
-        image: "",
+        image: "6e79d623-eab1-4dc2-92ef-9081ef58d1b0.jpg",
         type: 0,
       },
       //我的评价
@@ -431,8 +435,8 @@ export default {
           createTime: 1680160008000,
           userName: "",
           productName: "黑羽肉鸡",
-          userImage: "",
-          productImage: "",
+          userImage: "6e79d623-eab1-4dc2-92ef-9081ef58d1b0.jpg",
+          productImage: "6e79d623-eab1-4dc2-92ef-9081ef58d1b0.jpg",
         },
       ],
       reviewTotal: 1,
@@ -547,15 +551,23 @@ export default {
   created() {
     const loginId = localStorage.getItem("loginId");
     this.user.userId = loginId;
+    this.copyUser(this.user, this.tempUser);
     this.showMyInfo();
     // 获取路由参数，改变显示的页面
     const pageIndex = this.$route.params.pageIndex;
     if (pageIndex !== undefined) {
+      console.log(this.index);
       this.index = pageIndex;
+      //请求订单数据
+      if (this.index === 4) {
+        this.selectOrders(this.index);
+      }
     }
     console.log(this.$route.params);
   },
-  mounted() {},
+  mounted() {
+
+  },
   methods: {
     //改变页面显示内容
     changeIndex(index) {
@@ -573,16 +585,18 @@ export default {
           },
         })
         .then((res) => {
-          this.addressList = res.data.addressList;
-          this.user.userId = res.data.userId;
-          this.user.userName = res.data.userName;
-          this.user.password = res.data.password;
-          this.user.email = res.data.email;
-          this.user.phone = res.data.phone;
-          this.user.sex = res.data.sex;
-          this.user.type = res.data.type;
-          this.user.image = res.data.image;
-          this.addressTotal = res.data.total;
+          console.log(res.data.data);
+          this.addressList = res.data.data.addressList;
+          // this.user.userId = res.data.userId;
+          // this.user.userName = res.data.userName;
+          // this.user.password = res.data.password;
+          // this.user.email = res.data.email;
+          // this.user.phone = res.data.phone;
+          // this.user.sex = res.data.sex;
+          // this.user.type = res.data.type;
+          // this.user.image = res.data.image;
+          this.user = res.data.data;
+          this.addressTotal = res.data.data.total;
           this.copyUser(this.user, this.tempUser);
         })
         .catch(function (err) {
@@ -616,14 +630,13 @@ export default {
             center: true,
           })
             .then((res) => {
-              console.log(res);
-              this.copyUser(this.tempUser, this.user);
-              this.$refs.updateInfoFrom.resetFields();
-              request.put("/user/updateUserInfo", this.user).then((res) => {
+              // console.log(res);
+              request.put("/user/updateUserInfo", this.tempUser).then((res) => {
                 if (res.data.code == 200) {
                   this.showMyInfo();
                   this.$message.success("信息修改成功");
                 }
+                this.$refs.updateInfoFrom.resetFields();
               });
             })
             .catch(() => {
@@ -639,10 +652,9 @@ export default {
     //取消信息修改
     cancelChangeInfo() {
       this.changeInfoVisible = false;
-      this.$refs.updateInfoFrom.resetFields();
+      this.$refs.updateInfoFrom.clearValidate();
       this.copyUser(this.user, this.tempUser);
     },
-
     //评论
     //查看我的评论
     selectReview(index) {
@@ -656,8 +668,8 @@ export default {
           },
         })
         .then((res) => {
-          this.reviewList = res.data.list;
-          this.reviewTotal = res.data.total;
+          this.reviewList = res.data.data.list;
+          this.reviewTotal = res.data.data.total;
         });
     },
     //删除评论
@@ -771,7 +783,7 @@ export default {
       this.$refs.updateAddressFrom.resetFields();
       this.changeAddressVisible = false;
     },
-    //确定编辑地址
+    //  TODO 确定编辑地址
     sureEditAddress() {
       this.$refs.updateAddressFrom.validate((valid) => {
         if (valid) {
@@ -786,7 +798,7 @@ export default {
               request
                 .put("/address/updateAddress", this.tempAddress)
                 .then((res) => {
-                  if (res.code == 200) {
+                  if (res.data.code == 200) {
                     this.changeAddressVisible = false;
                     this.showMyInfo();
                     this.$message.success("地址修改成功");
@@ -836,7 +848,7 @@ export default {
               request
                 .post("/address/addAddress", this.tempAddress)
                 .then((res) => {
-                  if (res.code == 200) {
+                  if (res.data.code == 200) {
                     this.addAddressVisible = false;
                     this.showMyInfo();
                     this.$message.success("地址添加成功");
@@ -866,24 +878,56 @@ export default {
           },
         })
         .then((res) => {
-          this.orderList = res.data.list;
-          this.orderTotal = res.data.total;
+          this.orderList = res.data.data.list;
+          this.orderTotal = res.data.data.total;
         });
+    },
+    //申请退款
+    refund(item) {
+      console.log(item);
+      this.$confirm("是否申请退款?", "提示", {
+        confirmButtonText: "是",
+        cancelButtonText: "否",
+        type: "warning",
+        center: true,
+      })
+          .then((res) => {
+            console.log(res);
+            item.status='申请退款';
+            request
+                .put("/order/updateOrder", item)
+                .then((res) => {
+                  if (res.data.code == 200) {
+                    this.$message({
+                      type: "info",
+                      duration: 1500,
+                      message: "申请成功！",
+                    });
+                    this.getOrderList();
+                  }
+                });
+          })
+          .catch(() => {
+            this.$message({
+              type: "info",
+              message: "已取消申请",
+            });
+          });
     },
     //改变订单页数
     changeOrderPage(page) {
       this.orderPage = page;
       this.selectOrders(4);
     },
-    //TODO 上传
     //图片上传
     beforeUpload(file) {
       const isJPG = file.type === "image/jpeg";
       const isPNG = file.type === "image/png";
+      const isWEBP = file.type === "image/webp";
       const isLt2M = file.size / 1024 / 1024 < 2;
 
-      if (!isJPG && !isPNG) {
-        this.$message.error("上传图片只能是 JPG 或 PNG 格式!");
+      if (!isJPG && !isPNG && !isWEBP) {
+        this.$message.error("上传图片只能是 JPG、PNG和isWEBP 格式!");
         return false;
       }
       if (!isLt2M) {
@@ -894,6 +938,7 @@ export default {
     },
     //图片上传成功后执行
     handleUploadSuccess(response) {
+      console.log(response.data);
       this.tempUser.image = response.data;
       this.$message.success("上传成功!");
     },
@@ -916,6 +961,7 @@ export default {
   line-height: 1.5;
   color: #333;
   background-color: #f5f5f5;
+  text-align: center;
 }
 
 header {
@@ -928,7 +974,8 @@ header {
 .header-container {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  margin-left: 20px;
+  /* justify-content: space-between; */
 }
 
 .user-info {
@@ -941,8 +988,17 @@ header {
   height: 70px;
   object-fit: cover;
   border-radius: 50%;
-  margin-right: 1rem;
+  /* margin-right: 1rem; */
   border: 2px solid #65b04f;
+}
+
+.change_head_container {
+  text-align: center;
+  visibility: hidden;
+}
+
+.change_head_container input[type="file"] {
+  width: 100%;
 }
 
 .changeHeadImage {
@@ -950,10 +1006,11 @@ header {
   height: 90px;
   object-fit: cover;
   border-radius: 50%;
-  margin-left: 150px;
+  /* margin-left: 150px; */
   /*58px*/
   margin-bottom: 10px;
   border: 2px solid #007bff;
+  visibility: visible;
 }
 
 .user-details h3 {
@@ -975,9 +1032,10 @@ header {
   bottom: 15px;
 }
 
-.container {
+.body_container {
   display: flex;
-  height: 100%;
+  min-height: 500px;
+  width: 100%;
 }
 
 nav {
@@ -1020,12 +1078,18 @@ nav a.active {
 
 .myInfo {
   text-align: center;
-  margin-left: 35%;
+  /*margin-left: 43%;*/
+  margin: 0 auto;
   line-height: 48px;
+  /*width: 300px;*/
 }
 
 .myInfoTr {
   font-size: 20px;
+}
+
+.myInfoTr button{
+  width: 120px;
 }
 
 .changeInfo {
@@ -1061,10 +1125,13 @@ nav a.active {
 
 .productName {
   position: absolute;
+  top: 20px;
   left: 140px;
   font-size: 25px;
   font-weight: bold;
+  color: #000;
 }
+
 
 .commentContent {
   font-size: 18px;
@@ -1113,6 +1180,7 @@ nav a.active {
 .list th {
   background-color: #f2f2f2;
   font-weight: bold;
+  text-align: center;
 }
 
 .info {
@@ -1121,9 +1189,11 @@ nav a.active {
 }
 
 .addAddress {
+  float: right;
   margin-top: 10px;
   margin-bottom: 20px;
-  margin-left: 1130px;
+  margin-right: 10px;
+  /* margin-left: 1130px; */
   font-size: 15px;
   width: 8%;
   height: 10%;

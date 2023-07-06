@@ -1,7 +1,10 @@
 package com.zhao.salechicken.controller;
 
+import com.zhao.salechicken.common.BaseContext;
 import com.zhao.salechicken.common.R;
+import com.zhao.salechicken.dto.PermissionDto;
 import com.zhao.salechicken.pojo.Permission;
+import com.zhao.salechicken.pojo.Permissiondetail;
 import com.zhao.salechicken.pojo.User;
 import com.zhao.salechicken.service.PermissionService;
 import com.zhao.salechicken.service.PermissiondetailService;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -30,20 +34,21 @@ public class PermissiondetailController {
      *
      * @param request
      * @param user
-     * @param ids
+     * @param id
      * @return
      */
     @PostMapping("/addPermission")
-    public R<String> addPermission(HttpServletRequest request, @RequestBody User user, List<Integer> ids) {
+    public R<String> addPermission(HttpServletRequest request, @RequestBody User user, Integer id) {
         //获取当前登录用户
-        Integer loginUser = (Integer) request.getSession().getAttribute("loginUser");
+//        Integer loginUser = (Integer) request.getSession().getAttribute("loginUser");
+        Integer loginUser = BaseContext.getCurrentId();
 
         //判读是否有管理权限
         if (!permissiondetailService.judgePermission(loginUser, 1)) {
             return R.error("您没有该权限!!!");
         }
 
-        permissiondetailService.addPermission(user.getUserId(), ids);
+        permissiondetailService.addPermission(user.getUserId(), id);
 
         return R.success("权限添加成功");
     }
@@ -58,7 +63,8 @@ public class PermissiondetailController {
     @PostMapping("/deletePermission")
     public R<String> deletePermission(HttpServletRequest request, @RequestBody User user, Integer permissionId) {
         //获取当前登录用户
-        Integer loginUser = (Integer) request.getSession().getAttribute("loginUser");
+//        Integer loginUser = (Integer) request.getSession().getAttribute("loginUser");
+        Integer loginUser = BaseContext.getCurrentId();
 
         //判读是否有管理权限
         if (!permissiondetailService.judgePermission(loginUser, 1)) {
@@ -80,16 +86,17 @@ public class PermissiondetailController {
     @GetMapping("/selectProcessPermission")
     public R<List> selectProcessPermission(HttpServletRequest request, Integer userId) {
         //获取当前登录用户
-        Integer loginUser = (Integer) request.getSession().getAttribute("loginUser");
+//        Integer loginUser = (Integer) request.getSession().getAttribute("loginUser");
+        Integer loginUser = BaseContext.getCurrentId();
 
         //判读是否有管理权限
         if (!permissiondetailService.judgePermission(loginUser, 1)) {
             return R.error("您没有该权限!!!");
         }
 
-        List<Permission> permissions = permissiondetailService.selectProcessPermission(userId);
+        List<Integer> permissionIds = permissiondetailService.selectProcessPermission(userId);
 
-        return R.success(permissions);
+        return R.success(permissionIds);
     }
 
     /**
@@ -101,7 +108,8 @@ public class PermissiondetailController {
     @GetMapping("/selectUnProcessPermission")
     public R<List> selectUnProcessPermission(HttpServletRequest request, Integer userId) {
         //获取当前登录用户
-        Integer loginUser = (Integer) request.getSession().getAttribute("loginUser");
+//        Integer loginUser = (Integer) request.getSession().getAttribute("loginUser");
+        Integer loginUser = BaseContext.getCurrentId();
 
         //判读是否有管理权限
         if (!permissiondetailService.judgePermission(loginUser, 1)) {
@@ -129,8 +137,14 @@ public class PermissiondetailController {
      * @return
      */
     @PostMapping("/updatePermission")
-    public R<String> updatePermission(Integer userId, @RequestParam List<Integer> ids) {
-        permissiondetailService.updatePermission(userId, ids);
+    public R<String> updatePermission(@RequestBody List<Permissiondetail> permissiondetails) {
+        Integer userId = permissiondetails.get(0).getUserId();
+        //清空用户权限
+        permissiondetailService.clearAllPermissiondetail(userId);
+        permissiondetails.stream().map(item -> {
+            permissiondetailService.addPermission(userId, item.getPermissionId());
+            return item;
+        }).collect(Collectors.toList());
         return R.success("权限修改成功");
     }
 }

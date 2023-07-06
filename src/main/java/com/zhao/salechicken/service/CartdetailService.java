@@ -26,7 +26,7 @@ public interface CartdetailService {
      *
      * @param cartdetail
      */
-    void updateCartdetail(Cartdetail cartdetail);
+    void updateCartdetail(Integer loginUSer,Cartdetail cartdetail);
 
     /**
      * 向购物车添加商品

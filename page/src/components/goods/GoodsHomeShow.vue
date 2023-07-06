@@ -51,7 +51,7 @@ export default {
         origin,
         category,
       };
-      this.$api.products.selectAllProduct(params).then((response) => {
+      this.$api.products.selectProductBySales(params).then((response) => {
         // console.log(response);
         const res = response.data;
         if (res.code === 200) {
@@ -66,9 +66,6 @@ export default {
   },
 };
 </script>
-
-<!-- 引入各种样式 -->
-<!-- <style src="../../assets/css/index.css" /> -->
 
 <style scoped>
 .user_container {

@@ -32,7 +32,7 @@
         :key="goods.cartId"
       >
         <div class="col-md-3">
-          <img :src="goods.img" alt="" class="goods-img" />
+          <img :src="getImgUrl(goods.image)" alt="" class="goods-img" />
         </div>
         <div class="col-md-8" style="margin-top: 20px">
           {{ goods.productName }}<br />
@@ -67,7 +67,7 @@ export default {
     orderCartIds: function () {
       let cartIds = [];
       this.orderGoods.forEach((goods) => {
-        cartIds.push(goods.cartId);
+        cartIds.push(goods.cartdetailId);
       });
       return cartIds;
     },
@@ -83,12 +83,17 @@ export default {
         .then((response) => {
           const res = response.data;
           if (res.code === 200) {
-            this.$message.success("支付订单成功");
             //显示成功
+            this.$message.success("支付订单成功");
+            this.$router.push({ name: 'UserMe', params: { pageIndex: 4 } })
           } else {
             this.$message.error(res.msg);
           }
         });
+    },
+    //下载图片
+    getImgUrl(img) {
+      return `http://localhost:9999/file/download?fileName=${img}`;
     },
   },
 };

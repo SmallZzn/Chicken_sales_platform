@@ -10,13 +10,13 @@ public class BaseContext {
      * ThreadLocal能够为每一个线程提供一份存储空间，具有线程隔离的效果
      * 在线程内才可以获取相应的值，线程外无法获取，因此不会造成冲突
      */
-    private static ThreadLocal<Long> threadLocal=new ThreadLocal<>();
+    private static ThreadLocal<Integer> threadLocal=new ThreadLocal<>();
 
     /**
      * 设置值
      * @param id
      */
-    public static void setCurrentId(Long id){
+    public static void setCurrentId(Integer id){
         threadLocal.set(id);
     }
 
@@ -24,7 +24,7 @@ public class BaseContext {
      * 获取值
      * @return
      */
-    public static Long getCurrentId(){
+    public static Integer getCurrentId(){
         return threadLocal.get();
     }
 }

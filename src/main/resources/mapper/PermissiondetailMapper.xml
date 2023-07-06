@@ -20,10 +20,7 @@
 
     <insert id="addPermission">
         insert into permissiondetail(user_id,permission_id)
-        values
-        <foreach collection="ids" item="id" separator=",">
-            (#{userId},#{id})
-        </foreach>
+        values(#{userId},#{id})
     </insert>
 
     <delete id="deletePermission">

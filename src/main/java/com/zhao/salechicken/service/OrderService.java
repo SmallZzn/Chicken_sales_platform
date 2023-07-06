@@ -3,9 +3,11 @@ package com.zhao.salechicken.service;
 
 import com.github.pagehelper.PageInfo;
 import com.zhao.salechicken.pojo.Order;
+import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -37,7 +39,7 @@ public interface OrderService {
      * @param status
      * @return
      */
-    PageInfo selectOrder(Integer userId, int page, int pageSize, Integer orderId, String status);
+    PageInfo selectOrder(Integer userId, int page, int pageSize, Long orderId, String status);
 
     /**
      * 新增订单
@@ -57,4 +59,10 @@ public interface OrderService {
      * @param ids
      */
     void pay(Integer loginUser, List<Integer> ids,Integer addressId);
+
+    /**
+     * 查询个个月份的销售额
+     * @return
+     */
+    List<Double> selectTotalSales();
 }

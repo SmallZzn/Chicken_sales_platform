@@ -18,5 +18,5 @@ public class UserDto extends User {
     /**
      * 权限集合
      */
-    private List<Permission> permissionList;
+    private List<Integer> permissionIds;
 }

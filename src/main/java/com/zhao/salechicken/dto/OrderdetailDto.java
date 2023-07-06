@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class OrderdetailDto extends Orderdetail{
     private String productName;
+
+    private String image;
 }

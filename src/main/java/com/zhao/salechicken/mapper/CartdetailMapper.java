@@ -17,10 +17,15 @@ import java.util.List;
 @Mapper
 public interface CartdetailMapper {
 
+    /**
+     * 根据id查找购物车项
+     * @param cartdetailId
+     * @return
+     */
     Cartdetail seleceCartdetail(@Param("cartdetailId") Integer cartdetailId);
 
     /**
-     * 购物车商品数量增加
+     * 购物车商品数量修改
      *
      * @param cartdetail
      */

@@ -1,8 +1,5 @@
 package com.zhao.salechicken.service.impl;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.zhao.salechicken.common.R;
 import com.zhao.salechicken.dto.CartdetailDto;
 import com.zhao.salechicken.mapper.CartMapper;
 import com.zhao.salechicken.pojo.Cart;
@@ -11,12 +8,10 @@ import com.zhao.salechicken.pojo.Product;
 import com.zhao.salechicken.service.CartService;
 import com.zhao.salechicken.service.CartdetailService;
 import com.zhao.salechicken.service.ProductService;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -87,6 +82,8 @@ public class CartServiceImpl implements CartService {
             cartdetailDto.setPrice(product.getPrice());
             //为cartdetailDto的inventory赋值
             cartdetailDto.setInventory(product.getInventory());
+            //为cartdetailDto的image赋值
+            cartdetailDto.setImage(product.getImage());
 
             return cartdetailDto;
         }).collect(Collectors.toList());
@@ -95,28 +92,30 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void addCart(Integer loginUser, Integer cartdetailId, Integer productId) {
+    public void addCart(Integer loginUser, Integer productId) {
         //查找用户的购物车
         Cart cart = cartMapper.selectCart(loginUser);
 
-        //查询购物车详情
-        Cartdetail cartdetailInfo = cartdetailService.seleceCartdetail(cartdetailId);
+//        //查询购物车详情
+//        Cartdetail cartdetailInfo = cartdetailService.seleceCartdetail(cartdetailId);
 
         //查询改商品信息
         Product productInfo = productService.getProductById(productId);
 
-        if (cartdetailInfo != null) {
-            //购物车中存在该商品，该商品数量+1，并更新总价
-            //更新购物车详情数量
-            cartdetailInfo.setQuantity(cartdetailInfo.getQuantity() + 1);
-            //更新购物车详情总价
-            cartdetailInfo.setAllprice(cartdetailInfo.getQuantity() * productInfo.getPrice());
-            //更新数据库
-            cartdetailService.updateCartdetail(cartdetailInfo);
-        } else {
-            //购物车中不存在该商品，向购物车中添加该商品
-            cartdetailService.addProductIntoCart(productInfo, cart.getCartId());
-        }
+//        if (cartdetailInfo != null) {
+//            //购物车中存在该商品，该商品数量+1，并更新总价
+//            //更新购物车详情数量
+//            cartdetailInfo.setQuantity(cartdetailInfo.getQuantity() + 1);
+//            //更新购物车详情总价
+//            cartdetailInfo.setAllprice(cartdetailInfo.getQuantity() * productInfo.getPrice());
+//            //更新数据库
+//            cartdetailService.updateCartdetail(cartdetailInfo);
+//        } else {
+//            //购物车中不存在该商品，向购物车中添加该商品
+//            cartdetailService.addProductIntoCart(productInfo, cart.getCartId());
+//        }
+
+        cartdetailService.addProductIntoCart(productInfo, cart.getCartId());
 
         //更新购物车商品数量
         cart.setNum(cart.getNum() + 1);
@@ -126,38 +125,38 @@ public class CartServiceImpl implements CartService {
         cartMapper.updateCart(cart);
     }
 
-    @Override
-    public void reduceCartProductNum(Integer loginUser,Integer cartdetailId,Integer productId) {
-
-        //查找用户的购物车
-        Cart cart = cartMapper.selectCart(loginUser);
-
-        //查询购物车中该商品的信息
-        Cartdetail cartdetailInfo = cartdetailService.seleceCartdetail(cartdetailId);
-
-        //查询改商品信息
-        Product productInfo = productService.getProductById(productId);
-
-        if (cartdetailInfo.getQuantity() > 1) {
-            //如果购物车中该商品的数量大于1，则数量-1
-            //更新购物车详情数量
-            cartdetailInfo.setQuantity(cartdetailInfo.getQuantity() - 1);
-            //更新购物车详情总价
-            cartdetailInfo.setAllprice(cartdetailInfo.getQuantity() * productInfo.getPrice());
-            //更新数据库
-            cartdetailService.updateCartdetail(cartdetailInfo);
-        } else {
-            //如果购物车中该商品的数量小于1，则删除该商品
-            cartdetailService.deleteProductFromCart(cartdetailInfo.getProductId(), cart.getCartId());
-        }
-
-        //更新购物车商品数量
-        cart.setNum(cart.getNum() - 1);
-        //更新购物车商品总价
-        cart.setAllprice(cart.getAllprice() - productInfo.getPrice());
-        //更新数据库
-        cartMapper.updateCart(cart);
-    }
+//    @Override
+//    public void reduceCartProductNum(Integer loginUser,Integer cartdetailId,Integer productId) {
+//
+//        //查找用户的购物车
+//        Cart cart = cartMapper.selectCart(loginUser);
+//
+//        //查询购物车中该商品的信息
+//        Cartdetail cartdetailInfo = cartdetailService.seleceCartdetail(cartdetailId);
+//
+//        //查询改商品信息
+//        Product productInfo = productService.getProductById(productId);
+//
+//        if (cartdetailInfo.getQuantity() > 1) {
+//            //如果购物车中该商品的数量大于1，则数量-1
+//            //更新购物车详情数量
+//            cartdetailInfo.setQuantity(cartdetailInfo.getQuantity() - 1);
+//            //更新购物车详情总价
+//            cartdetailInfo.setAllprice(cartdetailInfo.getQuantity() * productInfo.getPrice());
+//            //更新数据库
+//            cartdetailService.updateCartdetail(cartdetailInfo);
+//        } else {
+//            //如果购物车中该商品的数量小于1，则删除该商品
+//            cartdetailService.deleteProductFromCart(cartdetailInfo.getProductId(), cart.getCartId());
+//        }
+//
+//        //更新购物车商品数量
+//        cart.setNum(cart.getNum() - 1);
+//        //更新购物车商品总价
+//        cart.setAllprice(cart.getAllprice() - productInfo.getPrice());
+//        //更新数据库
+//        cartMapper.updateCart(cart);
+//    }
 }
 
 

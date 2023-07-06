@@ -18,7 +18,7 @@ public class Order implements Serializable {
     /**
      * 订单id
      */
-    private Integer orderId;
+    private Long orderId;
 
     /**
      * 用户id

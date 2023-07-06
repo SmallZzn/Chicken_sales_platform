@@ -1,27 +1,34 @@
 <template>
   <div @click="onGoodsClick">
     <div class="thumbnail">
-      <img :src="imgSrc" alt="" />
+      <div style="width: 200px; height: 200px; margin: 10px auto">
+        <img-show :imgName="imgName"></img-show>
+      </div>
       <h3>{{ goodsName }}</h3>
       <p>产地:{{ origin }}</p>
-      <span class="goods-price">¥{{ price.toFixed(2) }}</span>
-      <button class="btn btn-default">
-        <a @click.prevent.stop="addCart"
-          ><span class="glyphicon glyphicon-shopping-cart"></span>加入购物车</a
-        >
-      </button>
+      <div class="card-bottom" style="margin: 0 auto; width: 200px">
+        <span class="goods-price">¥{{ price.toFixed(2) }}</span>
+        <button class="btn btn-default" @click.prevent.stop="addCart">
+          <span class="glyphicon glyphicon-shopping-cart"></span>
+          <span> 加入购物车</span>
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import ImgShow from "../ImgShow.vue";
 export default {
+  components: {
+    ImgShow,
+  },
   props: {
     productId: {
       type: Number,
       default: "0",
     },
-    imgSrc: {
+    imgName: {
       type: String,
       default: "/images/goods/01.jpeg",
     },
@@ -40,11 +47,7 @@ export default {
   },
   methods: {
     addCart() {
-      let params = {
-        productId: this.productId,
-        quantity: 1,
-      };
-      this.$api.cart.add(params).then((response) => {
+      this.$api.cart.add(this.productId).then((response) => {
         // console.log(response);
         const res = response.data;
         if (res.code === 200) {
@@ -69,8 +72,10 @@ export default {
 
 <style scoped>
 .thumbnail {
+  padding: 20px 0;
   background-color: #fff;
   border: 2px solid transparent;
+  cursor: pointer;
 }
 
 .thumbnail a {
@@ -92,20 +97,17 @@ export default {
 }
 
 .goods-price {
-  margin-left: 90px;
   font-size: 18px;
   color: #119744;
 }
 
 .thumbnail button {
   margin-left: 20px;
+  padding: 10px;
 }
 
 .thumbnail button:hover {
   background-color: #119744;
-}
-
-.thumbnail button:hover a {
   color: #fff;
 }
 </style>

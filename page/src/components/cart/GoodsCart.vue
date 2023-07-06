@@ -2,6 +2,7 @@
   <div>
     <table>
       <tr class="title">
+        <td class="select_td"></td>
         <td>商品</td>
         <td>品种</td>
         <td>单价</td>
@@ -9,14 +10,13 @@
         <td>小计</td>
       </tr>
       <tr v-for="item in goodsList" :key="item.productId">
-        <td>
-          <input type="checkbox" v-model="item.state" @change="onSelect" />
-          <img
-            src="/images/goods/01.jpeg"
-            alt=""
-            @click="onGoodsClick(item.productId)"
-            style="cursor: pointer"
-          />
+        <td class="select_td">
+          <input type="checkbox" v-model="item.state" @change="onSelect"/>
+        </td>
+        <td class="img_td">
+          <div class="good_img" @click="onGoodsClick(item.productId)">
+            <img-show :imgName="item.image"></img-show>
+          </div>
         </td>
         <td>{{ item.productName }}</td>
         <td class="danjia">￥{{ item.price.toFixed(2) }}</td>
@@ -30,7 +30,7 @@
     </table>
     <div class="box">
       <p>
-        <input type="checkbox" :checked="isFull" @change="onSelectAll" />全选
+        <input type="checkbox" :checked="isFull" @change="onSelectAll"/>全选
       </p>
       <p><span class="remove" @click="onClickRemove">移除</span></p>
       <p>
@@ -40,9 +40,9 @@
         合计费用 ￥<span class="total-price">{{ amount }}</span>
       </p>
       <button
-        type="submit"
-        class="btn btn-default btn-warning"
-        @click="onSubmitClick"
+          type="submit"
+          class="btn btn-default btn-warning"
+          @click="onSubmitClick"
       >
         提交订单
       </button>
@@ -51,29 +51,34 @@
 </template>
 
 <script>
+import ImgShow from "../ImgShow.vue";
+
 export default {
+  components: {ImgShow},
   data() {
     return {
       goodsList: [
         {
           state: true,
-          cartdetailId: 1,
           productId: 1,
-          quantity: 12,
-          allprice: 1200,
-          cartId: 1,
-          price: 100,
-          productName: "坤",
+          quantity: 1,
+          allprice: 45,
+          cartId: 2,
+          price: 45,
+          productName: "白羽肉鸡",
+          inventory: 91,
+          image: "017306cd-2fa8-49ac-9fb0-94a534adeedc.jpeg",
         },
         {
           state: true,
-          cartdetailId: 2,
           productId: 2,
-          quantity: 11,
-          allprice: 1221,
+          quantity: 1,
+          allprice: 50,
           cartId: 2,
-          price: 111,
-          productName: "红羽鸡",
+          price: 50,
+          productName: "黑羽肉鸡",
+          inventory: 74,
+          image: "017306cd-2fa8-49ac-9fb0-94a534adeedc.jpeg",
         },
       ],
       isFull: true,
@@ -115,11 +120,11 @@ export default {
     // 请求数据
     requestCart() {
       this.$api.cart.get().then((response) => {
-        // console.log(response);
+        console.log(response);
         const res = response.data;
         if (res.code === 200) {
           // this.$message.success("成功")
-          let goodsList = res.data.list;
+          let goodsList = res.data;
           // 为每个商品添加选中状态
           goodsList.forEach((val) => {
             val.state = true;
@@ -150,18 +155,19 @@ export default {
     // 数量减一
     reduceCartProductNum(item) {
       item.quantity--;
+      item.allprice = item.quantity * item.price;
       if (item.quantity === 0) {
         this.goodsList = this.goodsList.filter((val) => val != item);
       }
-      const { cartdetailId, productId } = item;
-      this.$api.cart.reduceNum(cartdetailId, productId);
+      const {cartdetailId, productId} = item;
+      this.$api.cart.updateCartdetail(item);
     },
     // 数量加一
     addCart(item) {
       item.quantity++;
-      const { cartdetailId, productId } = item;
-      console.log(cartdetailId, productId);
-      this.$api.cart.add(cartdetailId, productId);
+      item.allprice = item.quantity * item.price;
+      const {cartdetailId, productId} = item;
+      this.$api.cart.updateCartdetail(item);
     },
     // 移除购物车商品
     onClickRemove() {
@@ -198,15 +204,15 @@ export default {
         cancelButtonText: "取消",
         type: "warning",
       })
-        .then(() => {
-          this.removeAll();
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消",
+          .then(() => {
+            this.removeAll();
+          })
+          .catch(() => {
+            this.$message({
+              type: "info",
+              message: "已取消",
+            });
           });
-        });
     },
     // 发送清空请求
     removeAll() {
@@ -259,21 +265,33 @@ table tr td {
   text-align: center;
 }
 
+table tr td.select_td {
+  width: 40px;
+  border-right: none;
+}
+
+table tr td.select_td input {
+  margin-right: -32px;
+}
+
+table tr td.img_td {
+  padding: 10px 0;
+  border-left: none;
+}
+
+table tr td.img_td .good_img {
+  cursor: pointer;
+  width: 150px;
+  height: 150px;
+  margin: 0 auto;
+}
+
 table tr.title td {
   height: 50px;
   background: #119744;
   color: #fff;
   font-weight: bold;
   font-size: 14px;
-}
-
-table tr td img {
-  width: 100px;
-}
-
-table tr td input[type="checkbox"],
-input[type="radio"] {
-  margin: 4px 15px 0 0;
 }
 
 table tr td.number span {

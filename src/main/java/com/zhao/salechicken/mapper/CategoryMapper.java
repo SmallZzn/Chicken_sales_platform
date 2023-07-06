@@ -38,6 +38,13 @@ public interface CategoryMapper {
      * @param categoryId
      */
     void deleteCategory(@Param("categoryId") Integer categoryId);
+
+    /**
+     * 根据type查询种类名称
+     * @param type
+     * @return
+     */
+    String selectNameByType(@Param("type") Integer type);
 }
 
 

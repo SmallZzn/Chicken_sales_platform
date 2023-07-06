@@ -26,9 +26,9 @@ public interface PermissiondetailService {
      * 增加用户权限
      *
      * @param userId
-     * @param ids
+     * @param id
      */
-    void addPermission(Integer userId, List<Integer> ids);
+    void addPermission(Integer userId, Integer id);
 
     /**
      * 删除用户权限
@@ -44,7 +44,7 @@ public interface PermissiondetailService {
      * @param userId
      * @return
      */
-    List<Permission> selectProcessPermission(Integer userId);
+    List<Integer> selectProcessPermission(Integer userId);
 
     /**
      * 查询用户没有的权限
@@ -54,11 +54,17 @@ public interface PermissiondetailService {
      */
     List<Permission> selectUnProcessPermission(Integer userId);
 
+//    /**
+//     * 修改管理员权限
+//     *
+//     * @param userId
+//     * @param ids
+//     */
+//    void updatePermission(Integer userId, List<Integer> ids);
+
     /**
-     * 修改管理员权限
-     *
-     * @param userId
-     * @param ids
+     * 清空所有权限
+     * @return
      */
-    void updatePermission(Integer userId, List<Integer> ids);
+    void clearAllPermissiondetail(Integer userId);
 }

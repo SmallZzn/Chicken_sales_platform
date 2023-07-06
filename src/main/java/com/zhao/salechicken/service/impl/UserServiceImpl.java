@@ -92,8 +92,8 @@ public class UserServiceImpl implements UserService {
             userDto.setAddressList(addresses);
 
             //为userDto的permissionList赋值
-            List<Permission> permissions = permissiondetailService.selectProcessPermission(item.getUserId());
-            userDto.setPermissionList(permissions);
+            List<Integer> permissionIds = permissiondetailService.selectProcessPermission(item.getUserId());
+            userDto.setPermissionIds(permissionIds);
 
             return userDto;
 

@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @author 86180
@@ -54,7 +54,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public PageInfo selectOrder(Integer userId, int page, int pageSize, Integer orderId, String status) {
+    public PageInfo selectOrder(Integer userId, int page, int pageSize, Long orderId, String status) {
 
         //开启分页功能
         PageHelper.startPage(page, pageSize);
@@ -93,7 +93,8 @@ public class OrderServiceImpl implements OrderService {
 
         //添加订单并获取id,便于下面为订单详情设置orderId
         Order order = new Order();
-        orderMapper.addOrder(order);
+        order.setOrderId(randomOrderCode());
+//        orderMapper.addOrder(order);
 
         //向订单详情表添加数据 同时 删除购物车详情
         for (Cartdetail cartdetail : cartdetails) {
@@ -141,4 +142,28 @@ public class OrderServiceImpl implements OrderService {
         newCart.setAllprice(cart.getAllprice() - totalprice);
         cartService.updateCart(newCart);
     }
+
+    /**
+     * 生成随机订单号
+     * @return
+     */
+    public static Long randomOrderCode() {
+        SimpleDateFormat dmDate = new SimpleDateFormat("yyyyMMddHHmmss");
+//        String randata = getRandom(1);
+        Date date = new Date();
+        String dateran = dmDate.format(date);
+//        String Xsode = "XS" + dateran + randata;
+//        if (Xsode.length() < 24) {
+//            Xsode = Xsode + 0;
+//        }
+        return Long.parseLong(dateran);
+    }
+
+    /**
+     * 查询个个月份的销售额
+     * @return
+     */
+    public List<Double> selectTotalSales(){
+        return orderMapper.selectTotalSales();
+    };
 }

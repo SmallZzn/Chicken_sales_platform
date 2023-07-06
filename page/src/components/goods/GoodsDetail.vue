@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="goods_detail">
     <div class="product">
       <img
         class="product-img"
@@ -8,7 +8,7 @@
         alt="Product Image"
       />
       <div class="product-info">
-        <h1 class="product-name">{{ product.productName }}</h1>
+        <h1 class="product-name" >{{ product.productName }}</h1>
         <h2 class="product-price">价格：{{ product.price }}</h2>
         <h2 class="product-weight">重量: {{ product.weight }}KG</h2>
         <h2 class="product-origin">产地: {{ product.origin }}</h2>
@@ -22,10 +22,13 @@
       </div>
     </div>
 
-    <div>
-      <h1>评价</h1>
+    <div >
+      <h1 style="font-weight: bolder">评价</h1>
       <div class="comment" v-for="review in reviewList" :key="review.reviewId">
-        <img v-bind:src="getImgUrl(review.userImage)" class="commentImg" />
+        <div style="text-align: left">
+          <img v-bind:src="getImgUrl(review.userImage)" class="commentImg" />
+          <span class="commonUserName">{{review.userName}}</span>
+        </div>
         <p class="commentContent">{{ review.comment }}</p>
         <p class="commentDate">{{ review.createTime }}</p>
       </div>
@@ -92,16 +95,17 @@ export default {
       this.$api.products
         .getProductInfo(productId)
         .then((res) => {
-          this.product.productId = res.data.productId;
-          this.product.productName = res.data.productName;
-          this.product.description = res.data.description;
-          this.product.price = res.data.price;
-          this.product.weight = res.data.weight;
-          this.product.origin = res.data.origin;
-          this.product.category = res.data.category;
-          this.product.inventory = res.data.inventory;
-          this.product.sales = res.data.sales;
-          this.product.image = res.data.image;
+          console.log(res.data.data);
+          this.product.productId = res.data.data.productId;
+          this.product.productName = res.data.data.productName;
+          this.product.description = res.data.data.description;
+          this.product.price = res.data.data.price;
+          this.product.weight = res.data.data.weight;
+          this.product.origin = res.data.data.origin;
+          this.product.category = res.data.data.category;
+          this.product.inventory = res.data.data.inventory;
+          this.product.sales = res.data.data.sales;
+          this.product.image = res.data.data.image;
         })
         .catch(function (err) {
           alert(err);
@@ -127,19 +131,19 @@ export default {
         .selectProductReview(params)
         .then((res) => {
           console.log(res);
-          this.reviewList = res.data.list;
-          this.reviewTotal = res.data.total;
+          this.reviewList = res.data.data.list;
+          this.reviewTotal = res.data.data.total;
         })
         .catch(function (err) {
           alert(err);
         });
     },
     addCart() {
-      let params = {
-        productId: this.product.productId,
-        quantity: 1,
-      };
-      this.$api.cart.add(params).then((response) => {
+      // let params = {
+      //   productId: ,
+      //   quantity: 1,
+      // };
+      this.$api.cart.add(this.product.productId).then((response) => {
         // console.log(response);
         const res = response.data;
         if (res.code === 200) {
@@ -154,9 +158,10 @@ export default {
 </script>
 
 <style>
-body {
+.goods_detail {
   font-family: Arial, sans-serif;
   background-color: #f2f2f2;
+  text-align: center;
 }
 
 .product {
@@ -187,6 +192,7 @@ body {
 .product-name {
   font-size: 32px;
   margin: 0 0 30px;
+  font-weight: bolder;
 }
 
 .product-price {
@@ -258,18 +264,25 @@ body {
   border-radius: 10px;
   background-color: white;
   margin-bottom: 40px;
-  margin-left: 135px;
+  margin-left: 150px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .commentImg {
   width: 100px;
   height: 100px;
-  margin-right: 90%;
 }
 
 .commentContent {
   font-size: 18px;
+}
+
+.commonUserName{
+  font-size: 25px;
+  font-weight: bold;
+  color: #000;
+  vertical-align: top;
+  margin-left: 19px;
 }
 
 .commentDate {

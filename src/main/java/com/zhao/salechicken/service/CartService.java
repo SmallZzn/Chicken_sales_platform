@@ -56,16 +56,15 @@ public interface CartService {
     /**
      * 商品加入购物车/购物车商品数量+1
      * @param loginUser
-     * @param cartdetailId
      * @param productId
      */
-    void addCart(Integer loginUser, Integer cartdetailId, Integer productId);
-
-    /**
-     * 减少购物车中商品数量
-     * @param loginUser
-     * @param cartdetailId
-     * @param productId
-     */
-    void reduceCartProductNum(Integer loginUser,Integer cartdetailId,Integer productId);
+    void addCart(Integer loginUser, Integer productId);
+//
+//    /**
+//     * 减少购物车中商品数量
+//     * @param loginUser
+//     * @param cartdetailId
+//     * @param productId
+//     */
+//    void reduceCartProductNum(Integer loginUser,Integer cartdetailId,Integer productId);
 }

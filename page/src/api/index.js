@@ -17,5 +17,5 @@ export default {
   category,
   orders,
   admin,
-  review,
+  review
 };

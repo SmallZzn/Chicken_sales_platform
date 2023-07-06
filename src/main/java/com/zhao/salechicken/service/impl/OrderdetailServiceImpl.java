@@ -6,10 +6,9 @@ import com.github.pagehelper.PageInfo;
 import com.zhao.salechicken.dto.OrderdetailDto;
 import com.zhao.salechicken.mapper.OrderdetailMapper;
 import com.zhao.salechicken.pojo.Orderdetail;
-import com.zhao.salechicken.service.OrderService;
+import com.zhao.salechicken.pojo.Product;
 import com.zhao.salechicken.service.OrderdetailService;
 import com.zhao.salechicken.service.ProductService;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +36,7 @@ public class OrderdetailServiceImpl implements OrderdetailService {
     }
 
     @Override
-    public PageInfo selectOrderDetail(int page, int pageSize, Integer orderId) {
+    public PageInfo selectOrderDetail(int page, int pageSize, Long orderId) {
         //1、开启分页功能
         PageHelper.startPage(page,pageSize);
 
@@ -60,9 +59,13 @@ public class OrderdetailServiceImpl implements OrderdetailService {
             //复制item到orderdetailDto
             BeanUtils.copyProperties(item, orderdetailDto);
 
+            Product product = productService.getProductById(item.getProductId());
+
             //为orderdetailDto的productName赋值
-            String productName = productService.getProductNameById(item.getProductId());
-            orderdetailDto.setProductName(productName);
+            orderdetailDto.setProductName(product.getProductName());
+
+            //为orderdetailDto的image赋值
+            orderdetailDto.setImage(product.getImage());
 
             return orderdetailDto;
         }).collect(Collectors.toList());

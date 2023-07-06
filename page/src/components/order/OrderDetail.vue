@@ -10,7 +10,7 @@
       </tr>
       <tr v-for="item in goodsList" :key="item.orderdetialId">
         <td @click="onGoodsClick(item.productId)" style="cursor: pointer">
-          <img src="/images/goods/01.jpeg" alt="" />
+          <img :src="getImgUrl(item.image)" alt=""/>
         </td>
         <td>{{ item.productName }}</td>
         <td class="danjia">
@@ -45,6 +45,7 @@ export default {
           orderId: 13,
           productId: 1,
           productName: "白羽肉鸡",
+          image: null
         },
         {
           orderdetialId: 16,
@@ -53,6 +54,7 @@ export default {
           orderId: 13,
           productId: 2,
           productName: "黑羽肉鸡",
+          image: null
         },
       ],
     };
@@ -77,7 +79,7 @@ export default {
         page: 1,
         pageSize: 9999,
       };
-      this.$api.orders.selectAllOrder(params).then((response) => {
+      this.$api.orders.selectOrderDetail(params).then((response) => {
         // console.log(response);
         const res = response.data;
         if (res.code === 200) {
@@ -96,6 +98,9 @@ export default {
         },
       });
       window.open(routeUrl.href, "_blank");
+    },
+    getImgUrl(img) {
+      return `http://localhost:9999/file/download?fileName=${img}`;
     },
   },
 };
@@ -134,6 +139,7 @@ table tr.title td {
 
 table tr td img {
   width: 100px;
+  height: 90px;
 }
 
 table tr td input[type="checkbox"],

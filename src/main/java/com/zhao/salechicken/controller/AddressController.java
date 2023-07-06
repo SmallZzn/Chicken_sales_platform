@@ -1,5 +1,6 @@
 package com.zhao.salechicken.controller;
 
+import com.zhao.salechicken.common.BaseContext;
 import com.zhao.salechicken.common.R;
 import com.zhao.salechicken.pojo.Address;
 import com.zhao.salechicken.service.AddressService;
@@ -61,7 +62,9 @@ public class AddressController {
     @GetMapping("/selectAllAddress")
     public R<List<Address>> selectAllAddress(HttpServletRequest request){
         //获取当前登录用户的id
-        Integer loginUser = (Integer) request.getSession().getAttribute("loginUser");
+        Integer loginUser = BaseContext.getCurrentId();
+
+        System.out.println(loginUser);
 
         List<Address> addresses = addressService.selectAllAddress(loginUser);
 

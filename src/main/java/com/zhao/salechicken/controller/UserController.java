@@ -1,5 +1,6 @@
 package com.zhao.salechicken.controller;
 
+import com.zhao.salechicken.common.BaseContext;
 import com.zhao.salechicken.common.R;
 import com.zhao.salechicken.dto.UserDto;
 import com.zhao.salechicken.pojo.User;
@@ -36,6 +37,13 @@ public class UserController {
 
         //类型设置为用户
         user.setType(0);
+
+        //判断用户名是否重复
+        User userByName = userService.getUserByName(user.getUserName());
+        if (userByName != null) {
+            return R.error("用户名已存在");
+        }
+
         //添加用户到数据库
         Integer judge = userService.addUser(user);
         //若用户添加成功，则为用户创建购物车
@@ -55,7 +63,8 @@ public class UserController {
     @DeleteMapping("/deleteUser")
     public R<String> deleteUser(HttpServletRequest request, Integer userId) {
         //获取当前登录用户
-        Integer loginUser = (Integer) request.getSession().getAttribute("loginUser");
+//        Integer loginUser = (Integer) request.getSession().getAttribute("loginUser");
+        Integer loginUser = BaseContext.getCurrentId();
 
         //若是管理员进行删除
         if (!loginUser.equals(userId)) {
@@ -83,25 +92,26 @@ public class UserController {
      */
     @PutMapping("/updateUserInfo")
     public R<String> updateUserInfo(HttpServletRequest request, @RequestBody User user) {
-        //获取当前登录用户
-        Integer loginUser = (Integer) request.getSession().getAttribute("loginUser");
+        //获取当前登录用户的id
+        Integer loginUser = BaseContext.getCurrentId();
+
+        System.out.println(user);
 
         //TODO 注释掉loginUser
         //若是管理员进行删除
-//        if (!loginUser.equals(user.getUserId())) {
-//            //判断是否就有删除用户的权限
-//            if (!permissiondetailService.judgePermission(loginUser, 13)) {
-//                return R.error("您没有该权限!!!");
-//            }
-//        }
+        if (!loginUser.equals(user.getUserId())) {
+            //判断是否就有删除用户的权限
+            if (!permissiondetailService.judgePermission(loginUser, 13)) {
+                return R.error("您没有该权限!!!");
+            }
+        }
 
-        System.out.println(user.getImage());
         userService.updateUser(user);
         return R.success("修改成功");
     }
 
     @GetMapping("/selectUserInfo")
-    public R<UserDto> selectUserInfo(Integer userId){
+    public R<UserDto> selectUserInfo(Integer userId) {
         UserDto userDto = userService.selectUserInfo(userId);
 
         return R.success(userDto);

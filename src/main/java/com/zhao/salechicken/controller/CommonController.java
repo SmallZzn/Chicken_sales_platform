@@ -1,6 +1,7 @@
 package com.zhao.salechicken.controller;
 
 
+import com.zhao.salechicken.common.BaseContext;
 import com.zhao.salechicken.common.R;
 import com.zhao.salechicken.pojo.User;
 import com.zhao.salechicken.service.UserService;
@@ -49,8 +50,10 @@ public class CommonController {
 
         //4、登录成功，将用户id存入Session并返回成功结果
         HttpSession session = request.getSession();
+        session.getServletContext().setAttribute("loginUser", loginUser.getUserId());
 
-        session.setAttribute("loginUser", loginUser.getUserId());
+//        BaseContext.setCurrentId(loginUser.getUserId());
+
         log.info("登录用户的id:{}", loginUser.getUserId());
         return R.success(loginUser);
     }

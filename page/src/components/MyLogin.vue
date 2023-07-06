@@ -17,7 +17,7 @@
             >
           </p>
 
-          <form class="lo-form">
+          <div class="lo-form">
             <div class="form-group">
               <input
                 type="text"
@@ -36,7 +36,7 @@
             </div>
             <div class="form-button">
               <div v-loading="loading">
-                <button type="submit" @click="onLoginClick">
+                <button @click="onLoginClick">
                   <span>登录</span>
                 </button>
               </div>
@@ -45,7 +45,7 @@
                 <a href="reset.html" style="color: #119744">重置密码</a>
               </p>
             </div>
-          </form>
+          </div>
         </div>
       </div>
 
@@ -79,9 +79,9 @@ export default {
       this.$api.user
         .login(this.userName, this.password)
         .then((response) => {
+          console.log(response);
           //隐藏加载
           this.loading = false;
-          // console.log(response);
           let res = response.data;
           if (res.code === 200) {
             this.$message({

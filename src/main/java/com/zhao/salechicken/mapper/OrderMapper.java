@@ -4,10 +4,12 @@ package com.zhao.salechicken.mapper;
 import com.zhao.salechicken.pojo.Cartdetail;
 import com.zhao.salechicken.pojo.Order;
 import io.swagger.models.auth.In;
+import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
 * @author 86180
@@ -37,7 +39,7 @@ public interface OrderMapper {
      * @param status
      * @return
      */
-    List<Order> selectOrder(@Param("userId") Integer userId, @Param("orderId") Integer orderId, @Param("status") String status);
+    List<Order> selectOrder(@Param("userId") Integer userId, @Param("orderId") Long orderId, @Param("status") String status);
 
     /**
      * 新增订单
@@ -50,6 +52,12 @@ public interface OrderMapper {
      * @param order
      */
     void updateOrder(@Param("order") Order order);
+
+    /**
+     * 查询个个月份的销售额
+     * @return
+     */
+    List<Double> selectTotalSales();
 }
 
 

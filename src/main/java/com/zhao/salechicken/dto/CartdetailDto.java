@@ -22,4 +22,9 @@ public class CartdetailDto extends Cartdetail {
      * 产品库存
      */
     private Integer inventory;
+
+    /**
+     * 产品图片
+     */
+    private String image;
 }

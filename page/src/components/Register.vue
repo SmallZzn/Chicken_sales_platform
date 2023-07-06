@@ -12,12 +12,18 @@
           <span class="text-center lo-welcome">立即注册!</span>
           <p class="lo-uname">只需几分钟</p>
 
-          <form class="lo-form">
+          <div class="lo-form">
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="用户名" />
+              <input
+                v-model="userName"
+                type="text"
+                class="form-control"
+                placeholder="用户名"
+              />
             </div>
             <div class="form-group">
               <input
+                v-model="password"
                 type="password"
                 class="form-control"
                 placeholder="输入密码"
@@ -25,6 +31,7 @@
             </div>
             <div class="form-group">
               <input
+                v-model="rePassword"
                 type="password"
                 class="form-control"
                 placeholder="确认密码"
@@ -32,12 +39,12 @@
             </div>
             <div class="form-button">
               <div v-loading="loading">
-                <button type="submit" @click="onLoginClick">
+                <button @click="onLogonClick">
                   <span>注册</span>
                 </button>
               </div>
             </div>
-          </form>
+          </div>
         </div>
       </div>
 
@@ -60,15 +67,30 @@ export default {
     return {
       userName: "",
       password: "",
+      rePassword: "",
       loading: false,
     };
   },
   methods: {
-    onLoginClick() {
+    onLogonClick() {
+      // 判断密码是否输入一致
+      if (this.password == this.rePassword) {
+        this.register();
+      } else {
+        this.$message({
+          message: "两次输入密码不一致！",
+          type: "error",
+        });
+      }
+    },
+    register() {
       //显示加载
       this.loading = true;
       this.$api.user
-        .login(this.userName, this.password)
+        .register({
+          userName: this.userName,
+          password: this.password,
+        })
         .then((response) => {
           //隐藏加载
           this.loading = false;
@@ -76,18 +98,11 @@ export default {
           let res = response.data;
           if (res.code === 200) {
             this.$message({
-              message: "成功登陆",
+              message: "注册成功！",
               type: "success",
             });
-            //保存当前登陆用户的ID
-            localStorage.setItem("loginId", res.data.userId);
-            //保存当前登陆用户的用户名
-            localStorage.setItem("loginName", res.data.userName);
-            if (res.data.type === 1) {
-              this.$router.push("/admin");
-            } else {
-              this.$router.push("/user");
-            }
+            //跳转到登陆界面
+            this.$router.push("/login");
           } else {
             this.$message({
               message: res.msg,

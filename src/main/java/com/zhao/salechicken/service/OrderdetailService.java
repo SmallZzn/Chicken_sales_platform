@@ -3,7 +3,6 @@ package com.zhao.salechicken.service;
 
 import com.github.pagehelper.PageInfo;
 import com.zhao.salechicken.pojo.Orderdetail;
-import org.apache.ibatis.annotations.Param;
 
 /**
 * @author 86180
@@ -24,5 +23,5 @@ public interface OrderdetailService{
      * @param orderId
      * @return
      */
-    PageInfo selectOrderDetail(int page, int pageSize, Integer orderId);
+    PageInfo selectOrderDetail(int page, int pageSize, Long orderId);
 }

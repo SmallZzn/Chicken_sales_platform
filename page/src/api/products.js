@@ -5,7 +5,7 @@ function selectAllProduct(params) {
   return request({
     method: "get",
     url: "/product/selectAllProduct",
-    // url: 'data/test.json',
+    // url: 'http://localhost:8080/data/test.json',
     params,
   });
 }

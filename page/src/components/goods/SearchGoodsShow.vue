@@ -89,7 +89,7 @@ export default {
       page: 1, //当前页码
       total: 0, //列表数量总数
       pageSize: 16, //当前页码的数量
-      pages: 10, //总页码数
+      pages: 1, //总页码数
       productsList: [],
       sortId: 0, //0综合，1销量升序，2价格升序，3价格降序
       productName: null,
@@ -192,9 +192,6 @@ export default {
   },
 };
 </script>
-
-<!-- 引入各种样式 -->
-<!-- <style src="../../assets/css/index.css" /> -->
 
 <style scoped>
 .sort_goods {
