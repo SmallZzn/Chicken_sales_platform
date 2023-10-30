@@ -17,6 +17,13 @@ import java.util.List;
 public interface UserMapper {
 
     /**
+     * 通过手机号查找用户
+     * @param phone
+     * @return
+     */
+    User getUserByPhone(@Param("phone") String phone);
+
+    /**
      * 根据id查询用户
      *
      * @return

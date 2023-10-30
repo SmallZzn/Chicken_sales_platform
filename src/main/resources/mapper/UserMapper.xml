@@ -21,6 +21,12 @@
         email,phone,type,image,sex
     </sql>
 
+    <select id="getUserByPhone" resultMap="BaseResultMap">
+        select *
+        from user
+        WHERE phone = #{phone}
+    </select>
+
     <select id="getUserById" resultMap="BaseResultMap">
         select *
         from user

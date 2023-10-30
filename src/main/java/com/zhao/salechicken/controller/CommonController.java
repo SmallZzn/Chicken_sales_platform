@@ -1,24 +1,16 @@
 package com.zhao.salechicken.controller;
 
 
-import com.zhao.salechicken.common.BaseContext;
 import com.zhao.salechicken.common.R;
+import com.zhao.salechicken.dto.LoginFormDTO;
 import com.zhao.salechicken.pojo.User;
 import com.zhao.salechicken.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -26,6 +18,15 @@ public class CommonController {
 
     @Autowired
     private UserService userService;
+
+    /**
+     * 发送手机验证码
+     */
+    @PostMapping("code")
+    public R sendCode(@RequestParam("phone") String phone, HttpSession session) {
+        //发送短信验证码并保存验证码
+        return userService.sendCode(phone, session);
+    }
 
     /**
      * 登录
@@ -54,6 +55,19 @@ public class CommonController {
 
         log.info("登录用户的id:{}", loginUser.getUserId());
         return R.success(loginUser);
+    }
+
+
+    /**
+     * 优化
+     * 登录(通过手机号和验证码)
+     *
+     * @param request
+     * @return
+     */
+    @PostMapping("/loginByCode")
+    public R<User> loginByCode(HttpServletRequest request, @RequestBody LoginFormDTO loginFormDTO) {
+        return userService.loginByCode(loginFormDTO);
     }
 
     /**

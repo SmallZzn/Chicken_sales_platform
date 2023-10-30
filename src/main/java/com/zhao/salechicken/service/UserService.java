@@ -3,11 +3,11 @@ package com.zhao.salechicken.service;
 
 import com.github.pagehelper.PageInfo;
 import com.zhao.salechicken.common.R;
+import com.zhao.salechicken.dto.LoginFormDTO;
 import com.zhao.salechicken.dto.UserDto;
-import com.zhao.salechicken.pojo.Product;
 import com.zhao.salechicken.pojo.User;
 
-import java.util.List;
+import javax.servlet.http.HttpSession;
 
 /**
  * @author 86180
@@ -15,6 +15,29 @@ import java.util.List;
  * @createDate 2023-03-13 22:06:28
  */
 public interface UserService {
+
+    /**
+     * 发送验证码
+     * @param phone
+     * @param session
+     * @return
+     */
+    R sendCode(String phone, HttpSession session);
+
+    /**
+     * 用户登录（通过手机号和验证码）
+     * @param loginUserDTO
+     * @return
+     */
+    R loginByCode(LoginFormDTO loginUserDTO);
+
+
+    /**
+     * 通过手机号查找用户
+     * @param phone
+     * @return
+     */
+    User getUserByPhone(String phone);
 
     /**
      * 根据id查询用户信息

@@ -26,7 +26,7 @@ public class Address implements Serializable {
     private String receiver;
 
     /**
-     * 性别(1代表男，0代表女 )
+     * 性别(1代表男，0代表女)
      */
     private Integer sex;
 

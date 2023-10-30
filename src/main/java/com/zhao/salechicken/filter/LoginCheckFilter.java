@@ -3,15 +3,20 @@ package com.zhao.salechicken.filter;
 import com.alibaba.fastjson.JSON;
 import com.zhao.salechicken.common.BaseContext;
 import com.zhao.salechicken.common.R;
-import jdk.internal.org.objectweb.asm.tree.InnerClassNode;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.util.AntPathMatcher;
 
+import javax.annotation.Resource;
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
+import static com.zhao.salechicken.util.RedisConstants.LOGIN_USER_KEY;
+import static com.zhao.salechicken.util.RedisConstants.LOGIN_USER_TTL;
 
 
 /**
@@ -21,6 +26,9 @@ import java.io.IOException;
 @Slf4j
 @WebFilter(filterName = "LoginCheckFilter", urlPatterns = "/*")
 public class LoginCheckFilter implements Filter {
+
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
 
     //路径匹配器，支持通配符
     public static final AntPathMatcher PATH_MATCHER = new AntPathMatcher();
@@ -34,7 +42,7 @@ public class LoginCheckFilter implements Filter {
         //1、获取本次请求的URI
         String requestUri = request.getRequestURI();
 
-        log.info("拦截到请求：{}",requestUri);
+        log.info("拦截到请求：{}", requestUri);
 
         //定义不需要处理的请求路径
         String[] urls = new String[]{
@@ -69,13 +77,25 @@ public class LoginCheckFilter implements Filter {
             return;
         }
 
-//        TODO a
         //4、判断登录状态，如果已登录，则直接放行
-        Integer loginUser = (Integer) request.getSession().getServletContext().getAttribute("loginUser");
+//        Integer loginUser = (Integer) request.getSession().getServletContext().getAttribute("loginUser");
+//        if (loginUser != null) {
+//            log.info("用户已登录，用户id为：{}", loginUser);
+//            BaseContext.setCurrentId(loginUser);
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
+
+        //4、获取用户信息
+        String token = "1";//由于不会修改前端代码，无法将token保存在前端，所以将token写死
+        Integer loginUser = Integer.parseInt(stringRedisTemplate.opsForValue().get(LOGIN_USER_KEY + token));
+
+        //5、判断登录状态，如果已登录，则直接放行
         if (loginUser != null) {
-            log.info("用户已登录，用户id为：{}", loginUser);
             BaseContext.setCurrentId(loginUser);
             filterChain.doFilter(request, response);
+            //刷新token有效期
+            stringRedisTemplate.expire(LOGIN_USER_KEY + token, LOGIN_USER_TTL, TimeUnit.MINUTES);
             return;
         }
 
