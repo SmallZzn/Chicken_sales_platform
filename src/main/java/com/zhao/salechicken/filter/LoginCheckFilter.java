@@ -46,6 +46,8 @@ public class LoginCheckFilter implements Filter {
 
         //定义不需要处理的请求路径
         String[] urls = new String[]{
+                "/code",
+                "/loginByCode",
                 "/product/selectProductBySales",
                 "/logout",
                 "/file/upload",
@@ -88,10 +90,11 @@ public class LoginCheckFilter implements Filter {
 
         //4、获取用户信息
         String token = "1";//由于不会修改前端代码，无法将token保存在前端，所以将token写死
-        Integer loginUser = Integer.parseInt(stringRedisTemplate.opsForValue().get(LOGIN_USER_KEY + token));
+        String user = stringRedisTemplate.opsForValue().get(LOGIN_USER_KEY + token);
 
         //5、判断登录状态，如果已登录，则直接放行
-        if (loginUser != null) {
+        if (user != null) {
+            Integer loginUser = Integer.parseInt(user);
             BaseContext.setCurrentId(loginUser);
             filterChain.doFilter(request, response);
             //刷新token有效期

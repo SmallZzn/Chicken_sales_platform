@@ -35,7 +35,6 @@ public class CategoryController {
     @GetMapping("/selectAllCategory")
     public R<List> selectAllCategory() {
         List<Category> categorys = categoryService.selectAllCategory();
-
         return R.success(categorys);
     }
 

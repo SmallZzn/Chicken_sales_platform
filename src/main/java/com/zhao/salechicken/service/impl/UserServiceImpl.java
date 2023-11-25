@@ -77,19 +77,21 @@ public class UserServiceImpl implements UserService {
             return R.error("号码格式有误");
         }
 
-        //2、判断验证码是否正确
+        //2、查找用户
+        User user = userMapper.getUserByPhone(phone);
+
+        //3、判断用户是否存在，如果不存在则返回失败结果
+        if (user == null) {
+            return R.error("登录失败,用户不存在！！！");
+        }
+
+        //4、判断验证码是否正确
         String code = stringRedisTemplate.opsForValue().get(LOGIN_CODE_KEY + phone);
+        log.info("code:" + code);
         if (code == null || !code.equals(loginUserDTO.getCode())) {
             return R.error("验证码有误!!!");
         }
 
-        //3、查找用户
-        User user = userMapper.getUserByPhone(phone);
-
-        //4、判断用户是否存在，如果不存在则返回失败结果
-        if (user == null) {
-            return R.error("登录失败,用户不存在！！！");
-        }
 
         //5、保存用户信息到redis中
         //5.1 生成随机token

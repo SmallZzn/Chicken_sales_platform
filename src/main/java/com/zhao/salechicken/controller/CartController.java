@@ -5,8 +5,10 @@ import com.zhao.salechicken.common.R;
 import com.zhao.salechicken.dto.CartdetailDto;
 import com.zhao.salechicken.pojo.Cart;
 import com.zhao.salechicken.pojo.Cartdetail;
+import com.zhao.salechicken.pojo.Product;
 import com.zhao.salechicken.service.CartService;
 import com.zhao.salechicken.service.CartdetailService;
+import com.zhao.salechicken.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +27,9 @@ public class CartController {
     @Autowired
     private CartdetailService cartdetailService;
 
+    @Autowired
+    private ProductService productService;
+
     /**
      * 查看购物车
      *
@@ -35,7 +40,6 @@ public class CartController {
     public R<List<CartdetailDto>> selectMyCart(HttpServletRequest request) {
         //获取当前登录用户的id
         Integer loginUser = BaseContext.getCurrentId();
-
 
         List<CartdetailDto> cartdetailDtos = cartService.selectMyCart(loginUser);
         return R.success(cartdetailDtos);
@@ -49,14 +53,16 @@ public class CartController {
      */
     @PostMapping("/addCart")
     public R<String> addCart(Integer productId) {
-
-        System.out.println("productId = " + productId);
-
         //获取当前登录用户的id
         Integer loginUser = BaseContext.getCurrentId();
 
         //获取当前用户购物车
         Cart cart = cartService.selectCart(loginUser);
+
+        Product product = productService.getProductById(productId);
+        if (product.getInventory() <= 0) {
+            return R.error("商品数量不足!!!");
+        }
 
         //查找购物车是否已包含改商品
         Cartdetail cartdetail = cartdetailService.selectCartdetailById(cart.getCartId(), productId);
@@ -80,6 +86,12 @@ public class CartController {
     public R<String> updateCartdetail(@RequestBody Cartdetail cartdetail) {
         //获取当前登录用户的id
         Integer loginUser = BaseContext.getCurrentId();
+
+        Integer productId = cartdetail.getProductId();
+        Product product = productService.getProductById(productId);
+        if (product.getInventory() <= 0) {
+            return R.error("商品数量不足");
+        }
 
         //若存在，则修改购物车详情
         cartdetailService.updateCartdetail(loginUser, cartdetail);

@@ -152,8 +152,8 @@ public class OrderController {
         //获取当前登录用户的id
         Integer loginUser = BaseContext.getCurrentId();
 
-        orderService.pay(loginUser, payDto.getCartdetailIds(), payDto.getAddressId());
+        return orderService.pay(loginUser, payDto.getCartdetailIds(), payDto.getAddressId());
 
-        return R.success("下单成功");
+//        return R.success("下单成功");
     }
 }

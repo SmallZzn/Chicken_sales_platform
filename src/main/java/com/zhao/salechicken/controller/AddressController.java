@@ -29,10 +29,10 @@ public class AddressController {
     public R<String> addAddress(HttpServletRequest request,@RequestBody Address address){
 
         //获取当前登录用户的id
-        Integer loginUser = (Integer) request.getSession().getAttribute("loginUser");
+        Integer loginUser = BaseContext.getCurrentId();
 
         //设置当前登录用户的id
-        address.setUserId(2);
+        address.setUserId(loginUser);
 
         //默认不是默认地址
         address.setIsdefault(0);

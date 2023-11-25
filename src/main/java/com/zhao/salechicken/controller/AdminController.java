@@ -114,8 +114,6 @@ public class AdminController {
         //1、获取当前登录用户
         Integer loginUser = BaseContext.getCurrentId();
 
-        User user = userService.getUserById(loginUser);
-
         //若查询的是管理员列表，则判断是否具有查看管理员列表的权限
         if (type == 1) {
             if (!permissiondetailService.judgePermission(loginUser,5)) {

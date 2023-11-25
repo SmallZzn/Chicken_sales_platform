@@ -113,9 +113,6 @@ public class ProductController {
      */
     @GetMapping("/selectAllProduct")
     public R<PageInfo> selectAllProduct(HttpServletRequest request, int page, int pageSize, String productName, Integer category, String origin) {
-        //获取当前登录用户
-        Integer loginUser = BaseContext.getCurrentId();
-
         PageInfo pageInfo = productService.selectAllProduct(page, pageSize, productName, category, origin);
         return R.success(pageInfo);
     }

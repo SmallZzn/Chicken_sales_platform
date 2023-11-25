@@ -1,5 +1,7 @@
 package com.zhao.salechicken.service.impl;
 
+import cn.hutool.extra.ssh.JschUtil;
+import cn.hutool.json.JSONUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zhao.salechicken.dto.ProductDto;
@@ -10,12 +12,20 @@ import com.zhao.salechicken.pojo.Address;
 import com.zhao.salechicken.pojo.Product;
 import com.zhao.salechicken.pojo.User;
 import com.zhao.salechicken.service.ProductService;
+import com.zhao.salechicken.util.CacheClient;
+import io.swagger.models.auth.In;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static com.zhao.salechicken.util.RedisConstants.*;
 
 /**
  * @author 86180
@@ -31,6 +41,12 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private CategoryMapper categoryMapper;
 
+    @Autowired
+    private CacheClient cacheClient;
+
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
+
     @Override
     public void addProduct(Product product) {
         productMapper.addProduct(product);
@@ -39,11 +55,15 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteProduct(Integer productId) {
         productMapper.deleteProduct(productId);
+        //删除缓存
+        stringRedisTemplate.delete(CACHE_SHOPINFO_KEY + productId);
     }
 
     @Override
     public void updateProduct(Product product) {
         productMapper.updateProduct(product);
+        //删除缓存
+        stringRedisTemplate.delete(CACHE_SHOPINFO_KEY + product.getProductId());
     }
 
     @Override
@@ -122,12 +142,20 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getProductById(Integer productId) {
-        return productMapper.getProductById(productId);
+        // 缓存穿透
+        Product product = cacheClient.queryWithPassThrough(CACHE_SHOPINFO_KEY, productId, Product.class, id -> productMapper.getProductById(id), CACHE_SHOPINFO_TTL, TimeUnit.MINUTES);
+        return product;
     }
 
     @Override
     public String getProductNameById(Integer productId) {
-        return productMapper.getProductNameById(productId);
+        Product product = cacheClient.queryWithPassThrough(CACHE_SHOPINFO_KEY, productId, Product.class, id -> productMapper.getProductById(id), CACHE_SHOPINFO_TTL, TimeUnit.MINUTES);
+        if (product != null) {
+            return product.getProductName();
+        } else {
+            return null;
+        }
+//        return productMapper.getProductNameById(productId);
     }
 
     @Override

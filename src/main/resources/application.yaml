@@ -7,8 +7,8 @@ Spring:
     password: zzn
   #配置redis
   redis:
-    host: 192.168.200.130
-    port: 6379
+    host: 192.168.200.131
+    port: 6380
     password: zzn199636520
     lettuce:
       pool:
@@ -18,6 +18,15 @@ Spring:
         time-between-eviction-runs: 10s
     jackson:
       default-property-inclusion: non_null # JSON处理时忽略非空字段
+  rabbitmq:
+    host: 192.168.200.131 # 主机名
+    port: 5672 # 端口
+    virtual-host: / # 虚拟主机
+    username: zzn # 用户名
+    password: zzn199636520 # 密码
+    listener:
+      simple:
+        prefetch: 1 # 每次只能获取一条消息，处理完成才能获取下一个消息
 #  web:
 #    resources:
 #      static-locations: file:D:\Image\ChickenImage\
