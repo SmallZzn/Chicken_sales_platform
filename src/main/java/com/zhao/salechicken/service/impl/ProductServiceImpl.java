@@ -2,8 +2,11 @@ package com.zhao.salechicken.service.impl;
 
 import cn.hutool.extra.ssh.JschUtil;
 import cn.hutool.json.JSONUtil;
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.zhao.salechicken.Doc.ProductDoc;
+import com.zhao.salechicken.Doc.RequestParams;
 import com.zhao.salechicken.dto.ProductDto;
 import com.zhao.salechicken.dto.UserDto;
 import com.zhao.salechicken.mapper.CategoryMapper;
@@ -14,13 +17,35 @@ import com.zhao.salechicken.pojo.User;
 import com.zhao.salechicken.service.ProductService;
 import com.zhao.salechicken.util.CacheClient;
 import io.swagger.models.auth.In;
+import org.elasticsearch.action.delete.DeleteRequest;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
+import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.suggest.Suggest;
+import org.elasticsearch.search.suggest.SuggestBuilder;
+import org.elasticsearch.search.suggest.SuggestBuilders;
+import org.elasticsearch.search.suggest.completion.CompletionSuggestion;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -46,6 +71,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Resource
     private StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
+    public RestHighLevelClient client;
 
     @Override
     public void addProduct(Product product) {
@@ -196,6 +224,169 @@ public class ProductServiceImpl implements ProductService {
 
         return productPageInfo;
     }
+
+    @Override
+    public List<String> getSuggestion(String prefix) {
+        try {
+            //1、准备request
+            SearchRequest request = new SearchRequest("chicken_product");
+
+            //2、准备DSL
+            request.source().suggest(new SuggestBuilder().addSuggestion(
+                    "suggestions",
+                    SuggestBuilders.completionSuggestion("suggestion")
+                            .prefix(prefix)
+                            .skipDuplicates(true)
+                            .size(10)
+            ));
+
+            //3、发起请求
+            SearchResponse response = client.search(request, RequestOptions.DEFAULT);
+
+            //4、解析结果
+            Suggest suggest = response.getSuggest();
+            //4.1 根据补全查询名称，获取补全结果
+            CompletionSuggestion suggestions = suggest.getSuggestion("suggestions");
+            //4.2 获取options
+            List<CompletionSuggestion.Entry.Option> options = suggestions.getOptions();
+            //4.3 遍历
+            List<String> list = new ArrayList<>();
+            for (CompletionSuggestion.Entry.Option option : options) {
+                String text = option.getText().toString();
+                list.add(text);
+            }
+            return list;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void insertById(Integer id) {
+        try {
+            // 1.根据id查询产品数据
+            Product product = productMapper.getProductById(id);
+            // 2.转换为文档类型
+            ProductDoc productDoc = new ProductDoc(product);
+            // 3.将ProductDoc转json
+            String json = JSON.toJSONString(productDoc);
+
+            IndexRequest request = new IndexRequest("chicken_product").id(productDoc.getProductId().toString());
+            request.source(json, XContentType.JSON);
+            client.index(request, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void deleteById(Integer id) {
+        DeleteRequest request = new DeleteRequest("chicken_product", id.toString());
+        try {
+            client.delete(request, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+//    @Override
+//    public Map<String, List<String>> filters(RequestParams params) {
+//        try {
+//            //1、准备request
+//            SearchRequest request = new SearchRequest("chicken_product");
+//
+//            //2、准备DSL
+//            //2.1 query
+//            buildBasicQuery(params, request);
+//            //2.2 设置size
+//            request.source().size(0);
+//            //2.3 聚合
+//            buildAggregation(request);
+//
+//            //3、发出请求
+//            SearchResponse response = client.search(request, RequestOptions.DEFAULT);
+//
+//            //4、解析结果
+//            Map<String, List<String>> result = new HashMap<>();
+//            Aggregations aggregations = response.getAggregations();
+//            //根据种类名称，获取种类结果
+//            List<String> categoryList = getAggByName(aggregations, "categoryAgg");
+//            result.put("category", categoryList);
+//            //根据产地名称，获取产地结果
+//            List<String> originList = getAggByName(aggregations, "originAgg");
+//            result.put("origin", originList);
+//            return result;
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+//
+//    /**
+//     * 根据输入的信息找到对应的产品
+//     * @param params
+//     * @param request
+//     */
+//    public void buildBasicQuery(RequestParams params, SearchRequest request) {
+//        //构建BooleanQuery
+//        BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
+//        //关键字搜索
+//        String key = params.getKey();
+//        if (key == null || "" .equals(key)) {
+//            boolQuery.must(QueryBuilders.matchAllQuery());
+//        } else {
+//            boolQuery.must(QueryBuilders.matchQuery("all", key));
+//        }
+//        //种类条件
+//        if (params.getCategory() != null) {
+//            boolQuery.filter(QueryBuilders.termQuery("category", params.getCategory()));
+//        }
+//        //产地条件
+//        if (params.getOrigin() != null && !"" .equals(params.getOrigin())) {
+//            boolQuery.filter(QueryBuilders.termQuery("origin", params.getOrigin()));
+//        }
+//        //价格条件
+//        if (params.getMaxPrice() != null && params.getMinPrice() != null) {
+//            boolQuery.filter(QueryBuilders.rangeQuery("price")
+//                    .gte(params.getMinPrice()).lte(params.getMaxPrice()));
+//        }
+//        request.source().query(boolQuery);
+//    }
+//
+//    /**
+//     * 聚合
+//     * @param request
+//     */
+//    private void buildAggregation(SearchRequest request) {
+//        request.source().size(0);
+//        request.source().aggregation(AggregationBuilders
+//                .terms("categoryAgg")
+//                .field("category")
+//                .size(100));
+//        request.source().aggregation(AggregationBuilders
+//                .terms("originAgg")
+//                .field("origin")
+//                .size(100));
+//    }
+//
+//    /**
+//     * 解析聚合结果
+//     * @param aggregations
+//     * @param aggName
+//     * @return
+//     */
+//    private List<String> getAggByName(Aggregations aggregations, String aggName) {
+//        //4.1 根据聚合名称获取聚合结果
+//        Terms terms = aggregations.get(aggName);
+//        //4.2 获取buckets
+//        List<? extends Terms.Bucket> buckets = terms.getBuckets();
+//        //4.3 遍历
+//        List<String> list = new ArrayList<>();
+//        for (Terms.Bucket bucket : buckets) {
+//            String key = bucket.getKeyAsString();
+//            list.add(key);
+//        }
+//        return list;
+//    }
 }
 
 

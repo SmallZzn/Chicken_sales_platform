@@ -2,9 +2,11 @@ package com.zhao.salechicken.service;
 
 
 import com.github.pagehelper.PageInfo;
+import com.zhao.salechicken.Doc.RequestParams;
 import com.zhao.salechicken.pojo.Product;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 86180
@@ -132,4 +134,31 @@ public interface ProductService {
      * @return
      */
     PageInfo selectShortSupplyProduct(int page, int pageSize, String productName, Integer category, String origin);
+
+    /**
+     * es 优化
+     * 搜索框自动补全信息
+     * @param prefix
+     * @return
+     */
+    List<String> getSuggestion(String prefix);
+
+    /**
+     * 同步添加产品的信息到es
+     * @param id
+     */
+    void insertById(Integer id);
+
+    /**
+     * 同步删除产品的信息到es
+     * @param id
+     */
+    void deleteById(Integer id);
+
+    /**
+     * es优化，将产品根据产地、种类、价格分类返回
+     * @param params
+     * @return
+     */
+//    Map<String, List<String>> filters(RequestParams params);
 }

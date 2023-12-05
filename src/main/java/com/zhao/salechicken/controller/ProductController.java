@@ -1,19 +1,23 @@
 package com.zhao.salechicken.controller;
 
+import cn.hutool.db.PageResult;
 import com.github.pagehelper.PageInfo;
+import com.zhao.salechicken.Doc.RequestParams;
 import com.zhao.salechicken.common.BaseContext;
 import com.zhao.salechicken.common.R;
 import com.zhao.salechicken.pojo.Product;
-import com.zhao.salechicken.pojo.Review;
-import com.zhao.salechicken.pojo.User;
 import com.zhao.salechicken.service.PermissiondetailService;
 import com.zhao.salechicken.service.ProductService;
-import com.zhao.salechicken.service.UserService;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
+
+import static com.zhao.salechicken.util.MqConstants.*;
 
 @RestController
 @RequestMapping("/product")
@@ -24,6 +28,9 @@ public class ProductController {
 
     @Autowired
     private PermissiondetailService permissiondetailService;
+
+    @Resource
+    private RabbitTemplate rabbitTemplate;
 
     /**
      * 添加产品
@@ -39,11 +46,15 @@ public class ProductController {
         Integer loginUser = BaseContext.getCurrentId();
 
         //判断是否有添加产品的权限
-        if (!permissiondetailService.judgePermission(loginUser,6)) {
+        if (!permissiondetailService.judgePermission(loginUser, 6)) {
             return R.error("您没有该权限!!!");
         }
 
         productService.addProduct(product);
+        //获取新添加的产品的id
+        Product newProduct = productService.getProductByName(product.getProductName());
+        //将添加任务添加到rabbitmq中
+        rabbitTemplate.convertAndSend(CHICKEN_PRODUCT_EXCHANGE, CHICKEN_PRODUCT_INSERT_KEY, newProduct.getProductId());
         return R.success("添加成功!!!");
     }
 
@@ -60,11 +71,13 @@ public class ProductController {
         Integer loginUser = BaseContext.getCurrentId();
 
         //判断是否有删除产品的权限
-        if (!permissiondetailService.judgePermission(loginUser,7)) {
+        if (!permissiondetailService.judgePermission(loginUser, 7)) {
             return R.error("您没有该权限!!!");
         }
 
         productService.deleteProduct(productId);
+        //将删除任务添加到rabbitmq中
+        rabbitTemplate.convertAndSend(CHICKEN_PRODUCT_EXCHANGE, CHICKEN_PRODUCT_DELETE_KEY, productId);
         return R.success("删除成功!!!");
     }
 
@@ -82,11 +95,13 @@ public class ProductController {
         Integer loginUser = BaseContext.getCurrentId();
 
         //判断是否有更新产品的权限
-        if (!permissiondetailService.judgePermission(loginUser,8)) {
+        if (!permissiondetailService.judgePermission(loginUser, 8)) {
             return R.error("您没有该权限!!!");
         }
 
         productService.updateProduct(product);
+        //将添加任务添加到rabbitmq中
+        rabbitTemplate.convertAndSend(CHICKEN_PRODUCT_EXCHANGE, CHICKEN_PRODUCT_INSERT_KEY, product.getProductId());
         return R.success("修改成功!!!");
     }
 
@@ -119,13 +134,14 @@ public class ProductController {
 
     /**
      * 按销量由高到低查询所有商品
+     *
      * @param page
      * @param pageSize
      * @return
      */
     @GetMapping("/selectProductBySales")
-    public R<PageInfo> selectProductBySales(int page, int pageSize,String productName, Integer category, String origin) {
-        PageInfo pageInfo = productService.selectProductBySales(page, pageSize,productName, category, origin);
+    public R<PageInfo> selectProductBySales(int page, int pageSize, String productName, Integer category, String origin) {
+        PageInfo pageInfo = productService.selectProductBySales(page, pageSize, productName, category, origin);
         return R.success(pageInfo);
     }
 
@@ -165,22 +181,47 @@ public class ProductController {
 
     /**
      * 查看缺货产品
+     *
      * @param request
      * @param page
      * @param pageSize
      * @return
      */
     @GetMapping("/selectShortSupplyProduct")
-    public R<PageInfo> selectShortSupplyProduct(HttpServletRequest request,int page, int pageSize, String productName, Integer category, String origin) {
+    public R<PageInfo> selectShortSupplyProduct(HttpServletRequest request, int page, int pageSize, String productName, Integer category, String origin) {
         //获取当前登录用户
         Integer loginUser = BaseContext.getCurrentId();
 
         //判断是否有查看产品的权限
-        if (!permissiondetailService.judgePermission(loginUser,9)) {
+        if (!permissiondetailService.judgePermission(loginUser, 9)) {
             return R.error("您没有该权限!!!");
         }
 
-        PageInfo pageInfo = productService.selectShortSupplyProduct(page, pageSize,productName, category, origin);
+        PageInfo pageInfo = productService.selectShortSupplyProduct(page, pageSize, productName, category, origin);
         return R.success(pageInfo);
+    }
+
+    /**
+     * es优化
+     * 将产品根据产地、种类、价格分类返回
+     * @param params
+     * @return
+     */
+//    @PostMapping("/filters")
+//    public Map<String, List<String>> filters(@RequestBody RequestParams params) {
+//        return productService.filters(params);
+//    }
+
+    /**
+     * es优化
+     * 搜索框自动补全信息
+     *
+     * @param prefix
+     * @return
+     */
+    @GetMapping("/getSuggestion")
+    public R<List<String>> getSuggestion(String prefix) {
+        List<String> suggestion = productService.getSuggestion(prefix);
+        return R.success(suggestion);
     }
 }
