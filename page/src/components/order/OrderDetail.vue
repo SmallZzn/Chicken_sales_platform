@@ -7,6 +7,7 @@
         <td>单价</td>
         <td>数量</td>
         <td>小计</td>
+        <td>评价</td>
       </tr>
       <tr v-for="item in goodsList" :key="item.orderdetialId">
         <td @click="onGoodsClick(item.productId)" style="cursor: pointer">
@@ -20,6 +21,10 @@
           {{ item.quantity }}
         </td>
         <td class="price">￥{{ item.totalMoney.toFixed(2) }}</td>
+        <td>
+          <el-button v-if="!item.isReview" @click="goReview(item.productId,item.orderdetialId,item.orderId)">前往评价
+          </el-button>
+        </td>
       </tr>
     </table>
     <div class="box">
@@ -45,7 +50,8 @@ export default {
           orderId: 13,
           productId: 1,
           productName: "白羽肉鸡",
-          image: null
+          image: null,
+          isReview: false
         },
         {
           orderdetialId: 16,
@@ -54,7 +60,8 @@ export default {
           orderId: 13,
           productId: 2,
           productName: "黑羽肉鸡",
-          image: null
+          image: null,
+          isReview: false
         },
       ],
     };
@@ -68,7 +75,7 @@ export default {
       return amount;
     },
   },
-  created: function () {
+  mounted: function () {
     this.requestCart();
   },
   methods: {
@@ -102,6 +109,9 @@ export default {
     getImgUrl(img) {
       return `http://localhost:9999/file/download?fileName=${img}`;
     },
+    goReview(productId, orderdetailId, orderId) {
+      this.$router.push("/review/" + productId + "/" + orderdetailId + "/" + orderId)
+    }
   },
 };
 </script>

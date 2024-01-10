@@ -31,7 +31,7 @@ public interface OrderMapper {
      * 删除订单信息（可批量）
      * @param ids
      */
-    void deleteOrder(@Param("ids") List<Integer> ids);
+    void deleteOrder(@Param("ids") List<Long> ids);
 
     /**
      * 查询订单(根据订单状态/关键字)

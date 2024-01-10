@@ -756,6 +756,7 @@
         </span>
       </el-dialog>
 
+      <!--echarts  -->
       <!--销量前十-->
       <div v-show="display === 'saleInfo' && hasPer === true">
         <br>
@@ -781,6 +782,8 @@ export default {
   },
   data() {
     return {
+      selectedYear: 2023,
+
       adminName: '',// 管理员名称
       avatarImgName: '', // 头像图片
 
@@ -798,7 +801,8 @@ export default {
 
       product: {
         productTotal: 1,
-        productPage: 1,
+        //TODO 改
+        productPage: 2,
         productPageSize: 5,
         productName: "",
         productCategory: "",
@@ -1918,6 +1922,7 @@ export default {
             this.initSaleTopChart();
           });
     },
+    //echarts
     //产品销量前十柱状图
     initSaleTopChart() {
       var saleTopProductName = this.product.productList.map((product) => product.productName);
@@ -2095,7 +2100,7 @@ export default {
 .lackButt {
   width: 110px;
   font-size: 1em;
-  margin-left: 44%;
+  margin-left: 37%;
 }
 
 .addButt {

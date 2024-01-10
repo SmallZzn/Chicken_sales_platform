@@ -65,7 +65,7 @@ public class OrderController {
      * @return
      */
     @DeleteMapping("/deleteOrder")
-    public R<String> deleteOrder(HttpServletRequest request, @RequestParam List<Integer> ids) {
+    public R<String> deleteOrder(HttpServletRequest request, @RequestParam List<Long> ids) {
 
         //获取当前登录用户
         Integer loginUser = BaseContext.getCurrentId();

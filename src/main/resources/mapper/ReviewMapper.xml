@@ -11,6 +11,7 @@
         <result property="rating" column="rating" jdbcType="INTEGER"/>
         <result property="comment" column="comment" jdbcType="VARCHAR"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="orderId" column="order_id" jdbcType="BIGINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -24,8 +25,8 @@
     </select>
 
     <insert id="addReview">
-        insert into review(user_id, product_id, rating, comment, create_time)
-        values (#{review.userId},#{review.productId},#{review.rating},#{review.comment},#{review.createTime})
+        insert into review(user_id, product_id, comment, create_time,order_id)
+        values (#{review.userId},#{review.productId},#{review.comment},#{review.createTime},#{review.orderId})
     </insert>
 
     <select id="getReviewUserIdById" resultType="integer">
@@ -38,5 +39,9 @@
 
     <select id="selectMyReview" resultMap="BaseResultMap">
         select * from review where user_id=#{userId} order by create_time desc
+    </select>
+
+    <select id="selectReviewByProductIdAndOrderId" resultMap="BaseResultMap">
+        select * from review where product_id=#{productId} and order_id=#{orderId}
     </select>
 </mapper>

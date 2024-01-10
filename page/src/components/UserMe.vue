@@ -5,9 +5,9 @@
       <div class="container header-container">
         <div class="user-info">
           <img
-            v-bind:src="getImgUrl(user.image)"
-            alt="Profile picture"
-            class="headImage"
+              v-bind:src="getImgUrl(user.image)"
+              alt="Profile picture"
+              class="headImage"
           />
           <div class="user-details">
             <h3>{{ user.userName }}</h3>
@@ -19,9 +19,9 @@
         </div>
         <logout>
           <img
-            src="../assets/images/logout.png"
-            class="logout"
-            title="退出登录"
+              src="../assets/images/logout.png"
+              class="logout"
+              title="退出登录"
           />
         </logout>
       </div>
@@ -30,33 +30,33 @@
     <div class="container body_container">
       <nav>
         <a
-          href="#"
-          v-bind:class="index === 1 ? 'active' : ''"
-          @click="changeIndex(1)"
+            href="#"
+            v-bind:class="index === 1 ? 'active' : ''"
+            @click="changeIndex(1)"
         >
           <i class="fas fa-user"></i>
           My Information
         </a>
         <a
-          href="#"
-          v-bind:class="index === 2 ? 'active' : ''"
-          @click="selectReview(2)"
+            href="#"
+            v-bind:class="index === 2 ? 'active' : ''"
+            @click="selectReview(2)"
         >
           <i class="fas fa-star"></i>
           My Reviews
         </a>
         <a
-          href="#"
-          v-bind:class="index === 3 ? 'active' : ''"
-          @click="changeIndex(3)"
+            href="#"
+            v-bind:class="index === 3 ? 'active' : ''"
+            @click="changeIndex(3)"
         >
           <i class="fas fa-map-marker-alt"></i>
           My Addresses
         </a>
         <a
-          href="#"
-          v-bind:class="index === 4 ? 'active' : ''"
-          @click="selectOrders(4)"
+            href="#"
+            v-bind:class="index === 4 ? 'active' : ''"
+            @click="selectOrders(4)"
         >
           <i class="fas fa-shopping-cart"></i>
           My Orders
@@ -85,8 +85,8 @@
                 <tr class="myInfoTr">
                   <td>
                     <button
-                      class="changeInfo"
-                      @click="changeInfoVisible = true"
+                        class="changeInfo"
+                        @click="changeInfoVisible = true"
                     >
                       修改信息
                     </button>
@@ -100,39 +100,39 @@
         <!--我的评论-->
         <div v-show="index === 2">
           <div
-            class="comment"
-            v-for="review in reviewList"
-            :key="review.reviewId"
+              class="comment"
+              v-for="review in reviewList"
+              :key="review.reviewId"
           >
             <img
-              v-bind:src="getImgUrl(review.productImage)"
-              class="commentImg"
+                v-bind:src="getImgUrl(review.productImage)"
+                class="commentImg"
             />
             <a
-              :href="'#/user/goods/' + review.productId"
-              target="_blank"
-              class="productName"
-              >{{ review.productName }}</a
+                :href="'#/user/goods/' + review.productId"
+                target="_blank"
+                class="productName"
+            >{{ review.productName }}</a
             >
             <p class="commentContent">{{ review.comment }}</p>
             <p class="commentDate">{{ review.createTime }}</p>
             <template>
               <el-button
-                type="text"
-                class="deleteReview"
-                @click.prevent="deleteReview(review.reviewId)"
-                >删除
+                  type="text"
+                  class="deleteReview"
+                  @click.prevent="deleteReview(review.reviewId)"
+              >删除
               </el-button>
             </template>
           </div>
-          <br />
+          <br/>
           <el-pagination
-            background
-            layout="prev, pager, next"
-            :total="reviewTotal"
-            :current-page="reviewPage"
-            :page-size="reviewPageSize"
-            @current-change="changeReviewPage"
+              background
+              layout="prev, pager, next"
+              :total="reviewTotal"
+              :current-page="reviewPage"
+              :page-size="reviewPageSize"
+              @current-change="changeReviewPage"
           >
           </el-pagination>
         </div>
@@ -142,56 +142,56 @@
           <button class="addAddress" @click="addAddress">添加地址</button>
           <table class="list">
             <thead>
-              <tr>
-                <th>收货人</th>
-                <th>性别</th>
-                <th>电话</th>
-                <th>省</th>
-                <th>市</th>
-                <th>区</th>
-                <th>详细地址</th>
-                <th>操作</th>
-              </tr>
+            <tr>
+              <th>收货人</th>
+              <th>性别</th>
+              <th>电话</th>
+              <th>省</th>
+              <th>市</th>
+              <th>区</th>
+              <th>详细地址</th>
+              <th>操作</th>
+            </tr>
             </thead>
             <tbody>
-              <tr v-for="address in addressList" :key="address.id">
-                <td class="info">{{ address.receiver }}</td>
-                <td class="info">{{ address.sex === 1 ? "男" : "女" }}</td>
-                <td class="info">{{ address.phone }}</td>
-                <td class="info">{{ address.province }}</td>
-                <td class="info">{{ address.city }}</td>
-                <td class="info">{{ address.region }}</td>
-                <td class="info">{{ address.detail }}</td>
-                <td class="info">
-                  <a class="edit" @click.prevent="editAddress(address)">编辑</a>
-                  <template>
-                    <el-button
+            <tr v-for="address in addressList" :key="address.id">
+              <td class="info">{{ address.receiver }}</td>
+              <td class="info">{{ address.sex === 1 ? "男" : "女" }}</td>
+              <td class="info">{{ address.phone }}</td>
+              <td class="info">{{ address.province }}</td>
+              <td class="info">{{ address.city }}</td>
+              <td class="info">{{ address.region }}</td>
+              <td class="info">{{ address.detail }}</td>
+              <td class="info">
+                <a class="edit" @click.prevent="editAddress(address)">编辑</a>
+                <template>
+                  <el-button
                       type="text"
                       class="delete"
                       @click.prevent="deleteAddress(address.addressId)"
-                      >删除
-                    </el-button>
-                  </template>
-                  <br />
-                  <button
+                  >删除
+                  </el-button>
+                </template>
+                <br/>
+                <button
                     class="defaultButton"
                     v-show="address.isdefault === 0"
                     @click.prevent="setDefault(address)"
-                  >
-                    设为默认
-                  </button>
-                </td>
-              </tr>
+                >
+                  设为默认
+                </button>
+              </td>
+            </tr>
             </tbody>
           </table>
-          <br />
+          <br/>
           <el-pagination
-            background
-            layout="prev, pager, next"
-            :total="addressTotal"
-            :current-page="addressPage"
-            :page-size="addressPageSize"
-            @current-change="changeAddressPage"
+              background
+              layout="prev, pager, next"
+              :total="addressTotal"
+              :current-page="addressPage"
+              :page-size="addressPageSize"
+              @current-change="changeAddressPage"
           >
           </el-pagination>
         </div>
@@ -209,9 +209,9 @@
               <td>操作</td>
             </tr>
             <tr
-              class="info"
-              v-for="order in orderList"
-              v-bind:key="order.orderId"
+                class="info"
+                v-for="order in orderList"
+                v-bind:key="order.orderId"
             >
               <td>{{ order.orderId }}</td>
               <td>{{ user.userName }}</td>
@@ -221,53 +221,56 @@
               <td>{{ order.status }}</td>
               <td>
                 <a
-                  :href="'#/user/order/' + order.orderId"
-                  target="_blank"
-                  class="edit"
-                  >查看</a
+                    :href="'#/user/order/' + order.orderId"
+                    target="_blank"
+                    class="edit"
+                >查看</a
                 ><br>
                 <a v-if="order.status==='已付款'" @click="refund(order)" style="color: red">
                   申请退款
                 </a>
+                <a v-if="order.status==='已送达'" @click="confirm(order)" style="color: red">
+                  确认收货
+                </a>
               </td>
             </tr>
           </table>
-          <br />
+          <br/>
           <el-pagination
-            background
-            layout="prev, pager, next"
-            :total="orderTotal"
-            :current-page="orderPage"
-            :page-size="orderPageSize"
-            @current-change="changeOrderPage"
+              background
+              layout="prev, pager, next"
+              :total="orderTotal"
+              :current-page="orderPage"
+              :page-size="orderPageSize"
+              @current-change="changeOrderPage"
           >
           </el-pagination>
         </div>
 
         <!--用户信息修改界面-->
         <el-dialog
-          title="信息修改"
-          :visible.sync="changeInfoVisible"
-          width="30%"
-          :before-close="cancelChangeInfo"
-          center
+            title="信息修改"
+            :visible.sync="changeInfoVisible"
+            width="30%"
+            :before-close="cancelChangeInfo"
+            center
         >
           <el-form
-            label-width="100px"
-            :rules="rules"
-            :model="tempUser"
-            ref="updateInfoFrom"
+              label-width="100px"
+              :rules="rules"
+              :model="tempUser"
+              ref="updateInfoFrom"
           >
             <div class="change_head_container">
               <el-upload
-                action="http://localhost:9999/file/upload"
-                :show-file-list="false"
-                :on-success="handleUploadSuccess"
-                :before-upload="beforeUpload"
+                  action="http://localhost:9999/file/upload"
+                  :show-file-list="false"
+                  :on-success="handleUploadSuccess"
+                  :before-upload="beforeUpload"
               >
                 <el-image
-                  :src="getImgUrl(tempUser.image)"
-                  class="changeHeadImage"
+                    :src="getImgUrl(tempUser.image)"
+                    class="changeHeadImage"
                 ></el-image>
               </el-upload>
             </div>
@@ -298,17 +301,17 @@
 
         <!-- TODO 地址修改页面-->
         <el-dialog
-          title="地址修改"
-          :visible.sync="changeAddressVisible"
-          width="30%"
-          @close="cancelChangeAddress"
-          center
+            title="地址修改"
+            :visible.sync="changeAddressVisible"
+            width="30%"
+            @close="cancelChangeAddress"
+            center
         >
           <el-form
-            label-width="100px"
-            :rules="rules"
-            :model="tempAddress"
-            ref="updateAddressFrom"
+              label-width="100px"
+              :rules="rules"
+              :model="tempAddress"
+              ref="updateAddressFrom"
           >
             <el-form-item label="收货人" prop="receiver">
               <el-input v-model="tempAddress.receiver"></el-input>
@@ -338,23 +341,23 @@
           <span slot="footer" class="dialog-footer">
             <el-button @click="cancelChangeAddress">取 消</el-button>
             <el-button type="primary" @click="sureEditAddress()"
-              >确 定</el-button
+            >确 定</el-button
             >
           </span>
         </el-dialog>
 
         <!--地址添加页面-->
         <el-dialog
-          title="地址添加"
-          :visible.sync="addAddressVisible"
-          width="30%"
-          center
+            title="地址添加"
+            :visible.sync="addAddressVisible"
+            width="30%"
+            center
         >
           <el-form
-            label-width="100px"
-            :rules="rules"
-            :model="tempAddress"
-            ref="addAddressFrom"
+              label-width="100px"
+              :rules="rules"
+              :model="tempAddress"
+              ref="addAddressFrom"
           >
             <el-form-item label="收货人" prop="receiver">
               <el-input v-model="tempAddress.receiver"></el-input>
@@ -396,7 +399,7 @@ import request from "../utils/request";
 import Logout from "./user/Logout.vue";
 
 export default {
-  components: { Logout },
+  components: {Logout},
   data() {
     return {
       index: 1,
@@ -494,7 +497,7 @@ export default {
       // 表单验证
       rules: {
         userName: [
-          { required: true, message: "请填写用户名", trigger: "blur" },
+          {required: true, message: "请填写用户名", trigger: "blur"},
           {
             min: 3,
             message: "请正确填写用户名,长度不少于3个字符",
@@ -506,9 +509,9 @@ export default {
             trigger: "blur",
           },
         ],
-        sex: [{ required: true, message: "性别不能为空", trigger: "blur" }],
+        sex: [{required: true, message: "性别不能为空", trigger: "blur"}],
         password: [
-          { required: true, message: "请输入密码", trigger: "blur" },
+          {required: true, message: "请输入密码", trigger: "blur"},
           {
             min: 5,
             max: 20,
@@ -517,7 +520,7 @@ export default {
           },
         ],
         phone: [
-          { required: true, message: "请填写手机号码" },
+          {required: true, message: "请填写手机号码"},
           {
             pattern: /^((\(\d{2,3}\))|(\d{3}\-))?1[3|5|8]\d{9}$/,
             trigger: "blur",
@@ -525,7 +528,7 @@ export default {
           }, // eslint-disable-line
         ],
         email: [
-          { required: true, message: "请填写电子邮箱", trigger: "blur" },
+          {required: true, message: "请填写电子邮箱", trigger: "blur"},
           {
             trigger: ["blur", "change"],
             pattern: /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/,
@@ -533,7 +536,7 @@ export default {
           },
         ],
         receiver: [
-          { required: true, message: "请填写收货人", trigger: "blur" },
+          {required: true, message: "请填写收货人", trigger: "blur"},
           {
             min: 3,
             message: "请正确填写信息,长度不少于3个字符",
@@ -577,31 +580,31 @@ export default {
     //查找我的信息
     showMyInfo() {
       request
-        .get("/user/selectUserInfo", {
-          params: {
-            page: this.addressPage,
-            pageSize: this.addressPageSize,
-            userId: this.user.userId,
-          },
-        })
-        .then((res) => {
-          console.log(res.data.data);
-          this.addressList = res.data.data.addressList;
-          // this.user.userId = res.data.userId;
-          // this.user.userName = res.data.userName;
-          // this.user.password = res.data.password;
-          // this.user.email = res.data.email;
-          // this.user.phone = res.data.phone;
-          // this.user.sex = res.data.sex;
-          // this.user.type = res.data.type;
-          // this.user.image = res.data.image;
-          this.user = res.data.data;
-          this.addressTotal = res.data.data.total;
-          this.copyUser(this.user, this.tempUser);
-        })
-        .catch(function (err) {
-          alert(err);
-        });
+          .get("/user/selectUserInfo", {
+            params: {
+              page: this.addressPage,
+              pageSize: this.addressPageSize,
+              userId: this.user.userId,
+            },
+          })
+          .then((res) => {
+            console.log(res.data.data);
+            this.addressList = res.data.data.addressList;
+            // this.user.userId = res.data.userId;
+            // this.user.userName = res.data.userName;
+            // this.user.password = res.data.password;
+            // this.user.email = res.data.email;
+            // this.user.phone = res.data.phone;
+            // this.user.sex = res.data.sex;
+            // this.user.type = res.data.type;
+            // this.user.image = res.data.image;
+            this.user = res.data.data;
+            this.addressTotal = res.data.data.total;
+            this.copyUser(this.user, this.tempUser);
+          })
+          .catch(function (err) {
+            alert(err);
+          });
     },
     //下载图片
     getImgUrl(img) {
@@ -629,23 +632,23 @@ export default {
             type: "warning",
             center: true,
           })
-            .then((res) => {
-              // console.log(res);
-              request.put("/user/updateUserInfo", this.tempUser).then((res) => {
-                if (res.data.code == 200) {
-                  this.showMyInfo();
-                  this.$message.success("信息修改成功");
-                }
+              .then((res) => {
+                // console.log(res);
+                request.put("/user/updateUserInfo", this.tempUser).then((res) => {
+                  if (res.data.code == 200) {
+                    this.showMyInfo();
+                    this.$message.success("信息修改成功");
+                  }
+                  this.$refs.updateInfoFrom.resetFields();
+                });
+              })
+              .catch(() => {
                 this.$refs.updateInfoFrom.resetFields();
+                this.$message({
+                  type: "info",
+                  message: "已取消修改",
+                });
               });
-            })
-            .catch(() => {
-              this.$refs.updateInfoFrom.resetFields();
-              this.$message({
-                type: "info",
-                message: "已取消修改",
-              });
-            });
         }
       });
     },
@@ -660,17 +663,17 @@ export default {
     selectReview(index) {
       this.changeIndex(index);
       request
-        .get("/review/selectMyReview", {
-          params: {
-            page: this.reviewPage,
-            pageSize: this.reviewPageSize,
-            userId: this.user.userId,
-          },
-        })
-        .then((res) => {
-          this.reviewList = res.data.data.list;
-          this.reviewTotal = res.data.data.total;
-        });
+          .get("/review/selectMyReview", {
+            params: {
+              page: this.reviewPage,
+              pageSize: this.reviewPageSize,
+              userId: this.user.userId,
+            },
+          })
+          .then((res) => {
+            this.reviewList = res.data.data.list;
+            this.reviewTotal = res.data.data.total;
+          });
     },
     //删除评论
     deleteReview(id) {
@@ -680,31 +683,31 @@ export default {
         type: "warning",
         center: true,
       })
-        .then((res) => {
-          console.log(res);
-          this.$message(
-            {
-              type: "success",
-              message: "删除成功!",
-            },
-            request
-              .delete("/review/deleteReview", {
-                params: {
-                  reviewId: id,
+          .then((res) => {
+            console.log(res);
+            this.$message(
+                {
+                  type: "success",
+                  message: "删除成功!",
                 },
-              })
-              .then((res) => {
-                console.log(res.data);
-                this.selectReview(2);
-              })
-          );
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除",
+                request
+                    .delete("/review/deleteReview", {
+                      params: {
+                        reviewId: id,
+                      },
+                    })
+                    .then((res) => {
+                      console.log(res.data);
+                      this.selectReview(2);
+                    })
+            );
+          })
+          .catch(() => {
+            this.$message({
+              type: "info",
+              message: "已取消删除",
+            });
           });
-        });
     },
     //改变评论页数
     changeReviewPage(page) {
@@ -734,31 +737,31 @@ export default {
         type: "warning",
         center: true,
       })
-        .then((res) => {
-          console.log(res);
-          this.$message(
-            {
-              type: "success",
-              message: "删除成功!",
-            },
-            request
-              .delete("/address/deleteAddress", {
-                params: {
-                  addressId: id,
+          .then((res) => {
+            console.log(res);
+            this.$message(
+                {
+                  type: "success",
+                  message: "删除成功!",
                 },
-              })
-              .then((res) => {
-                console.log(res.data);
-                this.showMyInfo();
-              })
-          );
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除",
+                request
+                    .delete("/address/deleteAddress", {
+                      params: {
+                        addressId: id,
+                      },
+                    })
+                    .then((res) => {
+                      console.log(res.data);
+                      this.showMyInfo();
+                    })
+            );
+          })
+          .catch(() => {
+            this.$message({
+              type: "info",
+              message: "已取消删除",
+            });
           });
-        });
     },
     //设为默认地址
     setDefault(address) {
@@ -793,24 +796,24 @@ export default {
             type: "warning",
             center: true,
           })
-            .then((res) => {
-              console.log(res);
-              request
-                .put("/address/updateAddress", this.tempAddress)
-                .then((res) => {
-                  if (res.data.code == 200) {
-                    this.changeAddressVisible = false;
-                    this.showMyInfo();
-                    this.$message.success("地址修改成功");
-                  }
+              .then((res) => {
+                console.log(res);
+                request
+                    .put("/address/updateAddress", this.tempAddress)
+                    .then((res) => {
+                      if (res.data.code == 200) {
+                        this.changeAddressVisible = false;
+                        this.showMyInfo();
+                        this.$message.success("地址修改成功");
+                      }
+                    });
+              })
+              .catch(() => {
+                this.$message({
+                  type: "info",
+                  message: "已取消修改",
                 });
-            })
-            .catch(() => {
-              this.$message({
-                type: "info",
-                message: "已取消修改",
               });
-            });
         }
       });
     },
@@ -843,25 +846,25 @@ export default {
             type: "warning",
             center: true,
           })
-            .then((res) => {
-              console.log(res);
-              request
-                .post("/address/addAddress", this.tempAddress)
-                .then((res) => {
-                  if (res.data.code == 200) {
-                    this.addAddressVisible = false;
-                    this.showMyInfo();
-                    this.$message.success("地址添加成功");
-                    this.clearTempAddress();
-                  }
+              .then((res) => {
+                console.log(res);
+                request
+                    .post("/address/addAddress", this.tempAddress)
+                    .then((res) => {
+                      if (res.data.code == 200) {
+                        this.addAddressVisible = false;
+                        this.showMyInfo();
+                        this.$message.success("地址添加成功");
+                        this.clearTempAddress();
+                      }
+                    });
+              })
+              .catch(() => {
+                this.$message({
+                  type: "info",
+                  message: "已取消修改",
                 });
-            })
-            .catch(() => {
-              this.$message({
-                type: "info",
-                message: "已取消修改",
               });
-            });
         }
       });
     },
@@ -870,17 +873,17 @@ export default {
     selectOrders(index) {
       this.changeIndex(index);
       request
-        .get("/order/selectAllOrder", {
-          params: {
-            page: this.orderPage,
-            pageSize: this.orderPageSize,
-            userId: this.user.userId,
-          },
-        })
-        .then((res) => {
-          this.orderList = res.data.data.list;
-          this.orderTotal = res.data.data.total;
-        });
+          .get("/order/selectAllOrder", {
+            params: {
+              page: this.orderPage,
+              pageSize: this.orderPageSize,
+              userId: this.user.userId,
+            },
+          })
+          .then((res) => {
+            this.orderList = res.data.data.list;
+            this.orderTotal = res.data.data.total;
+          });
     },
     //申请退款
     refund(item) {
@@ -893,7 +896,7 @@ export default {
       })
           .then((res) => {
             console.log(res);
-            item.status='申请退款';
+            item.status = '申请退款';
             request
                 .put("/order/updateOrder", item)
                 .then((res) => {
@@ -911,6 +914,38 @@ export default {
             this.$message({
               type: "info",
               message: "已取消申请",
+            });
+          });
+    },
+    //申请退款
+    confirm(item) {
+      console.log(item);
+      this.$confirm("是否确认收货?", "提示", {
+        confirmButtonText: "是",
+        cancelButtonText: "否",
+        type: "warning",
+        center: true,
+      })
+          .then((res) => {
+            console.log(res);
+            item.status = '已收货';
+            request
+                .put("/order/updateOrder", item)
+                .then((res) => {
+                  if (res.data.code == 200) {
+                    this.$message({
+                      type: "info",
+                      duration: 1500,
+                      message: "确认成功！",
+                    });
+                    this.getOrderList();
+                  }
+                });
+          })
+          .catch(() => {
+            this.$message({
+              type: "info",
+              message: "取消确认",
             });
           });
     },
@@ -1088,7 +1123,7 @@ nav a.active {
   font-size: 20px;
 }
 
-.myInfoTr button{
+.myInfoTr button {
   width: 120px;
 }
 

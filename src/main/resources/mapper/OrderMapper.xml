@@ -81,7 +81,7 @@
              UNION SELECT 11 AS month
              UNION SELECT 12 AS month) AS m
                 LEFT JOIN
-            `order` AS o ON m.month = MONTH(o.orderdate) AND YEAR(o.orderdate) = YEAR(CURDATE())
+            `order` AS o ON m.month = MONTH(o.orderdate) AND YEAR(o.orderdate) = 2023
         GROUP BY
             m.month
         ORDER BY

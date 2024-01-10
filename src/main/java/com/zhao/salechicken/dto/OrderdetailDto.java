@@ -10,4 +10,6 @@ public class OrderdetailDto extends Orderdetail{
     private String productName;
 
     private String image;
+
+    private Boolean isReview;
 }

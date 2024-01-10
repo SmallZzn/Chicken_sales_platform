@@ -57,7 +57,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void deleteOrder(List<Integer> ids) {
+    public void deleteOrder(List<Long> ids) {
         orderMapper.deleteOrder(ids);
     }
 

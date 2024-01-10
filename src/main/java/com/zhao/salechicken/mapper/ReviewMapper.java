@@ -3,6 +3,7 @@ package com.zhao.salechicken.mapper;
 
 import com.github.pagehelper.Page;
 import com.zhao.salechicken.pojo.Review;
+import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -53,6 +54,14 @@ public interface ReviewMapper {
      * @return
      */
     List<Review> selectMyReview(@Param("userId") Integer userId);
+
+    /**
+     * 通过产品id和订单id查找评价
+     * @param orderId
+     * @param productId
+     * @return
+     */
+    Review selectReviewByProductIdAndOrderId(@Param("orderId") Long orderId, @Param("productId") Integer productId);
 }
 
 

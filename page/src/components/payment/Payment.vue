@@ -9,12 +9,12 @@
 
       <span style="font-size: 16px"> 确认收货地址</span>
       <!-- 跳转到编辑地址页面 -->
-      <router-link
-        class="btn btn-default"
-        style="margin-left: 330px"
-        :to="{ name: 'UserMe', params: { pageIndex: 3 } }"
-        >编辑地址
-      </router-link>
+<!--      <router-link-->
+<!--        class="btn btn-default"-->
+<!--        style="margin-left: 330px"-->
+<!--        :to="{ name: 'UserMe', params: { pageIndex: 3 } }"-->
+<!--        >编辑地址-->
+<!--      </router-link>-->
       <hr />
       <div class="row address">
         <!-- 选择地址 -->

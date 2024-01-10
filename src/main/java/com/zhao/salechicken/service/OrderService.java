@@ -4,12 +4,8 @@ package com.zhao.salechicken.service;
 import com.github.pagehelper.PageInfo;
 import com.zhao.salechicken.common.R;
 import com.zhao.salechicken.pojo.Order;
-import org.apache.ibatis.annotations.MapKey;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
 
 /**
  * @author 86180
@@ -28,8 +24,9 @@ public interface OrderService {
 
     /**
      * 删除订单记录
+     * @param ids
      */
-    void deleteOrder(List<Integer> ids);
+    void deleteOrder(List<Long> ids);
 
     /**
      * 查询订单(根据订单状态/关键字)

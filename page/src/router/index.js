@@ -9,8 +9,10 @@ import UserHome from "../components/UserHome.vue";
 import GoodsCart from "../components/cart/GoodsCart.vue";
 import Payment from "../components/payment/Payment.vue";
 import OrderDetail from "@/components/order/OrderDetail.vue";
+import review from "@/components/order/review.vue";
 import SearchGoodsShow from "../components/goods/SearchGoodsShow.vue";
 import GoodsDetail from "../components/goods/GoodsDetail.vue";
+
 
 import UserMeView from "../views/UserMeView.vue";
 
@@ -34,6 +36,7 @@ const routes = [
       { path: "cart", component: GoodsCart },
       { path: "pay", name: "Payment", component: Payment },
       { path: "order/:orderId", component: OrderDetail },
+      { path: "/review/:productId/:orderdetailId/:orderId", component: review},
       {
         path: "search/:productName",
         name: "SearchGoods",
