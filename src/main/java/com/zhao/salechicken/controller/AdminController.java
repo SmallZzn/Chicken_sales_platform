@@ -5,7 +5,6 @@ import com.zhao.salechicken.common.BaseContext;
 import com.zhao.salechicken.common.R;
 import com.zhao.salechicken.dto.UserDto;
 import com.zhao.salechicken.pojo.User;
-import com.zhao.salechicken.service.AddressService;
 import com.zhao.salechicken.service.PermissiondetailService;
 import com.zhao.salechicken.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,45 +57,23 @@ public class AdminController {
     /**
      * 修改管理员信息
      *
-     * @param request
      * @param user
      * @return
      */
     @PutMapping("/updateAdmin")
-    public R<String> updateAdmin(HttpServletRequest request, @RequestBody User user) {
-        //1、获取当前登录用户
-        Integer loginUser = BaseContext.getCurrentId();
-
-        //2、判断是否具有更新管理员的权限
-        if (!permissiondetailService.judgePermission(loginUser,4)) {
-            return R.error("您没有该权限!!!");
-        }
-
-        //3、修改管理员信息
-        userService.updateUser(user);
-        return R.success("修改成功!!!");
+    public R<String> updateAdmin(@RequestBody User user) {
+        return userService.updateUser(user);
     }
 
     /**
      * 删除管理员
      *
-     * @param request
      * @return
      * @Paeam user
      */
     @DeleteMapping("/deleteAdmin")
-    public R<String> deleteAdmin(HttpServletRequest request,Integer userId) {
-        //1、获取当前登录用户
-        Integer loginUser = BaseContext.getCurrentId();
-
-        //2、判断是否具有删除管理员的权限
-        if (!permissiondetailService.judgePermission(loginUser,3)) {
-            return R.error("您没有该权限!!!");
-        }
-
-        //3、删除管理员
-        userService.deleteUser(userId);
-        return R.success("删除成功!!!");
+    public R<String> deleteAdmin(Integer userId) {
+        return userService.deleteUser(userId);
     }
 
     /**

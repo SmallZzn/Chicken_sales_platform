@@ -3,6 +3,7 @@ package com.zhao.salechicken.service;
 
 import com.github.pagehelper.PageInfo;
 import com.zhao.salechicken.common.R;
+import com.zhao.salechicken.dto.PayDto;
 import com.zhao.salechicken.pojo.Order;
 
 import java.util.List;
@@ -53,10 +54,8 @@ public interface OrderService {
 
     /**
      * 支付
-     * @param loginUser
-     * @param ids
      */
-    R<String> pay(Integer loginUser, List<Integer> ids, Integer addressId);
+    R<String> pay(PayDto payDto);
 
     /**
      * 查询个个月份的销售额

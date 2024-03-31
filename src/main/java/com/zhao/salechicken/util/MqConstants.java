@@ -5,28 +5,26 @@ package com.zhao.salechicken.util;
  * @DateTime: 2023/11/23 10:55
  */
 public class MqConstants {
-    /**
-     * 交换机
-     */
-    public static final String CHICKEN_PRODUCT_EXCHANGE = "chicken.product.topic";
 
     /**
-     * 监听新增和修改队列
+     * 将增删改数据同步到ES的消息队列的group
      */
-    public static final String CHICKEN_PRODUCT_INSERT_QUEUE = "chicken.product.insert.queue";
+    public static final String ES_UPDATE_GROUP = "chicken-sales-es-service_group";
+
 
     /**
-     * 监听删除队列
+     * 下单消息队列的group
      */
-    public static final String CHICKEN_PRODUCT_DELETE_QUEUE = "chicken.product.delete.queue";
+    public static final String PAY_ORDER_GROUP = "chicken-sales-order-commit-service_group";
 
     /**
-     * 新增或修改RoutingKey
+     * 将增删改数据同步到ES的消息队列的topic
      */
-    public static final String CHICKEN_PRODUCT_INSERT_KEY = "chicken.product.insert";
+    public static final String ES_UPDATE_TOPIC = "chicken-sales-es-service_topic";
+
 
     /**
-     * 删除RoutingKey
+     * 下单消息队列的topic
      */
-    public static final String CHICKEN_PRODUCT_DELETE_KEY = "chicken.product.delete";
+    public static final String PAY_ORDER_TOPIC = "chicken-sales-order-commit-service_topic";
 }

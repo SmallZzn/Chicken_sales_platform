@@ -21,25 +21,12 @@ public class AddressController {
 
     /**
      * 添加地址信息
-     * @param request
      * @param address
      * @return
      */
     @PostMapping("/addAddress")
-    public R<String> addAddress(HttpServletRequest request,@RequestBody Address address){
-
-        //获取当前登录用户的id
-        Integer loginUser = BaseContext.getCurrentId();
-
-        //设置当前登录用户的id
-        address.setUserId(loginUser);
-
-        //默认不是默认地址
-        address.setIsdefault(0);
-
-        //添加到数据库
+    public R<String> addAddress(@RequestBody Address address){
         addressService.addAddress(address);
-
         return R.success("添加成功");
     }
 
@@ -63,11 +50,7 @@ public class AddressController {
     public R<List<Address>> selectAllAddress(HttpServletRequest request){
         //获取当前登录用户的id
         Integer loginUser = BaseContext.getCurrentId();
-
-        System.out.println(loginUser);
-
         List<Address> addresses = addressService.selectAllAddress(loginUser);
-
         return R.success(addresses);
     }
 
@@ -90,12 +73,8 @@ public class AddressController {
      */
     @PostMapping("/defaultAddress")
     public R<String> defaultAddress(@RequestBody Address address){
-
         //设置为默认地址
-        address.setIsdefault(1);
-
         addressService.isDefaultAddress(address);
-
         return R.success("设置成功");
     }
 }

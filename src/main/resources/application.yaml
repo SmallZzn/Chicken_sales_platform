@@ -49,3 +49,14 @@ salechicken:
 
 server:
   port: 9999
+
+
+rocketmq:
+  name-server: 192.168.200.131:9876 # NameServer 地址
+  producer:
+    group: chicken_sales_platform_pg
+    send-message-timeout: 2000
+    retry-times-when-send-failed: 1
+    retry-times-when-send-async-failed: 1
+  consumer:
+    group: chicken_sales_platform_cg

@@ -1,6 +1,7 @@
 package com.zhao.salechicken.service.impl;
 
 
+import com.zhao.salechicken.common.BaseContext;
 import com.zhao.salechicken.mapper.AddressMapper;
 import com.zhao.salechicken.pojo.Address;
 import com.zhao.salechicken.service.AddressService;
@@ -23,6 +24,15 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public void addAddress(Address address) {
+        //获取当前登录用户的id
+        Integer loginUser = BaseContext.getCurrentId();
+
+        //设置当前登录用户的id
+        address.setUserId(loginUser);
+
+        //默认不是默认地址
+        address.setIsdefault(0);
+
         addressMapper.addAddress(address);
     }
 
@@ -44,6 +54,8 @@ public class AddressServiceImpl implements AddressService {
     @Override
     @Transactional
     public void isDefaultAddress(Address address) {
+        //设置为默认地址
+        address.setIsdefault(1);
 
         //取消原来的默认地址
         addressMapper.isDefaultAddress(address);

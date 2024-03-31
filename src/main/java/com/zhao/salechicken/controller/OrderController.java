@@ -5,13 +5,10 @@ import com.zhao.salechicken.common.BaseContext;
 import com.zhao.salechicken.common.R;
 import com.zhao.salechicken.dto.PayDto;
 import com.zhao.salechicken.pojo.Order;
-import com.zhao.salechicken.pojo.User;
 import com.zhao.salechicken.service.OrderService;
 import com.zhao.salechicken.service.OrderdetailService;
 import com.zhao.salechicken.service.PermissiondetailService;
-import com.zhao.salechicken.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -135,25 +132,11 @@ public class OrderController {
     /**
      * 支付订单
      *
-     * @param request
      * @param payDto
      * @return
      */
     @PostMapping("/pay")
-    public R<String> pay(HttpServletRequest request, @RequestBody PayDto payDto) {
-
-        System.out.println(payDto);
-
-        //判断是否选中了商品
-        if (payDto.getCartdetailIds() == null) {
-            return R.error("您当前为选中任何商品");
-        }
-
-        //获取当前登录用户的id
-        Integer loginUser = BaseContext.getCurrentId();
-
-        return orderService.pay(loginUser, payDto.getCartdetailIds(), payDto.getAddressId());
-
-//        return R.success("下单成功");
+    public R<String> pay(@RequestBody PayDto payDto) {
+        return orderService.pay(payDto);
     }
 }

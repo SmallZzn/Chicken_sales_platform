@@ -27,4 +27,12 @@ public class BaseContext {
     public static Integer getCurrentId(){
         return threadLocal.get();
     }
+
+
+    /**
+     * 清除用户信息
+     */
+    public static void removeUser() {
+        threadLocal.remove();
+    }
 }

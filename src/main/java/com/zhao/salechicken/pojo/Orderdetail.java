@@ -3,7 +3,6 @@ package com.zhao.salechicken.pojo;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 
@@ -29,7 +28,7 @@ public class Orderdetail implements Serializable {
     /**
      * 订单id
      */
-    private Long orderId;
+    private String orderId;
 
     /**
      * 商品id

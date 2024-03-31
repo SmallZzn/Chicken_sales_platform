@@ -1,11 +1,10 @@
 package com.zhao.salechicken.service.impl;
 
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.util.RandomUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.zhao.salechicken.common.BaseContext;
 import com.zhao.salechicken.common.R;
 import com.zhao.salechicken.dto.LoginFormDTO;
 import com.zhao.salechicken.dto.UserDto;
@@ -92,7 +91,6 @@ public class UserServiceImpl implements UserService {
             return R.error("验证码有误!!!");
         }
 
-
         //5、保存用户信息到redis中
         //5.1 生成随机token
 //        String token = UUID.randomUUID().toString(true);//true表示是否不带中划线（不带）
@@ -101,6 +99,9 @@ public class UserServiceImpl implements UserService {
         stringRedisTemplate.opsForValue().set(LOGIN_USER_KEY + token, user.getUserId().toString());
         //5.3 设置token有效期
         stringRedisTemplate.expire(LOGIN_USER_KEY + token, LOGIN_USER_TTL, TimeUnit.MINUTES);
+
+        //将用户id设置进上下文
+        BaseContext.setCurrentId(user.getUserId());
 
         //6、返回token给前端
         return R.success(user);
@@ -127,13 +128,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(User user) {
+    public R updateUser(User user) {
+        //1、获取当前登录用户
+        Integer loginUser = BaseContext.getCurrentId();
+
+        //2、判断是否具有更新管理员的权限
+        if (!permissiondetailService.judgePermission(loginUser,4)) {
+            return R.error("您没有该权限!!!");
+        }
+
+        //3、修改管理员信息
         userMapper.updateUser(user);
+        return R.success("修改成功!!!");
     }
 
     @Override
-    public void deleteUser(Integer userId) {
+    public R deleteUser(Integer userId) {
+        //1、获取当前登录用户
+        Integer loginUser = BaseContext.getCurrentId();
+
+        //2、判断是否具有删除管理员的权限
+        if (!permissiondetailService.judgePermission(loginUser,3)) {
+            return R.error("您没有该权限!!!");
+        }
+
+        //3、删除管理员
         userMapper.deleteUser(userId);
+        return R.success("删除成功!!!");
     }
 
     @Override

@@ -1,23 +1,19 @@
 package com.zhao.salechicken.controller;
 
-import cn.hutool.db.PageResult;
 import com.github.pagehelper.PageInfo;
-import com.zhao.salechicken.Doc.RequestParams;
 import com.zhao.salechicken.common.BaseContext;
 import com.zhao.salechicken.common.R;
+import com.zhao.salechicken.mq.Producer.ChickenSalesUpdateEsProducer;
 import com.zhao.salechicken.pojo.Product;
 import com.zhao.salechicken.service.PermissiondetailService;
 import com.zhao.salechicken.service.ProductService;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.zhao.salechicken.util.MqConstants.*;
 
 @RestController
 @RequestMapping("/product")
@@ -29,8 +25,8 @@ public class ProductController {
     @Autowired
     private PermissiondetailService permissiondetailService;
 
-    @Resource
-    private RabbitTemplate rabbitTemplate;
+    @Autowired
+    private ChickenSalesUpdateEsProducer chickenSalesUpdateEsProducer;
 
     /**
      * 添加产品
@@ -54,7 +50,12 @@ public class ProductController {
         //获取新添加的产品的id
         Product newProduct = productService.getProductByName(product.getProductName());
         //将添加任务添加到rabbitmq中
-        rabbitTemplate.convertAndSend(CHICKEN_PRODUCT_EXCHANGE, CHICKEN_PRODUCT_INSERT_KEY, newProduct.getProductId());
+//        rabbitTemplate.convertAndSend(CHICKEN_PRODUCT_EXCHANGE, CHICKEN_PRODUCT_INSERT_KEY, newProduct.getProductId());
+        //将添加任务添加到RocketMQ中
+        Map<String, String> producerMap = new HashMap<>();
+        producerMap.put("productId",newProduct.getProductId()+"");
+        producerMap.put("operation","INSERT");
+        chickenSalesUpdateEsProducer.send(producerMap);
         return R.success("添加成功!!!");
     }
 
@@ -77,7 +78,12 @@ public class ProductController {
 
         productService.deleteProduct(productId);
         //将删除任务添加到rabbitmq中
-        rabbitTemplate.convertAndSend(CHICKEN_PRODUCT_EXCHANGE, CHICKEN_PRODUCT_DELETE_KEY, productId);
+//        rabbitTemplate.convertAndSend(CHICKEN_PRODUCT_EXCHANGE, CHICKEN_PRODUCT_DELETE_KEY, productId);
+        //将添加任务添加到RocketMQ中
+        Map<String, String> producerMap = new HashMap<>();
+        producerMap.put("productId",productId+"");
+        producerMap.put("operation","DELETE");
+        chickenSalesUpdateEsProducer.send(producerMap);
         return R.success("删除成功!!!");
     }
 
@@ -101,7 +107,12 @@ public class ProductController {
 
         productService.updateProduct(product);
         //将添加任务添加到rabbitmq中
-        rabbitTemplate.convertAndSend(CHICKEN_PRODUCT_EXCHANGE, CHICKEN_PRODUCT_INSERT_KEY, product.getProductId());
+//        rabbitTemplate.convertAndSend(CHICKEN_PRODUCT_EXCHANGE, CHICKEN_PRODUCT_INSERT_KEY, product.getProductId());
+        //将添加任务添加到RocketMQ中
+        Map<String, String> producerMap = new HashMap<>();
+        producerMap.put("productId",product.getProductId()+"");
+        producerMap.put("operation","INSERT");
+        chickenSalesUpdateEsProducer.send(producerMap);
         return R.success("修改成功!!!");
     }
 

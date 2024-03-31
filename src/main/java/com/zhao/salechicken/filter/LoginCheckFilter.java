@@ -96,7 +96,7 @@ public class LoginCheckFilter implements Filter {
         if (user != null) {
             Integer loginUser = Integer.parseInt(user);
             BaseContext.setCurrentId(loginUser);
-            filterChain.doFilter(request, response);
+            filterChain.doFilter(request, response); 
             //刷新token有效期
             stringRedisTemplate.expire(LOGIN_USER_KEY + token, LOGIN_USER_TTL, TimeUnit.MINUTES);
             return;

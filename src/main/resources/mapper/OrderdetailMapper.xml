@@ -8,7 +8,7 @@
             <id property="orderdetialId" column="orderdetial_id" jdbcType="INTEGER"/>
             <result property="quantity" column="quantity" jdbcType="INTEGER"/>
             <result property="totalMoney" column="total_money" jdbcType="DOUBLE"/>
-            <result property="orderId" column="order_id" jdbcType="BIGINT"/>
+            <result property="orderId" column="order_id" jdbcType="VARCHAR"/>
             <result property="productId" column="product_id" jdbcType="INTEGER"/>
     </resultMap>
 

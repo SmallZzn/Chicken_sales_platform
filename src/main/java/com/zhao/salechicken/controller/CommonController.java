@@ -1,6 +1,7 @@
 package com.zhao.salechicken.controller;
 
 
+import com.zhao.salechicken.common.BaseContext;
 import com.zhao.salechicken.common.R;
 import com.zhao.salechicken.dto.LoginFormDTO;
 import com.zhao.salechicken.pojo.User;
@@ -54,6 +55,7 @@ public class CommonController {
         session.getServletContext().setAttribute("loginUser", loginUser.getUserId());
 
         log.info("登录用户的id:{}", loginUser.getUserId());
+
         return R.success(loginUser);
     }
 
@@ -62,11 +64,10 @@ public class CommonController {
      * 优化
      * 登录(通过手机号和验证码)
      *
-     * @param request
      * @return
      */
     @PostMapping("/loginByCode")
-    public R<User> loginByCode(HttpServletRequest request, @RequestBody LoginFormDTO loginFormDTO) {
+    public R<User> loginByCode(@RequestBody LoginFormDTO loginFormDTO) {
         return userService.loginByCode(loginFormDTO);
     }
 
@@ -79,7 +80,8 @@ public class CommonController {
     @PostMapping("/logout")
     public R<String> logout(HttpServletRequest request) {
         //清理Session中保存的当前用户登录的id
-        request.getSession().removeAttribute("loginUser");
+        BaseContext.removeUser();
+//        request.getSession().removeAttribute("loginUser");
         return R.success("退出成功!!!");
     }
 }

@@ -18,6 +18,10 @@ public class SaleInfoController {
     @Autowired
     private OrderService orderService;
 
+    /**
+     * 查看销售情况
+     * @return
+     */
     @GetMapping("/selectTotalSales")
     public R<List<Double>> selectTotalSales() {
         List<Double> totalSales = orderService.selectTotalSales();

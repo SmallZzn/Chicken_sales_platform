@@ -107,6 +107,11 @@ public class UserController {
         return R.success("修改成功");
     }
 
+    /**
+     * 查看用户信息
+     * @param userId
+     * @return
+     */
     @GetMapping("/selectUserInfo")
     public R<UserDto> selectUserInfo(Integer userId) {
         UserDto userDto = userService.selectUserInfo(userId);

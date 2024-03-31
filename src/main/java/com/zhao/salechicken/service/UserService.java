@@ -65,14 +65,14 @@ public interface UserService {
      *
      * @param user
      */
-    void updateUser(User user);
+    R updateUser(User user);
 
     /**
      * 根据id删除用户
      *
      * @param userId
      */
-    void deleteUser(Integer userId);
+    R deleteUser(Integer userId);
 
     /**
      * 查询所有用户
