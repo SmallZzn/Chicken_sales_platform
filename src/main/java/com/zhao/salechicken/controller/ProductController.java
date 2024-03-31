@@ -31,13 +31,11 @@ public class ProductController {
     /**
      * 添加产品
      *
-     * @param request
      * @param product
      * @return
      */
     @PostMapping("/addProduct")
-    public R<String> addProduct(HttpServletRequest request, @RequestBody Product product) {
-
+    public R<String> addProduct(@RequestBody Product product) {
         //获取当前登录用户
         Integer loginUser = BaseContext.getCurrentId();
 
@@ -46,16 +44,8 @@ public class ProductController {
             return R.error("您没有该权限!!!");
         }
 
+        //添加产品
         productService.addProduct(product);
-        //获取新添加的产品的id
-        Product newProduct = productService.getProductByName(product.getProductName());
-        //将添加任务添加到rabbitmq中
-//        rabbitTemplate.convertAndSend(CHICKEN_PRODUCT_EXCHANGE, CHICKEN_PRODUCT_INSERT_KEY, newProduct.getProductId());
-        //将添加任务添加到RocketMQ中
-        Map<String, String> producerMap = new HashMap<>();
-        producerMap.put("productId",newProduct.getProductId()+"");
-        producerMap.put("operation","INSERT");
-        chickenSalesUpdateEsProducer.send(producerMap);
         return R.success("添加成功!!!");
     }
 
@@ -77,8 +67,6 @@ public class ProductController {
         }
 
         productService.deleteProduct(productId);
-        //将删除任务添加到rabbitmq中
-//        rabbitTemplate.convertAndSend(CHICKEN_PRODUCT_EXCHANGE, CHICKEN_PRODUCT_DELETE_KEY, productId);
         //将添加任务添加到RocketMQ中
         Map<String, String> producerMap = new HashMap<>();
         producerMap.put("productId",productId+"");
@@ -106,8 +94,6 @@ public class ProductController {
         }
 
         productService.updateProduct(product);
-        //将添加任务添加到rabbitmq中
-//        rabbitTemplate.convertAndSend(CHICKEN_PRODUCT_EXCHANGE, CHICKEN_PRODUCT_INSERT_KEY, product.getProductId());
         //将添加任务添加到RocketMQ中
         Map<String, String> producerMap = new HashMap<>();
         producerMap.put("productId",product.getProductId()+"");

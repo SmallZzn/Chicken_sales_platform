@@ -1,22 +1,17 @@
 package com.zhao.salechicken.service.impl;
 
-import cn.hutool.extra.ssh.JschUtil;
 import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zhao.salechicken.Doc.ProductDoc;
-import com.zhao.salechicken.Doc.RequestParams;
 import com.zhao.salechicken.dto.ProductDto;
-import com.zhao.salechicken.dto.UserDto;
 import com.zhao.salechicken.mapper.CategoryMapper;
 import com.zhao.salechicken.mapper.ProductMapper;
-import com.zhao.salechicken.pojo.Address;
+import com.zhao.salechicken.mq.Producer.ChickenSalesUpdateEsProducer;
 import com.zhao.salechicken.pojo.Product;
-import com.zhao.salechicken.pojo.User;
 import com.zhao.salechicken.service.ProductService;
 import com.zhao.salechicken.util.CacheClient;
-import io.swagger.models.auth.In;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
@@ -24,13 +19,6 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
-import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.suggest.Suggest;
 import org.elasticsearch.search.suggest.SuggestBuilder;
 import org.elasticsearch.search.suggest.SuggestBuilders;
@@ -47,10 +35,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.zhao.salechicken.util.RedisConstants.*;
+import static com.zhao.salechicken.util.RedisConstants.CACHE_SHOPINFO_KEY;
+import static com.zhao.salechicken.util.RedisConstants.CACHE_SHOPINFO_TTL;
 
 /**
  * @author 86180
@@ -75,9 +63,22 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     public RestHighLevelClient client;
 
+    @Autowired
+    private ChickenSalesUpdateEsProducer chickenSalesUpdateEsProducer;
+
     @Override
     public void addProduct(Product product) {
         productMapper.addProduct(product);
+        //获取新添加的产品的id
+        Product newProduct = productMapper.getProductByName(product.getProductName());
+        //将添加任务添加到RocketMQ中
+        Map<String, String> producerMap = new HashMap<>();
+        producerMap.put("productId", newProduct.getProductId() + "");
+        producerMap.put("operation", "INSERT");
+        chickenSalesUpdateEsProducer.send(producerMap);
+
+        //添加缓存
+        stringRedisTemplate.opsForValue().set(CACHE_SHOPINFO_KEY, JSONUtil.toJsonStr(newProduct), 30, TimeUnit.MINUTES);
     }
 
     @Override
@@ -101,6 +102,11 @@ public class ProductServiceImpl implements ProductService {
 
         //2、查询产品信息
         List<Product> productList = productMapper.selectProduct(productName, category, origin);
+
+        //添加缓存
+        for (Product product : productList) {
+            stringRedisTemplate.opsForValue().set(CACHE_SHOPINFO_KEY, JSONUtil.toJsonStr(product), 30, TimeUnit.MINUTES);
+        }
 
         PageInfo<Product> pageInfo = new PageInfo<>(productList);
 
@@ -142,6 +148,11 @@ public class ProductServiceImpl implements ProductService {
         //7、为productDtoPageInfo赋值
         productDtoPageInfo.setList(productDtoList);
 
+        //添加缓存
+        for (Product product : productList) {
+            stringRedisTemplate.opsForValue().set(CACHE_SHOPINFO_KEY + product.getProductId(), JSONUtil.toJsonStr(product), 30, TimeUnit.MINUTES);
+        }
+
         return productDtoPageInfo;
     }
 
@@ -154,6 +165,11 @@ public class ProductServiceImpl implements ProductService {
         List<Product> productList = productMapper.selectProductBySales(productName, category, origin);
 
         PageInfo<Product> pageInfo = new PageInfo<>(productList);
+
+        //添加缓存
+        for (Product product : productList) {
+            stringRedisTemplate.opsForValue().set(CACHE_SHOPINFO_KEY + product.getProductId(), JSONUtil.toJsonStr(product), 30, TimeUnit.MINUTES);
+        }
 
         return pageInfo;
     }
@@ -170,13 +186,14 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getProductById(Integer productId) {
-        // 缓存穿透
+        // 查询缓存，缓存穿透
         Product product = cacheClient.queryWithPassThrough(CACHE_SHOPINFO_KEY, productId, Product.class, id -> productMapper.getProductById(id), CACHE_SHOPINFO_TTL, TimeUnit.MINUTES);
         return product;
     }
 
     @Override
     public String getProductNameById(Integer productId) {
+        // 查询缓存，缓存穿透
         Product product = cacheClient.queryWithPassThrough(CACHE_SHOPINFO_KEY, productId, Product.class, id -> productMapper.getProductById(id), CACHE_SHOPINFO_TTL, TimeUnit.MINUTES);
         if (product != null) {
             return product.getProductName();
@@ -192,9 +209,14 @@ public class ProductServiceImpl implements ProductService {
         PageHelper.startPage(page, pageSize);
 
         //根据要求查询产品
-        List<Product> products = productMapper.sortProductByPriceDESC(productName, category, origin);
+        List<Product> productList = productMapper.sortProductByPriceDESC(productName, category, origin);
 
-        PageInfo<Product> productPageInfo = new PageInfo<>(products);
+        PageInfo<Product> productPageInfo = new PageInfo<>(productList);
+
+        //添加缓存
+        for (Product product : productList) {
+            stringRedisTemplate.opsForValue().set(CACHE_SHOPINFO_KEY + product.getProductId(), JSONUtil.toJsonStr(product), 30, TimeUnit.MINUTES);
+        }
 
         return productPageInfo;
     }
@@ -205,9 +227,14 @@ public class ProductServiceImpl implements ProductService {
         PageHelper.startPage(page, pageSize);
 
         //根据要求查询产品
-        List<Product> products = productMapper.sortProductByPriceASC(productName, category, origin);
+        List<Product> productList = productMapper.sortProductByPriceASC(productName, category, origin);
 
-        PageInfo<Product> productPageInfo = new PageInfo<>(products);
+        PageInfo<Product> productPageInfo = new PageInfo<>(productList);
+
+        //添加缓存
+        for (Product product : productList) {
+            stringRedisTemplate.opsForValue().set(CACHE_SHOPINFO_KEY + product.getProductId(), JSONUtil.toJsonStr(product), 30, TimeUnit.MINUTES);
+        }
 
         return productPageInfo;
     }
@@ -218,9 +245,14 @@ public class ProductServiceImpl implements ProductService {
         PageHelper.startPage(page, pageSize);
 
         //根据要求查询产品
-        List<Product> products = productMapper.selectShortSupplyProduct(productName, category, origin);
+        List<Product> productList = productMapper.selectShortSupplyProduct(productName, category, origin);
 
-        PageInfo<Product> productPageInfo = new PageInfo<>(products);
+        PageInfo<Product> productPageInfo = new PageInfo<>(productList);
+
+        //添加缓存
+        for (Product product : productList) {
+            stringRedisTemplate.opsForValue().set(CACHE_SHOPINFO_KEY + product.getProductId(), JSONUtil.toJsonStr(product), 30, TimeUnit.MINUTES);
+        }
 
         return productPageInfo;
     }
