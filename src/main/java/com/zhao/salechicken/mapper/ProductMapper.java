@@ -1,6 +1,7 @@
 package com.zhao.salechicken.mapper;
 
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.zhao.salechicken.pojo.Product;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -14,7 +15,7 @@ import java.util.List;
  * @Entity com.zhao.salechicken.pojo.Product
  */
 @Mapper
-public interface ProductMapper {
+public interface ProductMapper extends BaseMapper<Product> {
 
     /**
      * 添加产品信息

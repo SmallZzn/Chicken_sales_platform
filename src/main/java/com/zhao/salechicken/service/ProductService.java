@@ -1,19 +1,18 @@
 package com.zhao.salechicken.service;
 
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.pagehelper.PageInfo;
-import com.zhao.salechicken.Doc.RequestParams;
 import com.zhao.salechicken.pojo.Product;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author 86180
  * @description 针对表【product】的数据库操作Service
  * @createDate 2023-03-13 15:26:44
  */
-public interface ProductService {
+public interface ProductService extends IService<Product> {
     /**
      * 添加产品
      *

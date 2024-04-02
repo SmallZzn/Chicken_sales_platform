@@ -1,6 +1,7 @@
 package com.zhao.salechicken.service.impl;
 
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zhao.salechicken.dto.OrderdetailDto;
@@ -11,7 +12,6 @@ import com.zhao.salechicken.pojo.Product;
 import com.zhao.salechicken.pojo.Review;
 import com.zhao.salechicken.service.OrderdetailService;
 import com.zhao.salechicken.service.ProductService;
-import com.zhao.salechicken.service.ReviewService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
  * @createDate 2023-03-15 22:10:57
  */
 @Service
-public class OrderdetailServiceImpl implements OrderdetailService {
+public class OrderdetailServiceImpl extends ServiceImpl<OrderdetailMapper, Orderdetail> implements OrderdetailService {
 
     @Autowired
     private OrderdetailMapper orderdetailMapper;

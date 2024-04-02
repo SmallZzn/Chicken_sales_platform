@@ -16,21 +16,24 @@ import java.util.List;
 public interface OrderService {
     /**
      * 根据id搜索用户的所有订单
+     *
      * @param page
      * @param pageSize
      * @param userId
      * @return
      */
-    PageInfo selectAllOrder(int page,int pageSize, Integer userId);
+    PageInfo selectAllOrder(int page, int pageSize, Integer userId);
 
     /**
      * 删除订单记录
+     *
      * @param ids
      */
     void deleteOrder(List<Long> ids);
 
     /**
      * 查询订单(根据订单状态/关键字)
+     *
      * @param userId
      * @param page
      * @param pageSize
@@ -42,12 +45,14 @@ public interface OrderService {
 
     /**
      * 新增订单
+     *
      * @param order
      */
     void addOrder(Order order);
 
     /**
      * 修改订单信息
+     *
      * @param order
      */
     void updateOrder(Order order);
@@ -59,6 +64,7 @@ public interface OrderService {
 
     /**
      * 查询个个月份的销售额
+     *
      * @return
      */
     List<Double> selectTotalSales();

@@ -2,6 +2,7 @@ package com.zhao.salechicken.service.impl;
 
 import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zhao.salechicken.Doc.ProductDoc;
@@ -46,7 +47,7 @@ import static com.zhao.salechicken.util.RedisConstants.CACHE_SHOPINFO_TTL;
  * @createDate 2023-03-13 15:26:44
  */
 @Service
-public class ProductServiceImpl implements ProductService {
+public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> implements ProductService {
 
     @Autowired
     private ProductMapper productMapper;

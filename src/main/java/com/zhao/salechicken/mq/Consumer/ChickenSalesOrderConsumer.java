@@ -1,7 +1,6 @@
 package com.zhao.salechicken.mq.Consumer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zhao.salechicken.common.CustomException;
 import com.zhao.salechicken.dto.PayDto;
 import com.zhao.salechicken.mapper.OrderMapper;
 import com.zhao.salechicken.pojo.*;
@@ -28,9 +27,10 @@ import java.util.Map;
 import static com.zhao.salechicken.util.MqConstants.PAY_ORDER_GROUP;
 import static com.zhao.salechicken.util.MqConstants.PAY_ORDER_TOPIC;
 import static com.zhao.salechicken.util.OrderIdUtil.randomOrderCode;
+import static com.zhao.salechicken.util.RedisConstants.LOCK_ORDER_KEY;
 
 /**
- * 支付订单消息发送者
+ * 支付订单消息消费者
  */
 @Slf4j
 @Component
@@ -66,11 +66,9 @@ public class ChickenSalesOrderConsumer implements RocketMQListener<Map<String, O
         Object objectPayDto = producerMap.get("payDto");
         PayDto payDto = new ObjectMapper().convertValue(objectPayDto, PayDto.class);
 
-        log.info("ABC" + payDto.getCartdetailIds());
         //取出订单信息
         Object objectLoginUser = producerMap.get("loginUser");
         Integer loginUser = new ObjectMapper().convertValue(objectLoginUser, Integer.class);
-//        Integer loginUser = BaseContext.getCurrentId();
 
         //查找用户的购物车
         Cart cart = cartService.selectCart(loginUser);
@@ -85,19 +83,19 @@ public class ChickenSalesOrderConsumer implements RocketMQListener<Map<String, O
         List<Cartdetail> cartdetails = cartdetailService.selectPayCartdetail(cart.getCartId(), ids);
 
         //使用读写锁
-        RReadWriteLock readWriteLock = redissonClient.getReadWriteLock("payOrder");
+        RReadWriteLock readWriteLock = redissonClient.getReadWriteLock(LOCK_ORDER_KEY + loginUser);
         RLock rLock = readWriteLock.readLock();
         rLock.lock();
         try {
-            //判断商品数量是否充足
-            for (Cartdetail cartdetail : cartdetails) {
-                Integer productId = cartdetail.getProductId();
-                Product product = productService.getProductById(productId);
-                if (product.getInventory() <= 0) {
-                    String productName = productService.getProductNameById(productId);
-                    throw new CustomException(productName + "数量不足!!!");
-                }
-            }
+//            //判断商品数量是否充足
+//            for (Cartdetail cartdetail : cartdetails) {
+//                Integer productId = cartdetail.getProductId();
+//                Product product = productService.getProductById(productId);
+//                if (product.getInventory() <= 0) {
+//                    String productName = productService.getProductNameById(productId);
+//                    throw new CustomException(productName + "数量不足!!!");
+//                }
+//            }
 
             //添加订单并获取id,便于下面为订单详情设置orderId
             Order order = new Order();

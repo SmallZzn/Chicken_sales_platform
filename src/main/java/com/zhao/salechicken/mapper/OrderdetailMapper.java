@@ -1,6 +1,6 @@
 package com.zhao.salechicken.mapper;
 
-import com.zhao.salechicken.pojo.Order;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.zhao.salechicken.pojo.Orderdetail;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -14,7 +14,7 @@ import java.util.List;
  * @Entity com.zhao.salechicken.pojo.Orderdetail
  */
 @Mapper
-public interface OrderdetailMapper {
+public interface OrderdetailMapper extends BaseMapper<Orderdetail> {
 
     /**
      * 添加订单详情

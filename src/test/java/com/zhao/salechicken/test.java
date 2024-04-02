@@ -2,6 +2,8 @@ package com.zhao.salechicken;
 
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zhao.salechicken.pojo.Orderdetail;
+import com.zhao.salechicken.service.impl.OrderdetailServiceImpl;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -49,5 +51,11 @@ public class test {
         // 将所有部分拼接成一个字符串
         System.out.println(timestamp + randomCode1 + sequenceNumber + randomCode2);
 //        System.out.println(Long.parseLong(timestamp + randomCode1 + sequenceNumber + randomCode2));
+    }
+
+    @Test
+    public void testGetOrderdetailById() {
+        OrderdetailServiceImpl orderdetailServicel = new OrderdetailServiceImpl();
+        Orderdetail orderdetail = orderdetailServicel.getById(8);
     }
 }
