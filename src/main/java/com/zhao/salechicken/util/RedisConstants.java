@@ -27,6 +27,9 @@ public class RedisConstants {
     //订单提交分布式锁前缀
     public static final String LOCK_ORDER_KEY = "lock:order:";
 
+    //产品库存扣减分布式锁前缀
+//    public static final String LOCK_ORDER_DEDUCT_KEY = "lock:product:deductions:";
+
     public static final String SECKILL_STOCK_KEY = "seckill:stock:";
     public static final String BLOG_LIKED_KEY = "blog:liked:";
     public static final String FEED_KEY = "feed:";

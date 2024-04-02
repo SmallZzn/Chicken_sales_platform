@@ -69,8 +69,8 @@ public class ProductController {
         productService.deleteProduct(productId);
         //将添加任务添加到RocketMQ中
         Map<String, String> producerMap = new HashMap<>();
-        producerMap.put("productId",productId+"");
-        producerMap.put("operation","DELETE");
+        producerMap.put("productId", productId + "");
+        producerMap.put("operation", "DELETE");
         chickenSalesUpdateEsProducer.send(producerMap);
         return R.success("删除成功!!!");
     }
@@ -96,8 +96,8 @@ public class ProductController {
         productService.updateProduct(product);
         //将添加任务添加到RocketMQ中
         Map<String, String> producerMap = new HashMap<>();
-        producerMap.put("productId",product.getProductId()+"");
-        producerMap.put("operation","INSERT");
+        producerMap.put("productId", product.getProductId() + "");
+        producerMap.put("operation", "INSERT");
         chickenSalesUpdateEsProducer.send(producerMap);
         return R.success("修改成功!!!");
     }

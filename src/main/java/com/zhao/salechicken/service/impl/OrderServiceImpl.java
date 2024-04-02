@@ -117,7 +117,7 @@ public class OrderServiceImpl implements OrderService {
             boolean success = productService.update()
                     .setSql("inventory = inventory - 1")
                     .eq("product_id", productId)
-                    .lt("inventory", 0)
+                    .gt("inventory", 0)
                     .update();
 
             Product product = productService.getProductById(productId);

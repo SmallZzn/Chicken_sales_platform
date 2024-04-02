@@ -115,7 +115,7 @@ public class ChickenSalesOrderConsumer implements RocketMQListener<Map<String, O
                 //产品销量增加，库存减少
                 Product product = productService.getProductById(orderdetail.getProductId());
                 product.setSales(product.getSales() + cartdetail.getQuantity());
-                product.setInventory(product.getInventory() - cartdetail.getQuantity());
+//                product.setInventory(product.getInventory() - cartdetail.getQuantity());
                 productService.updateProduct(product);
 
                 //添加订单详情
