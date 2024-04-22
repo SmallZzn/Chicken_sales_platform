@@ -1,6 +1,7 @@
 package com.zhao.salechicken.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.zhao.salechicken.annotation.MyLog;
 import com.zhao.salechicken.common.BaseContext;
 import com.zhao.salechicken.common.R;
 import com.zhao.salechicken.pojo.Review;
@@ -10,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Slf4j
@@ -31,6 +31,7 @@ public class ReviewController {
      * @return
      */
     @PostMapping("/addReview")
+    @MyLog(title = "评价模块", content = "新增评论")
     public R<String> addReview(@RequestBody Review review) {
         //1、获取当前用户id
         Integer loginUser = BaseContext.getCurrentId();
@@ -53,6 +54,7 @@ public class ReviewController {
      * @return
      */
     @DeleteMapping("/deleteReview")
+    @MyLog(title = "评价模块", content = "删除产品评价")
     public R<String> deleteReview(Integer reviewId) {
         //1、获取当前登录用户的id
         Integer loginUser = BaseContext.getCurrentId();
@@ -81,6 +83,7 @@ public class ReviewController {
      * @return
      */
     @GetMapping("/selectReview")
+    @MyLog(title = "评价模块", content = "查看产品评价(分页)")
     public R<PageInfo> selectProductReview(int page, int pageSize, Integer productId) {
         PageInfo pageInfo = reviewService.selectProductReview(page, pageSize, productId);
         return R.success(pageInfo);
@@ -94,6 +97,7 @@ public class ReviewController {
      * @return
      */
     @GetMapping("/selectMyReview")
+    @MyLog(title = "评价模块", content = "查看单个用户的所有评价（分页）")
     public R<PageInfo> selectMyReview(int page, int pageSize,Integer userId) {
 
         PageInfo pageInfo = reviewService.selectMyReview(userId, page, pageSize);

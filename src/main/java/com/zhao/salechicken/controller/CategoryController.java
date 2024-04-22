@@ -1,14 +1,12 @@
 package com.zhao.salechicken.controller;
 
 
+import com.zhao.salechicken.annotation.MyLog;
 import com.zhao.salechicken.common.BaseContext;
 import com.zhao.salechicken.common.R;
-import com.zhao.salechicken.mapper.CategoryMapper;
 import com.zhao.salechicken.pojo.Category;
-import com.zhao.salechicken.service.CartService;
 import com.zhao.salechicken.service.CategoryService;
 import com.zhao.salechicken.service.PermissiondetailService;
-import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +31,7 @@ public class CategoryController {
      * @return
      */
     @GetMapping("/selectAllCategory")
+    @MyLog(title = "种类模块", content = "查看所有商品种类")
     public R<List> selectAllCategory() {
         List<Category> categorys = categoryService.selectAllCategory();
         return R.success(categorys);
@@ -46,6 +45,7 @@ public class CategoryController {
      * @return
      */
     @PostMapping("/addCategory")
+    @MyLog(title = "种类模块", content = "新增产品种类")
     public R<String> addCategory(HttpServletRequest request, @RequestBody Category category) {
         //获取当前登录用户
         Integer loginUser = BaseContext.getCurrentId();
@@ -71,6 +71,7 @@ public class CategoryController {
      * @return
      */
     @DeleteMapping("/deleteCategory")
+    @MyLog(title = "种类模块", content = "删除产品种类")
     public R<String> deleteCategory(HttpServletRequest request, Integer categoryId) {
         //获取当前登录用户
         Integer loginUser = BaseContext.getCurrentId();

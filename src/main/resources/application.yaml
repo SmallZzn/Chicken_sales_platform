@@ -46,6 +46,9 @@ pagehelper:
 #图片存放路径
 salechicken:
   path: D:\Image\ChickenImage\
+  stats:
+    locale:
+      amap-key: 824c511f0997586ea016f979fdb23087
 
 server:
   port: 9999

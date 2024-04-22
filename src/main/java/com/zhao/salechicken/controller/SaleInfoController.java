@@ -1,5 +1,6 @@
 package com.zhao.salechicken.controller;
 
+import com.zhao.salechicken.annotation.MyLog;
 import com.zhao.salechicken.common.R;
 import com.zhao.salechicken.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,7 @@ public class SaleInfoController {
      * @return
      */
     @GetMapping("/selectTotalSales")
+    @MyLog(title = "销售详情模块", content = "查看销售情况查看销售情况")
     public R<List<Double>> selectTotalSales() {
         List<Double> totalSales = orderService.selectTotalSales();
         return R.success(totalSales);

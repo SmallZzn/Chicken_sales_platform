@@ -1,16 +1,14 @@
 package com.zhao.salechicken.controller;
 
+import com.zhao.salechicken.annotation.MyLog;
 import com.zhao.salechicken.common.BaseContext;
 import com.zhao.salechicken.common.R;
-import com.zhao.salechicken.dto.PermissionDto;
 import com.zhao.salechicken.pojo.Permission;
 import com.zhao.salechicken.pojo.Permissiondetail;
 import com.zhao.salechicken.pojo.User;
 import com.zhao.salechicken.service.PermissionService;
 import com.zhao.salechicken.service.PermissiondetailService;
-import com.zhao.salechicken.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +36,7 @@ public class PermissiondetailController {
      * @return
      */
     @PostMapping("/addPermission")
+    @MyLog(title = "权限模块", content = "增加管理员权限")
     public R<String> addPermission(HttpServletRequest request, @RequestBody User user, Integer id) {
         //获取当前登录用户
         Integer loginUser = BaseContext.getCurrentId();
@@ -60,6 +59,7 @@ public class PermissiondetailController {
      * @return
      */
     @PostMapping("/deletePermission")
+    @MyLog(title = "权限模块", content = "删除管理员权限")
     public R<String> deletePermission(HttpServletRequest request, @RequestBody User user, Integer permissionId) {
         //获取当前登录用户
         Integer loginUser = BaseContext.getCurrentId();
@@ -82,6 +82,7 @@ public class PermissiondetailController {
      * @return
      */
     @GetMapping("/selectProcessPermission")
+    @MyLog(title = "权限模块", content = "查看管理员有的权限")
     public R<List> selectProcessPermission(HttpServletRequest request, Integer userId) {
         //获取当前登录用户
         Integer loginUser = BaseContext.getCurrentId();
@@ -103,6 +104,7 @@ public class PermissiondetailController {
      * @return
      */
     @GetMapping("/selectUnProcessPermission")
+    @MyLog(title = "权限模块", content = "查看管理员没有的权限")
     public R<List> selectUnProcessPermission(HttpServletRequest request, Integer userId) {
         //获取当前登录用户
         Integer loginUser = BaseContext.getCurrentId();
@@ -123,6 +125,7 @@ public class PermissiondetailController {
      * @return
      */
     @GetMapping("/selectAllPermission")
+    @MyLog(title = "权限模块", content = "查询所有权限")
     public R<List> selectAllPermission() {
         return R.success(permissionService.selectAllPermission());
     }
@@ -133,6 +136,7 @@ public class PermissiondetailController {
      * @return
      */
     @PostMapping("/updatePermission")
+    @MyLog(title = "权限模块", content = "修改管理员权限")
     public R<String> updatePermission(@RequestBody List<Permissiondetail> permissiondetails) {
         Integer userId = permissiondetails.get(0).getUserId();
         //清空用户权限

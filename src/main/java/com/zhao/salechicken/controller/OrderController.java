@@ -1,6 +1,7 @@
 package com.zhao.salechicken.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.zhao.salechicken.annotation.MyLog;
 import com.zhao.salechicken.common.BaseContext;
 import com.zhao.salechicken.common.R;
 import com.zhao.salechicken.dto.PayDto;
@@ -39,6 +40,7 @@ public class OrderController {
      * @return
      */
     @GetMapping("/selectAllOrder")
+    @MyLog(title = "订单模块", content = "查询某个用户的订单")
     public R<PageInfo> selectAllOrder(HttpServletRequest request, int page, int pageSize, Integer userId) {
         //如果查看所有订单,要判断是否有查看订单的权限
         if (userId == null) {
@@ -62,6 +64,7 @@ public class OrderController {
      * @return
      */
     @DeleteMapping("/deleteOrder")
+    @MyLog(title = "订单模块", content = "删除订单信息（可批量）")
     public R<String> deleteOrder(HttpServletRequest request, @RequestParam List<Long> ids) {
 
         //获取当前登录用户
@@ -85,6 +88,7 @@ public class OrderController {
      * 查询指定订单(根据订单状态/id)(分页)
      */
     @GetMapping("/selectOrder")
+    @MyLog(title = "订单模块", content = "查询指定订单(根据订单状态/id)(分页)")
     public R<PageInfo> selectOrder(int page, int pageSize, Integer userId, Long orderId, String status) {
         //查询信息
         PageInfo pageInfo = orderService.selectOrder(userId, page, pageSize, orderId, status);
@@ -100,6 +104,7 @@ public class OrderController {
      * @return
      */
     @GetMapping("/selectOrderDetail")
+    @MyLog(title = "订单模块", content = "查看订单详情")
     public R<PageInfo> selectOrderDetail(int page, int pageSize, Long orderId) {
         PageInfo pageInfo = orderdetailService.selectOrderDetail(page, pageSize, orderId);
         return R.success(pageInfo);
@@ -112,6 +117,7 @@ public class OrderController {
      * @return
      */
     @PutMapping("/updateOrder")
+    @MyLog(title = "订单模块", content = "修改订单信息")
     public R<String> updateOrder(@RequestBody Order order) {
 
         //获取当前登录用户
@@ -136,6 +142,7 @@ public class OrderController {
      * @return
      */
     @PostMapping("/pay")
+    @MyLog(title = "订单模块", content = "支付订单")
     public R<String> pay(@RequestBody PayDto payDto) {
         return orderService.pay(payDto);
     }

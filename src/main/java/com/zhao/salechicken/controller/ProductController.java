@@ -1,6 +1,7 @@
 package com.zhao.salechicken.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.zhao.salechicken.annotation.MyLog;
 import com.zhao.salechicken.common.BaseContext;
 import com.zhao.salechicken.common.R;
 import com.zhao.salechicken.mq.Producer.ChickenSalesUpdateEsProducer;
@@ -35,6 +36,7 @@ public class ProductController {
      * @return
      */
     @PostMapping("/addProduct")
+    @MyLog(title = "产品模块", content = "添加产品")
     public R<String> addProduct(@RequestBody Product product) {
         //获取当前登录用户
         Integer loginUser = BaseContext.getCurrentId();
@@ -57,6 +59,7 @@ public class ProductController {
      * @return
      */
     @DeleteMapping("/deleteProduct")
+    @MyLog(title = "产品模块", content = "删除产品")
     public R<String> deleteProduct(HttpServletRequest request, Integer productId) {
         //获取当前登录用户
         Integer loginUser = BaseContext.getCurrentId();
@@ -83,6 +86,7 @@ public class ProductController {
      * @return
      */
     @PutMapping("/updateProduct")
+    @MyLog(title = "产品模块", content = "修改产品信息")
     public R<String> updateProduct(HttpServletRequest request, @RequestBody Product product) {
 
         //获取当前登录用户
@@ -124,6 +128,7 @@ public class ProductController {
      * @return
      */
     @GetMapping("/selectAllProduct")
+    @MyLog(title = "产品模块", content = "查询所有产品信息（分页）（所有）")
     public R<PageInfo> selectAllProduct(HttpServletRequest request, int page, int pageSize, String productName, Integer category, String origin) {
         PageInfo pageInfo = productService.selectAllProduct(page, pageSize, productName, category, origin);
         return R.success(pageInfo);
@@ -137,6 +142,7 @@ public class ProductController {
      * @return
      */
     @GetMapping("/selectProductBySales")
+    @MyLog(title = "产品模块", content = "按销量由高到低查询所有商品")
     public R<PageInfo> selectProductBySales(int page, int pageSize, String productName, Integer category, String origin) {
         PageInfo pageInfo = productService.selectProductBySales(page, pageSize, productName, category, origin);
         return R.success(pageInfo);
@@ -149,6 +155,7 @@ public class ProductController {
      * @return
      */
     @GetMapping("/selectProductInfo")
+    @MyLog(title = "产品模块", content = "查看产品全部信息")
     public R<Product> selectProductInfo(Integer productId) {
         Product product = productService.getProductById(productId);
         return R.success(product);
@@ -160,6 +167,7 @@ public class ProductController {
      * @return
      */
     @GetMapping("/sortProductByPriceDESC")
+    @MyLog(title = "产品模块", content = "按价格降序")
     public R<PageInfo> sortProductByPriceDESC(int page, int pageSize, String productName, Integer category, String origin) {
         PageInfo pageInfo = productService.sortProductByPriceDESC(page, pageSize, productName, category, origin);
         return R.success(pageInfo);
@@ -171,6 +179,7 @@ public class ProductController {
      * @return
      */
     @GetMapping("/sortProductByPriceASC")
+    @MyLog(title = "产品模块", content = "按价格升序")
     public R<PageInfo> sortProductByPriceASC(int page, int pageSize, String productName, Integer category, String origin) {
         PageInfo pageInfo = productService.sortProductByPriceASC(page, pageSize, productName, category, origin);
         return R.success(pageInfo);
@@ -185,6 +194,7 @@ public class ProductController {
      * @return
      */
     @GetMapping("/selectShortSupplyProduct")
+    @MyLog(title = "产品模块", content = "查看缺货产品")
     public R<PageInfo> selectShortSupplyProduct(HttpServletRequest request, int page, int pageSize, String productName, Integer category, String origin) {
         //获取当前登录用户
         Integer loginUser = BaseContext.getCurrentId();

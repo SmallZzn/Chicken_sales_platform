@@ -1,5 +1,6 @@
 package com.zhao.salechicken.controller;
 
+import com.zhao.salechicken.annotation.MyLog;
 import com.zhao.salechicken.common.BaseContext;
 import com.zhao.salechicken.common.R;
 import com.zhao.salechicken.pojo.Address;
@@ -25,6 +26,7 @@ public class AddressController {
      * @return
      */
     @PostMapping("/addAddress")
+    @MyLog(title = "地址模块", content = "添加地址")
     public R<String> addAddress(@RequestBody Address address){
         addressService.addAddress(address);
         return R.success("添加成功");
@@ -36,6 +38,7 @@ public class AddressController {
      * @return
      */
     @DeleteMapping("/deleteAddress")
+    @MyLog(title = "地址模块", content = "删除地址")
     public R<String> deleteAddress(Integer addressId){
         addressService.deleteAddress(addressId);
         return R.success("删除成功");
@@ -47,6 +50,7 @@ public class AddressController {
      * @return
      */
     @GetMapping("/selectAllAddress")
+    @MyLog(title = "地址模块", content = "查找所有地址")
     public R<List<Address>> selectAllAddress(HttpServletRequest request){
         //获取当前登录用户的id
         Integer loginUser = BaseContext.getCurrentId();
@@ -61,6 +65,7 @@ public class AddressController {
      * @return
      */
     @PutMapping("/updateAddress")
+    @MyLog(title = "地址模块", content = "修改地址信息")
     public R<String> updateAddress(@RequestBody Address address){
         addressService.updateAddress(address);
         return R.success("地址修改成功");
@@ -72,6 +77,7 @@ public class AddressController {
      * @return
      */
     @PostMapping("/defaultAddress")
+    @MyLog(title = "地址模块", content = "设置为默认地址")
     public R<String> defaultAddress(@RequestBody Address address){
         //设置为默认地址
         addressService.isDefaultAddress(address);

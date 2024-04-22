@@ -19,6 +19,13 @@
         <elasticsearch.version>7.12.1</elasticsearch.version>
     </properties>
     <dependencies>
+
+        <!-- aop切面 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
         <!--MybatisPlus依赖-->
         <dependency>
             <groupId>com.baomidou</groupId>
@@ -26,7 +33,7 @@
             <version>3.4.3</version>
         </dependency>
 
-        <!--RocketMQ依赖       -->
+        <!--RocketMQ依赖-->
         <dependency>
             <groupId>org.apache.rocketmq</groupId>
             <artifactId>rocketmq-spring-boot-starter</artifactId>

@@ -1,5 +1,6 @@
 package com.zhao.salechicken.controller;
 
+import com.zhao.salechicken.annotation.MyLog;
 import com.zhao.salechicken.common.BaseContext;
 import com.zhao.salechicken.common.R;
 import com.zhao.salechicken.dto.CartdetailDto;
@@ -37,6 +38,7 @@ public class CartController {
      * @return
      */
     @GetMapping("/selectMyCart")
+    @MyLog(title = "购物车模块", content = "查看购物车")
     public R<List<CartdetailDto>> selectMyCart(HttpServletRequest request) {
         //获取当前登录用户的id
         Integer loginUser = BaseContext.getCurrentId();
@@ -52,6 +54,7 @@ public class CartController {
      * @return
      */
     @PostMapping("/addCart")
+    @MyLog(title = "购物车模块", content = "商品加入购物车")
     public R<String> addCart(Integer productId) {
         //获取当前登录用户的id
         Integer loginUser = BaseContext.getCurrentId();
@@ -83,6 +86,7 @@ public class CartController {
      * @return
      */
     @PutMapping("/updateCartdetail")
+    @MyLog(title = "购物车模块", content = "购物车商品数量增加或减少")
     public R<String> updateCartdetail(@RequestBody Cartdetail cartdetail) {
         //获取当前登录用户的id
         Integer loginUser = BaseContext.getCurrentId();
@@ -106,6 +110,7 @@ public class CartController {
      * @return
      */
     @DeleteMapping("/emptyCart")
+    @MyLog(title = "购物车模块", content = "清空购物车")
     public R<String> emptyCart(HttpServletRequest request) {
         //获取当前登录用户的id
         Integer loginUser = BaseContext.getCurrentId();

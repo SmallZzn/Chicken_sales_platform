@@ -1,6 +1,7 @@
 package com.zhao.salechicken.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.zhao.salechicken.annotation.MyLog;
 import com.zhao.salechicken.common.BaseContext;
 import com.zhao.salechicken.common.R;
 import com.zhao.salechicken.dto.UserDto;
@@ -30,6 +31,7 @@ public class AdminController {
      * @return
      */
     @PostMapping("/addAdmin")
+    @MyLog(title = "管理员模块", content = "添加管理员")
     public R<String> addAdmin(HttpServletRequest request, @RequestBody User user) {
 
         //1、获取当前登录用户
@@ -61,6 +63,7 @@ public class AdminController {
      * @return
      */
     @PutMapping("/updateAdmin")
+    @MyLog(title = "管理员模块", content = "修改管理员信息")
     public R<String> updateAdmin(@RequestBody User user) {
         return userService.updateUser(user);
     }
@@ -72,6 +75,7 @@ public class AdminController {
      * @Paeam user
      */
     @DeleteMapping("/deleteAdmin")
+    @MyLog(title = "管理员模块", content = "删除管理员")
     public R<String> deleteAdmin(Integer userId) {
         return userService.deleteUser(userId);
     }
@@ -87,6 +91,7 @@ public class AdminController {
      * @return
      */
     @GetMapping("/selectUser")
+    @MyLog(title = "管理员模块", content = "查看所有用户/管理员")
     public R<PageInfo> selectUser(HttpServletRequest request, int page, int pageSize, Integer type, String keywords) {
         //1、获取当前登录用户
         Integer loginUser = BaseContext.getCurrentId();

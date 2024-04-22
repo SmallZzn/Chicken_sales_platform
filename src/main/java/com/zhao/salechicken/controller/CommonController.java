@@ -1,6 +1,7 @@
 package com.zhao.salechicken.controller;
 
 
+import com.zhao.salechicken.annotation.MyLog;
 import com.zhao.salechicken.common.BaseContext;
 import com.zhao.salechicken.common.R;
 import com.zhao.salechicken.dto.LoginFormDTO;
@@ -8,7 +9,10 @@ import com.zhao.salechicken.pojo.User;
 import com.zhao.salechicken.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -24,6 +28,7 @@ public class CommonController {
      * 发送手机验证码
      */
     @PostMapping("/code")
+    @MyLog(title = "公共模块", content = "发送手机验证码")
     public R sendCode(@RequestParam("phone") String phone, HttpSession session) {
         //发送短信验证码并保存验证码
         return userService.sendCode(phone, session);
@@ -67,6 +72,7 @@ public class CommonController {
      * @return
      */
     @PostMapping("/loginByCode")
+    @MyLog(title = "公共模块", content = "登录")
     public R<User> loginByCode(@RequestBody LoginFormDTO loginFormDTO) {
         return userService.loginByCode(loginFormDTO);
     }
@@ -78,6 +84,7 @@ public class CommonController {
      * @return
      */
     @PostMapping("/logout")
+    @MyLog(title = "公共模块", content = "退出登录")
     public R<String> logout(HttpServletRequest request) {
         //清理Session中保存的当前用户登录的id
         BaseContext.removeUser();

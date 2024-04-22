@@ -1,5 +1,6 @@
 package com.zhao.salechicken.controller;
 
+import com.zhao.salechicken.annotation.MyLog;
 import com.zhao.salechicken.common.BaseContext;
 import com.zhao.salechicken.common.R;
 import com.zhao.salechicken.dto.UserDto;
@@ -33,6 +34,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/logon")
+    @MyLog(title = "用户模块", content = "用户注册")
     public R<String> logon(@RequestBody User user) {
 
         //类型设置为用户
@@ -61,6 +63,7 @@ public class UserController {
      * @return
      */
     @DeleteMapping("/deleteUser")
+    @MyLog(title = "用户模块", content = "用户注销")
     public R<String> deleteUser(HttpServletRequest request, Integer userId) {
         //获取当前登录用户
         Integer loginUser = BaseContext.getCurrentId();
@@ -89,6 +92,7 @@ public class UserController {
      * @return
      */
     @PutMapping("/updateUserInfo")
+    @MyLog(title = "用户模块", content = "用户修改信息")
     public R<String> updateUserInfo(@RequestBody User user) {
         //获取当前登录用户的id
         Integer loginUser = BaseContext.getCurrentId();
@@ -113,6 +117,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/selectUserInfo")
+    @MyLog(title = "用户模块", content = "查看用户信息")
     public R<UserDto> selectUserInfo(Integer userId) {
         UserDto userDto = userService.selectUserInfo(userId);
 
